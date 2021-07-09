@@ -13,6 +13,7 @@ public class Trap extends Building {
         // Get the Pathtype at (x, y)
         // If it is pathtiles and no other buildings exsits on it
         // place the village
+        return true;
     }
 
     public void destroyTrap() {
@@ -23,7 +24,7 @@ public class Trap extends Building {
         return this.damage;
     }
 
-    public void exertDamage(Enemy stepOn) {
+    public void exertDamage(BasicEnemy stepOn) {
         // TODO: Deduct corresponding hp from the enemy
     }
 }

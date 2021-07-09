@@ -8,7 +8,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 abstract public class Building extends StaticEntity {
     private int pathCycle = 0;
     private Boolean characterStepOn = false;
-    private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+    private ArrayList<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
 
     public Building (SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
@@ -18,7 +18,7 @@ abstract public class Building extends StaticEntity {
         return this.pathCycle;
     }
 
-    public ArrayList<Enemy> getEnemies() {
+    public ArrayList<BasicEnemy> getEnemies() {
         return this.enemies;
     }
 
@@ -34,11 +34,11 @@ abstract public class Building extends StaticEntity {
 
     //public abstract boolean checkPathCycle();
 
-    public void addEnemy(Enemy stepOn) {
+    public void addEnemy(BasicEnemy stepOn) {
         this.enemies.add(stepOn);
     }
 
-    public void removeEnemy(Enemy stepOn) {
+    public void removeEnemy(BasicEnemy stepOn) {
         this.enemies.remove(stepOn);
     }
 

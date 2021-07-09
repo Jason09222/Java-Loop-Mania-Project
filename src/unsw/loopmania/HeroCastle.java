@@ -9,8 +9,9 @@ public class HeroCastle extends Building {
         super(x, y);
     }
 
-    public void checkPathType() {
+    public boolean checkPathType() {
         // Cannot be placed expect one spot
+        return true;
     }
 
     public boolean checkPathCycle() {

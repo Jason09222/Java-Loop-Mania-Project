@@ -21,5 +21,6 @@ public class Barracks extends Building{
         // Get the Pathtype at (x, y)
         // If it is pathtiles and no other buildings exsits on it
         // place the village
+        return true;
     }
 }

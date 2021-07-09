@@ -18,9 +18,10 @@ public class Campfire extends Building {
         // Get the Pathtype at (x, y)
         // If it is non-pathtiles and no other buildings exsits on it
         // place the village
+        return true;
     } 
 
-    public void doubleDamage(Enemy stepOn) {
+    public void doubleDamage(BasicEnemy stepOn) {
         // TODO: get the character's damage and double it
         // deduct corresponding points from the enemy
     }
