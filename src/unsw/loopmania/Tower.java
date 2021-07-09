@@ -13,19 +13,25 @@ public class Tower extends Building {
         // Get the Pathtype at (x, y)
         // If it is non-pathtiles and no other buildings exsits on it
         // place the village
+        return true;
     } 
 
-    @Override
-    public void addEnemy() {
+    public void addEnemyNearBy() {
         // loop through all enemies
         // calculate the distance between tower and enemy
         // if it is in radius
         // add to the list
+        return;
     }
 
-    public boolean checkBattle() {
-        // loop through all battles happening now 
-        // loop through the enemies in the battle
+    public boolean checkBattle() { 
+        // loop through the enemies in the list stepOns
+        // if it id in battle
         // decuct hp
+        return true;
+    }
+
+    public int getShootRadius() {
+        return this.shootRadius;
     }
 }
