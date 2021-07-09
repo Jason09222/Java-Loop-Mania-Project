@@ -10,14 +10,12 @@ public class Character extends MovingEntity {
     private String name;
     private int hp;
     private int damage;
-    private List<StaticEntity> inventory;
 
     public Character(String name, int hp, int damage, PathPosition position) {
         super(position);
         this.name = name;
         this.hp = hp;
         this.damage = damage;
-        this.inventory = new ArrayList<StaticEntity>();
     }
     
     public String getName() {
@@ -44,11 +42,4 @@ public class Character extends MovingEntity {
         this.damage = damage;
     }
 
-    public List<StaticEntity> getInventory() {
-        return this.inventory;
-    }
 
-    public void addItemToInventory(StaticEntity item) {
-        this.inventory.add(item);
-    }
-}
