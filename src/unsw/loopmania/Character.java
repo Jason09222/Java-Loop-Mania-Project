@@ -7,27 +7,19 @@ import java.util.List;
  */
 public class Character extends MovingEntity {
     // TODO = potentially implement relationships between this class and other classes
-    private String name;
-    private int hp;
-    private int damage;
+    private int hp = 500;
+    private int damage = 1;
     private List<Entity> equippedInventoryItems;
+    private Boolean inBattle;
 
-    public Character(String name, int hp, int damage, PathPosition position) {
+    public Character(PathPosition position) {
         super(position);
-        this.name = name;
-        this.hp = hp;
-        this.damage = damage;
+        setHp(this.hp);
+        setDamage(this.damage);
         this.equippedInventoryItems = new ArrayList<Entity>();
+        this.inBattle = false;
     }
     
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getHp() {
         return this.hp;
     }
@@ -55,6 +47,16 @@ public class Character extends MovingEntity {
     public void equipItem(Entity equipment) {
         this.equippedInventoryItems.add(equipment);
     }
+
+    public void setInBattle(Boolean flag) {
+        this.inBattle = flag;
+    }
+
+    public Boolean getInBattle() {
+        return this.inBattle;
+    }
+
+
 }
 
 
