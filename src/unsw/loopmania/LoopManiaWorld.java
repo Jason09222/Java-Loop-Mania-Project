@@ -47,9 +47,14 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of items
     private List<Entity> unequippedInventoryItems;
+    private List<Pair<BasicItem, PathPosition>> unPickedItem;
 
     // TODO = expand the range of buildings
     private List<VampireCastleBuilding> buildingEntities;
+    private List<Building> campfires;
+    private List<Building> buildings;
+
+    private List<Ally> allies;
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
@@ -73,6 +78,63 @@ public class LoopManiaWorld {
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        buildings = new ArrayList<>();
+        allies =new ArrayList<>();
+        campfires = new ArrayList<>();
+    }
+
+    public List<Ally> getAllies() {
+        return this.allies;
+    }
+
+    public List<Building> getBuildings() {
+        return this.buildings;
+    }
+
+    public List<BasicEnemy> getEnemy() {
+        return this.enemies;
+    }
+
+    public List<Building> getCampfire() {
+        return this.campfires;
+    }
+
+    public List<Pair<Integer, Integer>> getOrderedPath() {
+        return this.orderedPath;
+    }
+
+    public List<Pair<BasicItem, PathPosition>> getUnpickedItems() {
+        return this.unPickedItem;
+    }
+
+    public void createbuilding(String type, SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        Building newBuilding = null;
+        // TODO: Check pathType
+        switch(type) {
+            case "Village":
+                newBuilding = new Village(x, y);
+                break;
+            case "Barracks":
+                newBuilding = new Barracks(x, y);
+                break;
+            case "Tower":
+                newBuilding = new Tower(x, y);
+                break;
+            case "Trap":
+                newBuilding = new Trap(x, y);
+                break;
+            case "VampireCastleBuuilding":
+                newBuilding = new VampireCastleBuilding(x, y);
+                break;
+            case "ZombiePit":
+                newBuilding = new ZombiePit(x, y);
+                break;
+            case "Campfire":
+                newBuilding = new Campfire(x, y);
+                this.campfires.add(newBuilding);
+        }
+        
+        this.buildings.add(newBuilding);
     }
 
     public int getWidth() {
@@ -111,7 +173,8 @@ public class LoopManiaWorld {
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
         if (pos != null){
             int indexInPath = orderedPath.indexOf(pos);
-            BasicEnemy enemy = new BasicEnemy(new PathPosition(indexInPath, orderedPath));
+            //BasicEnemy enemy = new BasicEnemy(new PathPosition(indexInPath, orderedPath));
+            BasicEnemy enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
         }
@@ -127,6 +190,11 @@ public class LoopManiaWorld {
         enemies.remove(enemy);
     }
 
+
+    private void killAlly(Ally ally) {
+        ally.destroy();
+        allies.remove(ally);
+    }
     /**
      * run the expected battles in the world, based on current world state
      * @return list of enemies which have been killed
@@ -134,12 +202,72 @@ public class LoopManiaWorld {
     public List<BasicEnemy> runBattles() {
         // TODO = modify this - currently the character automatically wins all battles without any damage!
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
+        List<Ally> defeatedAllies = new ArrayList<Ally>();
+        List<BasicEnemy> transferZombies = new ArrayList<BasicEnemy>(); 
         for (BasicEnemy e: enemies){
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
             // TODO = you should implement different RHS on this inequality, based on influence radii and battle radii
+            boolean hasAttacked = false;
+            for (Ally ally : allies) {
+                if (ally.getHp() <= 0) {
+                    continue;
+                }
+                if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < 4) {
+                    e.attack_ally(ally);
+                    hasAttacked = true;
+                    if (ally.getHp() <= 0) {
+                        if (e.getType().equals("Zombie")) {
+                            Random rand = new Random();
+                            int int_random = rand.nextInt(5);
+                            if (int_random == 0) {
+                                BasicEnemy newZombie = new Zombie(ally.getPathPosition());
+                                transferZombies.add(newZombie);
+                            }
+                        }
+                        defeatedAllies.add(ally);
+                    }
+                    break;
+                }
+            }
+            if (!hasAttacked) {
+                e.attack_character(character);
+            }
+            
+
+            for (BasicEnemy enemy : transferZombies) {
+                enemies.add(enemy);
+            }
+        }
+
+
+
+        for (Ally ally : allies) {
+            for (BasicEnemy e : enemies) {
+                if (e.getHP() <= 0) {
+                    continue;
+                }
+                if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < 4){
+
+                    //TODO ally attack
+                    if (e.getHP() <= 0) {
+                        defeatedEnemies.add(e);
+                    }
+                    break;
+                }
+            }
+        }
+
+        for (BasicEnemy e : enemies) {
+            if (e.getHP() <= 0) {
+                continue;
+            }
+            // add character attacked
             if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < 4){
-                // fight...
-                defeatedEnemies.add(e);
+                character.attack(e);
+                if (e.getHP() <= 0) {
+                    defeatedEnemies.add(e);
+                }
+                break;
             }
         }
         for (BasicEnemy e: defeatedEnemies){
@@ -147,6 +275,14 @@ public class LoopManiaWorld {
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
             killEnemy(e);
+        }
+
+        for (Ally ally: defeatedAllies) {
+            killAlly(ally);
+        }
+        if (character.getHp() <=0) {
+            //TODO
+            //Lose Game;
         }
         return defeatedEnemies;
     }
@@ -285,8 +421,28 @@ public class LoopManiaWorld {
      */
     private void moveBasicEnemies() {
         // TODO = expand to more types of enemy
+
+        
         for (BasicEnemy e: enemies){
-            e.move();
+            for (int i = 0; i < e.getSpeed(); i++) {
+                Building nearestCamp = this.getShortestCampire(e);
+                if (e.getType().equals("Vampire") && nearestCamp != null) {
+                    if (e.getDistance(nearestCamp.getX(), nearestCamp.getY()) <= 2) {
+                        e.moveDownPath();
+                        continue;
+                    } else if (e.getDistance(nearestCamp.getX(), nearestCamp.getY()) == 3) {
+                        if (e.getLastDirec().equals("Up")) {
+                            e.moveDownPath();
+                            e.setLastDirec("Down");
+                        } else {
+                            e.moveUpPath();
+                            e.setLastDirec("Up");
+                        }
+                        continue;
+                    }
+                }
+                e.move();
+            }
         }
     }
 
@@ -347,5 +503,22 @@ public class LoopManiaWorld {
         shiftCardsDownFromXCoordinate(cardNodeX);
 
         return newBuilding;
+    }
+
+
+
+    public Building getShortestCampire(BasicEnemy e) {
+        if (this.getCampfire().isEmpty()) return null;
+        int shortest = 1000;
+        Building tmp = new Campfire(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        for (Building b : this.getCampfire()) {
+            int currDist = e.getDistance(b.getX(), b.getY());
+            if (currDist < shortest) {
+                tmp = b;
+                shortest = currDist; 
+            }
+        }
+        return tmp;
+
     }
 }

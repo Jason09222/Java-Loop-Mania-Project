@@ -8,7 +8,7 @@ import java.util.List;
 public class Character extends MovingEntity {
     // TODO = potentially implement relationships between this class and other classes
     private int hp = 500;
-    private int damage = 1;
+    private int damage = 100;
     private List<Entity> equippedInventoryItems;
     private Boolean inBattle;
 
@@ -25,6 +25,7 @@ public class Character extends MovingEntity {
     }
 
     public void setHp(int hp) {
+        // TODO: Check if it reaches the highest possible hp
         this.hp = hp;
     }
 
@@ -56,6 +57,10 @@ public class Character extends MovingEntity {
         return this.inBattle;
     }
 
+    public void attack(BasicEnemy e) {
+        //TODO
+        e.setHP(e.getHP() - this.getDamage());
+    }
 
 }
 
