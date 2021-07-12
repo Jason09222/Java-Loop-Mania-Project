@@ -51,6 +51,8 @@ public class LoopManiaWorld {
     // TODO = expand the range of buildings
     private List<VampireCastleBuilding> buildingEntities;
 
+    private int goldOwned;
+
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
      */
@@ -73,6 +75,7 @@ public class LoopManiaWorld {
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        goldOwned = 0;
     }
 
     public int getWidth() {
@@ -347,5 +350,17 @@ public class LoopManiaWorld {
         shiftCardsDownFromXCoordinate(cardNodeX);
 
         return newBuilding;
+    }
+
+    public int getGold() {
+        return this.goldOwned;
+    }
+
+    public void addGold(int numGained) {
+        this.goldOwned += numGained;
+    }
+
+    public void spendGold(int numLost) {
+        this.goldOwned += numLost;
     }
 }
