@@ -53,6 +53,8 @@ public class LoopManiaWorld {
 
     private int goldOwned;
 
+    private int experience;
+
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
      */
@@ -76,6 +78,7 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         goldOwned = 0;
+        experience = 0;
     }
 
     public int getWidth() {
@@ -362,5 +365,13 @@ public class LoopManiaWorld {
 
     public void spendGold(int numLost) {
         this.goldOwned += numLost;
+    }
+
+    public int getExperience() {
+        return this.experience;
+    }
+
+    public void addExperience(int numGained) {
+        this.experience += numGained;
     }
 }
