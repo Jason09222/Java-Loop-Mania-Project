@@ -185,6 +185,11 @@ public class LoopManiaWorld {
         enemies.remove(enemy);
     }
 
+
+    private void killAlly(Ally ally) {
+        ally.destroy();
+        allies.remove(ally);
+    }
     /**
      * run the expected battles in the world, based on current world state
      * @return list of enemies which have been killed
@@ -258,6 +263,14 @@ public class LoopManiaWorld {
             // if we killEnemy in prior loop, we get java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
             killEnemy(e);
+        }
+
+        for (Ally ally: defeatedAllies) {
+            killAlly(ally);
+        }
+        if (character.getHp() <=0) {
+            //TODO
+            //Lose Game;
         }
         return defeatedEnemies;
     }
