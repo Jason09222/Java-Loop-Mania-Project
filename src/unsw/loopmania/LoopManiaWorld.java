@@ -185,20 +185,29 @@ public class LoopManiaWorld {
 
     /**
      * spawns items if the conditions warrant it, adds to world
-     * @return list of the items to be displayed on screen
+     * @return list of the gold to be displayed on screen
      */
-    public List<Gold> possiblySpawnItems(){
-        Pair<Integer, Integer> pos = possiblyGetBasicItemSpawnPosition();
-        List<Gold> spawningItems = new ArrayList<>();
-        if (pos != null){
-            int indexInPath = orderedPath.indexOf(pos);
-            PathPosition newPathPosition =  new PathPosition(indexInPath, orderedPath);
-            Gold item = new Gold(newPathPosition.getX(), newPathPosition.getY());
-            unPickedItem.add(item);
-            spawningItems.add(item);
+    public List<BasicItem> possiblySpawnItems(){
+        Pair<Integer, Integer> pos1 = possiblyGetBasicItemSpawnPosition();
+        Pair<Integer, Integer> pos2 = possiblyGetBasicItemSpawnPosition();
+        List<BasicItem> spawningItems = new ArrayList<>();
+        if (pos1 != null && pos2 != null){
+            int indexInPath1 = orderedPath.indexOf(pos1);
+            int indexInPath2 = orderedPath.indexOf(pos2);
+            PathPosition newPathPosition1 =  new PathPosition(indexInPath1, orderedPath);
+            PathPosition newPathPosition2 =  new PathPosition(indexInPath2, orderedPath);
+            BasicItem gold = new Gold(newPathPosition1.getX(), newPathPosition1.getY());
+            BasicItem healthPotion = new HealthPotion(newPathPosition2.getX(), newPathPosition2.getY());
+            unPickedItem.add(gold);
+            spawningItems.add(gold);
+            unPickedItem.add(healthPotion);
+            spawningItems.add(healthPotion);
         }
         return spawningItems;
     }
+
+
+
 
 
 

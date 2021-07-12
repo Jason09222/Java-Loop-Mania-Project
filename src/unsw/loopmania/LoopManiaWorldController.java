@@ -119,7 +119,7 @@ public class LoopManiaWorldController {
     private Image swordImage;
     private Image basicBuildingImage;
     private Image goldImage;
-    //private Image healthPotionImage;
+    private Image healthPotionImage;
 
 
     /**
@@ -172,7 +172,7 @@ public class LoopManiaWorldController {
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         basicBuildingImage = new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
         goldImage = new Image((new File("src/images/gold_pile.png")).toURI().toString());
-        //healthPotionImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString());
+        healthPotionImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString());
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
 
@@ -246,8 +246,8 @@ public class LoopManiaWorldController {
             for (BasicEnemy newEnemy: newEnemies){
                 onLoad(newEnemy);
             }
-            List<Gold> newItems = world.possiblySpawnItems();
-            for (Gold newItem: newItems){
+            List<BasicItem> newItems = world.possiblySpawnItems();
+            for (BasicItem newItem: newItems){
                 onLoad(newItem);
             }
             printThreadingNotes("HANDLED TIMER");
@@ -354,12 +354,17 @@ public class LoopManiaWorldController {
 
 
     /**
-     * load an gold into the GUI
+     * load item into the GUI
      * @param item
      */
-    private void onLoad(Gold gold) {
-        ImageView view = new ImageView(goldImage);
-        addEntity(gold, view);
+    private void onLoad(BasicItem item) {
+        ImageView view;
+        if (item.getType().equals("Gold")) {
+             view = new ImageView(goldImage);
+        } else {
+             view = new ImageView(healthPotionImage);
+        }
+        addEntity(item, view);
         squares.getChildren().add(view);
     }
 
