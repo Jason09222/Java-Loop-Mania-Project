@@ -421,7 +421,7 @@ public class LoopManiaWorld {
         for (BasicEnemy e: enemies){
             for (int i = 0; i < e.getSpeed(); i++) {
                 Building nearestCamp = this.getShortestCampire(e);
-                if (e.getType().equals("Slug") && nearestCamp != null) {
+                if (e.getType().equals("Vampire") && nearestCamp != null) {
                     if (e.getDistance(nearestCamp.getX(), nearestCamp.getY()) <= 2) {
                         e.moveDownPath();
                         continue;
