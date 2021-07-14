@@ -475,7 +475,7 @@ public class LoopManiaWorld {
      * spawn a sword in the world and return the sword entity
      * @return a sword to be spawned in the controller as a JavaFX node
      */
-/*    public Sword addUnequippedSword(){
+    public Sword addUnequippedSword(){
         // TODO = expand this - we would like to be able to add multiple types of items, apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null){
@@ -489,12 +489,13 @@ public class LoopManiaWorld {
         Sword sword = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
         unequippedInventoryItems.add(sword);
         return sword;
-    } */
+    } 
     /**
      * spawn an item in the world and return the item entity
      * @param type of item to be added
      * @return a item to be spawned in the controller as a JavaFX node
      */
+
     public BasicItem addUnequippedItem(String type){
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null) {
@@ -557,6 +558,7 @@ public class LoopManiaWorld {
                     unequippedInventoryItems.add(equippedItems.get(0));
                 }
                 equippedItems.set(0, item);
+                
             case "Helmet":
                 if (equippedItems.get(1) != null) {
                     unequippedInventoryItems.add(equippedItems.get(1));
