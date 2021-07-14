@@ -2,6 +2,7 @@ package unsw.loopmania;
 
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.util.Pair;
 
 public class Barracks extends Building{
     public Barracks(SimpleIntegerProperty x, SimpleIntegerProperty y) {
