@@ -392,7 +392,7 @@ public class LoopManiaWorld {
 
     }
 
-    public BasicItem generateItem() {
+    public void generateItem() {
         BasicItem reward = null;
         int totalRewards = 8;
         Random rand = new Random();
@@ -429,11 +429,11 @@ public class LoopManiaWorld {
             case 8:
                 reward = new Sword(x, y);
                 break;
-            default: return null;
+            default: return;
         }
-
-        unequippedInventoryItems.add(reward);
-        return reward;
+        addUnequippedInventory(reward);
+        
+        return;
     }
 
     public void checkCardEntity () {
@@ -738,21 +738,17 @@ public class LoopManiaWorld {
         SimpleIntegerProperty y = e.y();
         switch(int_random) {
             case 0:
-                //TODO set some amount of gold to map
                 this.goldOwned += e.getGold();
                 break;
             case 1:
-                //TODO: set some kind of weapon to map
-                //addUnequippedInventory(item);
+                generateItem();
                 break;
             case 2:
-                //TODO: set one health potion to map
                 StaticEntity healthP = new HealthPotion(x, y);
                 addUnequippedInventory(healthP);
                 break;
             case 3:
-                
-                //TODO: set one card to map
+                generateCard();
                 break;
             default:
                 return;
