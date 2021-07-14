@@ -78,21 +78,27 @@ public class BasicEnemy extends MovingEntity {
 
 
 
-    public void generateTrophy(Character c) {
+    public void generateTrophy(LoopManiaWorld l) {
     
         Random rand = new Random();
         int int_random = rand.nextInt(3);
+        SimpleIntegerProperty x = this.x();
+        SimpleIntegerProperty y = this.y();
         switch(int_random) {
             case 0:
                 //TODO set some amount of gold to map
+                l.addGold(getGold());
                 break;
             case 1:
                 //TODO: set some kind of weapon to map
                 break;
             case 2:
                 //TODO: set one health potion to map
+                StaticEntity healthP = new HealthPotion(x, y);
+                l.addUnequippedInventory(healthP);
                 break;
             case 3:
+                StaticEntity
                 //TODO: set one card to map
                 break;
             default:

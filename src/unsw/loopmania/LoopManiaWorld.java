@@ -599,4 +599,44 @@ public class LoopManiaWorld {
         }
         return tmp;
     }
+
+
+    public void addUnequippedInventory(StaticEntity item) {
+        if (this.unequippedInventoryItems.size() == 15) {
+            this.unequippedInventoryItems.remove(0);
+            this.goldOwned += 100;
+        }
+        this.unequippedInventoryItems.add(item);
+    }
+
+
+
+    public void generateTrophy(BasicEnemy e) {
+    
+        Random rand = new Random();
+        int int_random = rand.nextInt(3);
+        SimpleIntegerProperty x = e.x();
+        SimpleIntegerProperty y = e.y();
+        switch(int_random) {
+            case 0:
+                //TODO set some amount of gold to map
+                this.goldOwned += e.getGold();
+                break;
+            case 1:
+                //TODO: set some kind of weapon to map
+                //addUnequippedInventory(item);
+                break;
+            case 2:
+                //TODO: set one health potion to map
+                StaticEntity healthP = new HealthPotion(x, y);
+                addUnequippedInventory(healthP);
+                break;
+            case 3:
+                
+                //TODO: set one card to map
+                break;
+            default:
+                return;
+        }
+    }
 }
