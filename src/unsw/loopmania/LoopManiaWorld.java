@@ -490,6 +490,56 @@ public class LoopManiaWorld {
         unequippedInventoryItems.add(sword);
         return sword;
     }
+    /**
+     * spawn an item in the world and return the item entity
+     * @param type of item to be added
+     * @return a item to be spawned in the controller as a JavaFX node
+     */
+    public BasicItem addUnequippedItem(String type){
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        if (firstAvailableSlot == null) {
+            // eject the oldest unequipped item and replace it... oldest item is that at beginning of items
+            removeItemByPositionInUnequippedInventoryItems(0);
+            firstAvailableSlot = getFirstAvailableSlotForItem();
+            // gives random amount of cash/experience reward for discarding oldest item
+            Random rand = new Random();
+            int result = rand.nextInt(10)%2;
+            switch (result) {
+                case 0: 
+                    addExperience(rand.nextInt(10));
+                    break;
+                case 1:
+                    addGold(rand.nextInt(10));
+                    break;
+                default:
+                    break;
+            }
+        }
+        // insert new item as it is now know we have a slot available
+        BasicItem item;
+        switch(type) {
+            case "Sword":
+                item = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                break;
+            case "Helmet":
+                item = new Helmet(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                break;
+            case "Armour":
+                item = new Armour(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                break;
+            case "Shield":
+                item = new Shield(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                break;
+            case "HealthPotion":
+                item = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                break;
+            default:
+                item = new BasicItem(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()), null);
+                break;
+        }
+        unequippedInventoryItems.add(item);
+        return item;
+    }
 
     /**
      * moves an "item" from unequippedInventory into equippedInventory
@@ -748,10 +798,6 @@ public class LoopManiaWorld {
     public void addExperience(int numGained) {
         this.experience += numGained;
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> basicStructure
 
     public Building getShortestCampire(BasicEnemy e) {
         if (this.getCampfire().isEmpty()) return null;
