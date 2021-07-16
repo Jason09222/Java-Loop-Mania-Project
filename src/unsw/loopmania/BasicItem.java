@@ -7,7 +7,4 @@ public class BasicItem extends Item {
     public BasicItem(SimpleIntegerProperty x, SimpleIntegerProperty y, ItemType type) {
         super(x, y, type);
     }
-    public ItemType getType() {
-        return this.type;
-    }
 }

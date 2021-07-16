@@ -7,5 +7,5 @@ public class RareItem extends Item  {
     public RareItem(SimpleIntegerProperty x, SimpleIntegerProperty y, ItemType type) {
         super(x, y, type);
         this.type = type;
-
+    }
 }

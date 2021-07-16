@@ -600,7 +600,7 @@ public class LoopManiaWorld {
                 item = new HealthPotion(x, y);
                 break;
             default:
-                item = new BasicItem(x, y, null);
+                item = null;
         }
         unequippedInventoryItems.add(item);
         return item;
@@ -613,14 +613,18 @@ public class LoopManiaWorld {
      *
      */
 
-    public boolean equipItem(BasicItem item) {
-        //TODO = recode equipment system
-        unequippedInventoryItems.remove(item);
-        return equippedItems.equip(item);
+    public boolean unEquipItem(int slot) {
+        // TODO = spawn the item back into the inventory
+        equippedItems.unEquip(slot);
+        return equippedItems.unEquip(slot);
     }
 
-    public boolean unEquipItem(int slot) {
-        return equippedItems.unEquip(slot);
+    public Item equipItemByCoordinates(int nodeX, int nodeY) {
+        Item item = getUnequippedInventoryItemEntityByCoordinates(nodeX, nodeY);
+        equippedItems.equip(item);
+        Item equippedItem = equippedItems.spawnEquippedItem(item.getType().getIndex(), item.getType());
+        item.destroy();
+        return equippedItem;
     }
 
 
@@ -632,7 +636,7 @@ public class LoopManiaWorld {
      * @param y y coordinate from 0 to height-1
      */
     public void removeUnequippedInventoryItemByCoordinates(int x, int y) {
-        Entity item = getUnequippedInventoryItemEntityByCoordinates(x, y);
+        Item item = getUnequippedInventoryItemEntityByCoordinates(x, y);
         removeUnequippedInventoryItem(item);
     }
 
@@ -707,8 +711,8 @@ public class LoopManiaWorld {
      * @param y y index from 0 to height-1
      * @return unequipped inventory item at the input position
      */
-    private Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y) {
-        for (Entity e : unequippedInventoryItems) {
+    private Item getUnequippedInventoryItemEntityByCoordinates(int x, int y) {
+        for (Item e : unequippedInventoryItems) {
             if ((e.getX() == x) && (e.getY() == y)) {
                 return e;
             }
