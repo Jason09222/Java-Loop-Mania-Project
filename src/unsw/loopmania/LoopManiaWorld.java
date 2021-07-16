@@ -175,7 +175,7 @@ public class LoopManiaWorld {
         for (Building b : this.buildings) {
             if (b instanceof VampireCastleBuilding) {
                 VampireCastleBuilding v = (VampireCastleBuilding)b;
-                if (v.checkPathCycle()) {
+                if (v.checkPathCycle(this)) {
                     Vampire newVam = v.spawnVampire(this);
                     spawningEnemies.add(newVam);
                 }
@@ -183,7 +183,7 @@ public class LoopManiaWorld {
 
             if (b instanceof ZombiePit) {
                 ZombiePit z = (ZombiePit) b;
-                if (z.checkPathCycle()) z.spawnZombie(this);
+                if (z.checkPathCycle(this)) z.spawnZombie(this);
             }
         }
         return spawningEnemies;
@@ -505,23 +505,9 @@ public class LoopManiaWorld {
         equippedItems.set(equippedItems.indexOf(item), null);
     }
 
-    /*
-     * public void equipSword(Sword sword) { if (equippedItems.get(0) != null) {
-     * unequippedInventoryItems.add(equippedItems.get(0)); } equippedItems.set(0,
-     * sword); }
-     *
-     * public void equipHelmet(Helmet helmet) { if (equippedItems.get(1) != null) {
-     * unequippedInventoryItems.add(equippedItems.get(1)); } equippedItems.set(1,
-     * helmet); }
-     *
-     * public void equipArmour(Armour armour) { if (equippedItems.get(2) != null) {
-     * unequippedInventoryItems.add(equippedItems.get(2)); } equippedItems.set(2,
-     * armour); }
-     *
-     * public void equipShield(Shield shield) { if (equippedItems.get(3) != null) {
-     * unequippedInventoryItems.add(equippedItems.get(3)); } equippedItems.set(3,
-     * shield); }
-     */
+
+
+    
 
     /**
      * remove an item by x,y coordinates
@@ -542,9 +528,9 @@ public class LoopManiaWorld {
 
         if (!character.getInBattle()) {
             character.moveDownPath();
+            updatePathCycle();
         }
         moveBasicEnemies();
-        updatePathCycle();
         charactersStepOnBuilding();
         enemyStepOnBuilding();
     }
@@ -679,7 +665,7 @@ public class LoopManiaWorld {
         // TODO = change based on spec
         int slugNum = 0;
         for (BasicEnemy enemy : enemies) {
-            if (enemy.getType().equals("Slug")) {
+            if (enemy instanceof Slug) {
                 slugNum++;
             }
         }
@@ -702,6 +688,31 @@ public class LoopManiaWorld {
         }
         return null;
     }
+
+    /*
+    private Pair<Integer, Integer> possiblyGetVampireSpawnPosition(Building building) {
+        Random rand = new Random();
+        //int choice = rand.nextInt(2); 
+        if (building instanceof VampireCastleBuilding && building.getPathCycle() == 4) {
+            List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
+            int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
+            // inclusive start and exclusive end of range of positions not allowed
+            int startNotAllowed = (indexPosition - 2 + orderedPath.size())%orderedPath.size();
+            int endNotAllowed = (indexPosition + 3)%orderedPath.size();
+        // note terminating condition has to be != rather than < since wrap around...
+            for (int i=endNotAllowed; i!=startNotAllowed; i=(i+1)%orderedPath.size()){
+                orderedPathSpawnCandidates.add(orderedPath.get(i));
+            }
+
+            // choose random choice
+            Pair<Integer, Integer> spawnPosition = orderedPathSpawnCandidates.get(rand.nextInt(orderedPathSpawnCandidates.size()));
+            building.setPathCycle(0);
+            return spawnPosition;
+            
+        }
+        return null;
+    }
+    */
 
     /**
      * get a randomly generated position which could be used to spawn an item

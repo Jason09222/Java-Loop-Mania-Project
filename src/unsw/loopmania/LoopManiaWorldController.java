@@ -117,11 +117,38 @@ public class LoopManiaWorldController {
      */
     private Timeline timeline;
 
-    private Image vampireCastleCardImage;
-    private Image basicEnemyImage;
+    private Image armourImage;
     private Image swordImage;
-    private Image basicBuildingImage;
+    private Image brilliantBlueNewImage;
+    private Image goldImage;
+    private Image heartImage;
+    private Image helmetImage;
+    private Image shieldImage;
+    private Image staffImage;
+    private Image stakeImage;
+    private Image theOneRingImage;
+    
+    private Image basicEnemyImage;
     private Image vampireImage;
+    private Image zombieImage;
+
+    private Image basicBuildingImage;
+    private Image zombiePitImage;
+    private Image towerImage;
+    private Image trapImage;
+    private Image heroCastleImage;
+    private Image villageImage;
+    private Image barracksImage;
+    private Image campfireImage;
+    
+    private Image vampireCastleCardImage;
+    private Image barracksCardImage;
+    private Image campfireCardImage;
+    private Image towerCardImage;
+    private Image trapCard;
+    private Image villageCard;
+    private Image zombiePitCard;
+
     /**
      * the image currently being dragged, if there is one, otherwise null. Holding
      * the ImageView being dragged allows us to spawn it again in the drop location
@@ -177,12 +204,40 @@ public class LoopManiaWorldController {
     public LoopManiaWorldController(LoopManiaWorld world, List<ImageView> initialEntities) {
         this.world = world;
         entityImages = new ArrayList<>(initialEntities);
-        vampireCastleCardImage = new Image((new File("src/images/vampire_castle_card.png")).toURI().toString());
-        basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
-        swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
-        basicBuildingImage = new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
-        vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
         
+        vampireCastleCardImage = new Image((new File("src/images/vampire_castle_card.png")).toURI().toString());
+        barracksCardImage = new Image((new File("src/images/barracks_card.png")).toURI().toString());
+        campfireCardImage = new Image((new File("src/images/campfire_card.png")).toURI().toString());
+        towerCardImage = new Image((new File("src/images/tower_card.png")).toURI().toString());
+        trapCard = new Image((new File("src/images/trap_card.png")).toURI().toString());
+        villageCard = new Image((new File("src/images/village_card.png")).toURI().toString());
+        zombiePitCard = new Image((new File("src/images/zombie_pit_card.png")).toURI().toString());
+        
+        zombiePitImage = new Image((new File("src/images/zombie_pit.png")).toURI().toString());
+        basicBuildingImage = new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
+        towerImage = new Image((new File("src/images/tower.png")).toURI().toString());
+        trapImage = new Image((new File("src/images/trap.png")).toURI().toString());
+        barracksImage = new Image((new File("src/images/barracks.png")).toURI().toString());
+        villageImage = new Image((new File("src/images/village.png")).toURI().toString());
+        heroCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
+        campfireImage = new Image((new File("src/images/campfire.png")).toURI().toString());
+
+        basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
+        vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
+        zombieImage = new Image((new File("src/images/zombie.png")).toURI().toString());
+
+        swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        armourImage = new Image((new File("src/images/armour.png")).toURI().toString());
+        brilliantBlueNewImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString());
+        goldImage = new Image((new File("src/images/gold_pile.png")).toURI().toString());
+        heartImage = new Image((new File("src/images/heart.png")).toURI().toString());
+        helmetImage = new Image((new File("src/images/helmet.png")).toURI().toString());
+        shieldImage = new Image((new File("src/images/shield.png")).toURI().toString());
+        staffImage = new Image((new File("src/images/staff.png")).toURI().toString());
+        stakeImage = new Image((new File("src/images/stake.png")).toURI().toString());
+        theOneRingImage = new Image((new File("src/images/the_one_ring.png")).toURI().toString());
+
+
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
 
