@@ -2,6 +2,7 @@ package unsw.loopmania;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
@@ -353,6 +354,43 @@ public class LoopManiaWorldController {
         onLoad(vampireCastleCard);
     }
 
+    private void loadCampfireCard() {
+        // TODO = load more types of card
+        CampfireCard campfireCard = world.loadCampfireCard();
+        onLoad(campfireCard);
+    }
+
+    private void loadTowerCard() {
+        // TODO = load more types of card
+        TowerCard towerCard = world.loadTowerCard();
+        onLoad(towerCard);
+    }
+
+    private void loadTrapCard() {
+        // TODO = load more types of card
+        TrapCard trapCard = world.loadTrapCard();
+        onLoad(trapCard);
+    }
+
+    private void loadVillageCard() {
+        // TODO = load more types of card
+        VillageCard villageCard = world.loadVillageCard();
+        onLoad(villageCard);
+    }
+
+    private void loadBarracksCard() {
+        // TODO = load more types of card
+        BarracksCard barracksCard = world.loadBarracksCard();
+        onLoad(barracksCard);
+    }
+    
+
+    public void loadZombiePitCard() {
+        ZombiePitCard zombiePitCard = world.loadZombiePitCard();
+        onLoad(zombiePitCard);
+    }
+
+
     /**
      * load a sword from the world, and pair it with an image in the GUI
      */
@@ -375,7 +413,40 @@ public class LoopManiaWorldController {
         // TODO = provide different benefits to defeating the enemy based on the type of
         // enemy
         loadSword();
-        loadVampireCard();
+        //loadVampireCard();
+        generateCard();
+    }
+
+    public void generateCard() {
+        int totalCards = 7;
+        Random rand = new Random();
+        int result = rand.nextInt(1000) % totalCards;
+
+        switch (result) {
+            case 0: 
+                loadVampireCard();
+                break;
+            case 1: 
+                loadCampfireCard();
+                break;
+            case 2: 
+                loadTowerCard();
+                break;
+            case 3: 
+                loadTrapCard();
+                break;
+            case 4: 
+                loadBarracksCard();
+                break;
+            case 5: 
+                loadVillageCard();
+                break;
+            case 6: 
+                loadZombiePitCard();
+                break;
+            default: return;
+        }
+
     }
 
     /**
@@ -393,6 +464,78 @@ public class LoopManiaWorldController {
         addDragEventHandlers(view, DRAGGABLE_TYPE.CARD, cards, squares);
 
         addEntity(vampireCastleCard, view);
+        cards.getChildren().add(view);
+    }
+
+    private void onLoad(CampfireCard campfireCard) {
+        ImageView view = new ImageView(campfireCardImage);
+
+        // FROM
+        // https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
+        // note target setOnDragOver and setOnDragEntered defined in initialize method
+        addDragEventHandlers(view, DRAGGABLE_TYPE.CARD, cards, squares);
+
+        addEntity(campfireCard, view);
+        cards.getChildren().add(view);
+    }
+
+    private void onLoad(VillageCard villageCardIm) {
+        ImageView view = new ImageView(villageCard);
+
+        // FROM
+        // https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
+        // note target setOnDragOver and setOnDragEntered defined in initialize method
+        addDragEventHandlers(view, DRAGGABLE_TYPE.CARD, cards, squares);
+
+        addEntity(villageCardIm, view);
+        cards.getChildren().add(view);
+    }
+
+    private void onLoad(TowerCard towerCard) {
+        ImageView view = new ImageView(towerCardImage);
+
+        // FROM
+        // https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
+        // note target setOnDragOver and setOnDragEntered defined in initialize method
+        addDragEventHandlers(view, DRAGGABLE_TYPE.CARD, cards, squares);
+
+        addEntity(towerCard, view);
+        cards.getChildren().add(view);
+    }
+
+    private void onLoad(TrapCard trapCardIm) {
+        ImageView view = new ImageView(trapCard);
+
+        // FROM
+        // https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
+        // note target setOnDragOver and setOnDragEntered defined in initialize method
+        addDragEventHandlers(view, DRAGGABLE_TYPE.CARD, cards, squares);
+
+        addEntity(trapCardIm, view);
+        cards.getChildren().add(view);
+    }
+
+    private void onLoad(BarracksCard barracksCard) {
+        ImageView view = new ImageView(barracksCardImage);
+
+        // FROM
+        // https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
+        // note target setOnDragOver and setOnDragEntered defined in initialize method
+        addDragEventHandlers(view, DRAGGABLE_TYPE.CARD, cards, squares);
+
+        addEntity(barracksCard, view);
+        cards.getChildren().add(view);
+    }
+
+    private void onLoad(ZombiePitCard zombiePitCard) {
+        ImageView view = new ImageView(zombiePitImage);
+
+        // FROM
+        // https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
+        // note target setOnDragOver and setOnDragEntered defined in initialize method
+        addDragEventHandlers(view, DRAGGABLE_TYPE.CARD, cards, squares);
+
+        addEntity(zombiePitCard, view);
         cards.getChildren().add(view);
     }
 
@@ -419,6 +562,8 @@ public class LoopManiaWorldController {
         ImageView view;
         if (enemy instanceof Slug) {
             view = new ImageView(basicEnemyImage);
+        } else if (enemy instanceof Zombie) {
+            view = new ImageView(zombieImage);
         } else {
             view = new ImageView(vampireImage);
         }
@@ -434,6 +579,43 @@ public class LoopManiaWorldController {
      */
     private void onLoad(VampireCastleBuilding building) {
         ImageView view = new ImageView(basicBuildingImage);
+        addEntity(building, view);
+        squares.getChildren().add(view);
+    }
+
+
+    private void onLoad(Campfire building) {
+        ImageView view = new ImageView(campfireImage);
+        addEntity(building, view);
+        squares.getChildren().add(view);
+    }
+
+    private void onLoad(Barracks building) {
+        ImageView view = new ImageView(barracksImage);
+        addEntity(building, view);
+        squares.getChildren().add(view);
+    }
+
+    private void onLoad(Tower building) {
+        ImageView view = new ImageView(towerImage);
+        addEntity(building, view);
+        squares.getChildren().add(view);
+    }
+
+    private void onLoad(Trap building) {
+        ImageView view = new ImageView(trapImage);
+        addEntity(building, view);
+        squares.getChildren().add(view);
+    }
+
+    private void onLoad(ZombiePit building) {
+        ImageView view = new ImageView(zombiePitImage);
+        addEntity(building, view);
+        squares.getChildren().add(view);
+    }
+
+    private void onLoad(Village building) {
+        ImageView view = new ImageView(villageImage);
         addEntity(building, view);
         squares.getChildren().add(view);
     }
@@ -480,8 +662,10 @@ public class LoopManiaWorldController {
                             case CARD:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn a building here of different types
-                                VampireCastleBuilding newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                VampireCastleBuilding newBuilding = (VampireCastleBuilding)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                Campfire campfire = (Campfire)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
                                 onLoad(newBuilding);
+                                onLoad(campfire);
                                 break;
                             case ITEM:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
@@ -568,9 +752,9 @@ public class LoopManiaWorldController {
      *                      where the building will spawn, from 0 to height-1
      * @return building entity returned from the world
      */
-    private VampireCastleBuilding convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+    /*private VampireCastleBuilding convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
         return (VampireCastleBuilding)world.convertCardToBuildingByCoordinates(cardNodeX, cardNodeY, buildingNodeX, buildingNodeY);
-    }
+    }*/
 
     /**
      * remove an item from the unequipped inventory by its x and y coordinates in
