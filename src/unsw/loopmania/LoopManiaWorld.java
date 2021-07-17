@@ -932,6 +932,7 @@ public class LoopManiaWorld {
     }
 
     public void enemyStepOnBuilding() {
+        List<Building> toRemove = new ArrayList<Building>();
         for (Building b : this.buildings) {
             if (b instanceof Tower) {
                 Tower t = (Tower) b;
@@ -940,8 +941,13 @@ public class LoopManiaWorld {
 
             if (b instanceof Trap) {
                 Trap tr = (Trap) b;
-                tr.exertDamage(this);
+                tr.exertDamage(this, toRemove);
             }
+        }
+
+        for (Building b : toRemove) {
+            this.buildings.remove(b);
+            b.destroy();
         }
         
     }
