@@ -54,9 +54,10 @@ public class LoopManiaWorld {
     private List<Card> cardEntities;
 
     // TODO = expand the range of items
-    private List<Entity> equippedItems;
-    private List<Entity> unequippedInventoryItems;
+    // private Inventory unequippedInventoryItems;
+    private List<Item> unequippedInventoryItems;
     private List<BasicItem> unPickedItem;
+    private Equipment equippedItems;
 
     // TODO = expand the range of buildings
     private List<VampireCastleBuilding> buildingEntities;
@@ -91,7 +92,7 @@ public class LoopManiaWorld {
         enemies = new ArrayList<>();
         cardEntities = new ArrayList<>();
         unequippedInventoryItems = new ArrayList<>();
-        equippedItems = new ArrayList<>();
+        equippedItems = new Equipment(unequippedInventoryItems);
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         goldOwned = 0;
@@ -422,7 +423,7 @@ public class LoopManiaWorld {
      * @return a item to be spawned in the controller as a JavaFX node
      */
 
-    public BasicItem addUnequippedItem(String type) {
+    public BasicItem addUnequippedItem(ItemType type) {
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null) {
             // eject the oldest unequipped item and replace it... oldest item is that at
@@ -448,24 +449,27 @@ public class LoopManiaWorld {
         // insert new item as it is now we know we have a slot available
         BasicItem item;
         switch (type) {
-            case "Sword":
+            case SWORD:
                 item = new Sword(x, y);
                 break;
-            case "Helmet":
+            case STAKE:
+                item = new Stake(x, y);
+            case STAFF:
+                item = new Staff(x, y);
+            case HELMET:
                 item = new Helmet(x, y);
                 break;
-            case "Armour":
+            case ARMOUR:
                 item = new Armour(x, y);
                 break;
-            case "Shield":
+            case SHIELD:
                 item = new Shield(x, y);
                 break;
-            case "HealthPotion":
+            case HEALTHPOTION:
                 item = new HealthPotion(x, y);
                 break;
             default:
-                item = new BasicItem(x, y, null);
-                break;
+                item = null;
         }
         unequippedInventoryItems.add(item);
         return item;
@@ -478,38 +482,18 @@ public class LoopManiaWorld {
      *
      */
 
-    public void equipItem(BasicItem item) {
-        unequippedInventoryItems.remove(item);
-        switch (item.getType()) {
-            case "Sword":
-                if (equippedItems.get(0) != null) {
-                    unequippedInventoryItems.add(equippedItems.get(0));
-                }
-                equippedItems.set(0, item);
-
-            case "Helmet":
-                if (equippedItems.get(1) != null) {
-                    unequippedInventoryItems.add(equippedItems.get(1));
-                }
-                equippedItems.set(1, item);
-            case "Armour":
-                if (equippedItems.get(2) != null) {
-                    unequippedInventoryItems.add(equippedItems.get(2));
-                }
-                equippedItems.set(2, item);
-            case "Shield":
-                if (equippedItems.get(3) != null) {
-                    unequippedInventoryItems.add(equippedItems.get(3));
-                }
-                equippedItems.set(3, item);
-            default:
-                break;
-        }
+    public boolean unEquipItem(int slot) {
+        // TODO = spawn the item back into the inventory
+        equippedItems.unEquip(slot);
+        return equippedItems.unEquip(slot);
     }
 
-    public void unEquipItem(BasicItem item) {
-        unequippedInventoryItems.add(item);
-        equippedItems.set(equippedItems.indexOf(item), null);
+    public Item equipItemByCoordinates(int nodeX, int nodeY) {
+        Item item = getUnequippedInventoryItemEntityByCoordinates(nodeX, nodeY);
+        equippedItems.equip(item);
+        Item equippedItem = equippedItems.spawnEquippedItem(item.getType().getIndex(), item.getType());
+        item.destroy();
+        return equippedItem;
     }
 
 
@@ -523,7 +507,7 @@ public class LoopManiaWorld {
      * @param y y coordinate from 0 to height-1
      */
     public void removeUnequippedInventoryItemByCoordinates(int x, int y) {
-        Entity item = getUnequippedInventoryItemEntityByCoordinates(x, y);
+        Item item = getUnequippedInventoryItemEntityByCoordinates(x, y);
         removeUnequippedInventoryItem(item);
     }
 
@@ -566,8 +550,8 @@ public class LoopManiaWorld {
      * @param y y index from 0 to height-1
      * @return unequipped inventory item at the input position
      */
-    private Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y) {
-        for (Entity e : unequippedInventoryItems) {
+    private Item getUnequippedInventoryItemEntityByCoordinates(int x, int y) {
+        for (Item e : unequippedInventoryItems) {
             if ((e.getX() == x) && (e.getY() == y)) {
                 return e;
             }
@@ -820,7 +804,7 @@ public class LoopManiaWorld {
         }
     }
 
-    public void addUnequippedInventory(StaticEntity item) {
+    public void addUnequippedInventory(BasicItem item) {
         if (this.unequippedInventoryItems.size() == 15) {
             this.unequippedInventoryItems.remove(0);
             this.goldOwned += 100;
@@ -842,7 +826,7 @@ public class LoopManiaWorld {
                 generateItem();
                 break;
             case 2:
-                StaticEntity healthP = new HealthPotion(x, y);
+                BasicItem healthP = new HealthPotion(x, y);
                 addUnequippedInventory(healthP);
                 break;
             case 3:
