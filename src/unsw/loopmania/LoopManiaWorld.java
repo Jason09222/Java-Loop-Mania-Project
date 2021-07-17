@@ -100,6 +100,7 @@ public class LoopManiaWorld {
         buildings = new ArrayList<>();
         allies = new ArrayList<>();
         campfires = new ArrayList<>();
+        unPickedItem = new ArrayList<>();
     }
 
     public List<Ally> getAllies() {
@@ -204,23 +205,61 @@ public class LoopManiaWorld {
      * @return list of the gold to be displayed on screen
      */
     public List<BasicItem> possiblySpawnItems() {
-        Pair<Integer, Integer> pos1 = possiblyGetBasicItemSpawnPosition();
-        Pair<Integer, Integer> pos2 = possiblyGetBasicItemSpawnPosition();
+        // Pair<Integer, Integer> pos1 = possiblyGetBasicItemSpawnPosition();
+        // Pair<Integer, Integer> pos2 = possiblyGetBasicItemSpawnPosition();
         List<BasicItem> spawningItems = new ArrayList<>();
-        if (pos1 != null && pos2 != null) {
-            int indexInPath1 = orderedPath.indexOf(pos1);
-            int indexInPath2 = orderedPath.indexOf(pos2);
-            PathPosition newPathPosition1 = new PathPosition(indexInPath1, orderedPath);
-            PathPosition newPathPosition2 = new PathPosition(indexInPath2, orderedPath);
-            BasicItem gold = new Gold(newPathPosition1.getX(), newPathPosition1.getY());
-            BasicItem healthPotion = new HealthPotion(newPathPosition2.getX(), newPathPosition2.getY());
-            unPickedItem.add(gold);
-            spawningItems.add(gold);
-            unPickedItem.add(healthPotion);
-            spawningItems.add(healthPotion);
-        }
+        // if (pos1 != null && pos2 != null) {
+        //     int indexInPath1 = orderedPath.indexOf(pos1);
+        //     int indexInPath2 = orderedPath.indexOf(pos2);
+        //     PathPosition newPathPosition1 = new PathPosition(indexInPath1, orderedPath);
+        //     PathPosition newPathPosition2 = new PathPosition(indexInPath2, orderedPath);
+        //     BasicItem gold = new Gold(newPathPosition1.getX(), newPathPosition1.getY());
+        //     BasicItem healthPotion = new HealthPotion(newPathPosition2.getX(), newPathPosition2.getY());
+        //     unPickedItem.add(gold);
+        //     spawningItems.add(gold);
+        //     unPickedItem.add(healthPotion);
+        //     spawningItems.add(healthPotion);
+        // }
+        BasicItem gold = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        BasicItem healthPotion = new HealthPotion(new SimpleIntegerProperty(3), new SimpleIntegerProperty(3));
+        unPickedItem.add(gold);
+        spawningItems.add(gold);
+        unPickedItem.add(healthPotion);
+        spawningItems.add(healthPotion);
         return spawningItems;
     }
+
+    //  /**
+    //  * get a randomly generated position which could be used to spawn an item
+    //  *
+    //  * @return null if random choice is that wont be spawning an enemy or it isn't
+    //  *         possible, or random coordinate pair if should go ahead
+    //  */
+    // private Pair<Integer, Integer> possiblyGetBasicItemSpawnPosition() {
+
+    //     // has a chance spawning a basic item on a tile the character isn't on or
+    //     // immediately before or after (currently space required = 2)...
+    //     Random rand = new Random();
+    //     int choice = rand.nextInt(2);
+    //     if ((choice == 0) && (enemies.size() < 2)) {
+    //         List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
+    //         int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
+    //         // inclusive start and exclusive end of range of positions not allowed
+    //         int startNotAllowed = (indexPosition - 2 + orderedPath.size()) % orderedPath.size();
+    //         int endNotAllowed = (indexPosition + 3) % orderedPath.size();
+    //         // note terminating condition has to be != rather than < since wrap around...
+    //         for (int i = endNotAllowed; i != startNotAllowed; i = (i + 1) % orderedPath.size()) {
+    //             orderedPathSpawnCandidates.add(orderedPath.get(i));
+    //         }
+
+    //         // choose random choice
+    //         Pair<Integer, Integer> spawnPosition = orderedPathSpawnCandidates
+    //                 .get(rand.nextInt(orderedPathSpawnCandidates.size()));
+
+    //         return spawnPosition;
+    //     }
+    //     return null;
+    // }
 
     /**
      * kill an enemy
@@ -498,7 +537,7 @@ public class LoopManiaWorld {
 
 
 
-    
+
 
     /**
      * remove an item by x,y coordinates
@@ -671,7 +710,7 @@ public class LoopManiaWorld {
     /*
     private Pair<Integer, Integer> possiblyGetVampireSpawnPosition(Building building) {
         Random rand = new Random();
-        //int choice = rand.nextInt(2); 
+        //int choice = rand.nextInt(2);
         if (building instanceof VampireCastleBuilding && building.getPathCycle() == 4) {
             List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
             int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
@@ -687,43 +726,13 @@ public class LoopManiaWorld {
             Pair<Integer, Integer> spawnPosition = orderedPathSpawnCandidates.get(rand.nextInt(orderedPathSpawnCandidates.size()));
             building.setPathCycle(0);
             return spawnPosition;
-            
+
         }
         return null;
     }
     */
 
-    /**
-     * get a randomly generated position which could be used to spawn an item
-     *
-     * @return null if random choice is that wont be spawning an enemy or it isn't
-     *         possible, or random coordinate pair if should go ahead
-     */
-    private Pair<Integer, Integer> possiblyGetBasicItemSpawnPosition() {
 
-        // has a chance spawning a basic item on a tile the character isn't on or
-        // immediately before or after (currently space required = 2)...
-        Random rand = new Random();
-        int choice = rand.nextInt(2);
-        if ((choice == 0) && (enemies.size() < 2)) {
-            List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
-            int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
-            // inclusive start and exclusive end of range of positions not allowed
-            int startNotAllowed = (indexPosition - 2 + orderedPath.size()) % orderedPath.size();
-            int endNotAllowed = (indexPosition + 3) % orderedPath.size();
-            // note terminating condition has to be != rather than < since wrap around...
-            for (int i = endNotAllowed; i != startNotAllowed; i = (i + 1) % orderedPath.size()) {
-                orderedPathSpawnCandidates.add(orderedPath.get(i));
-            }
-
-            // choose random choice
-            Pair<Integer, Integer> spawnPosition = orderedPathSpawnCandidates
-                    .get(rand.nextInt(orderedPathSpawnCandidates.size()));
-
-            return spawnPosition;
-        }
-        return null;
-    }
 
 
     public int getGold() {
@@ -771,7 +780,7 @@ public class LoopManiaWorld {
             boolean isAvailable = true;
             for (Building building : campfires) {
                 Campfire campfire = (Campfire) building;
-                if (campfire.getDistance(pos.getValue0(), pos.getValue1()) <= campfire.getcampRadius()) { 
+                if (campfire.getDistance(pos.getValue0(), pos.getValue1()) <= campfire.getcampRadius()) {
                     isAvailable = false;
                     break;
                 }
@@ -974,7 +983,7 @@ public class LoopManiaWorld {
             this.buildings.remove(b);
             b.destroy();
         }
-        
+
     }
 
     /**
@@ -1010,6 +1019,7 @@ public class LoopManiaWorld {
         cardEntities.add(newCard);
         return newCard;
     }*/
+
 
     public VampireCastleCard loadVampireCard(){
         // if adding more cards than have, remove the first card...
@@ -1065,7 +1075,7 @@ public class LoopManiaWorld {
         cardEntities.add(zombiePitCard);
         return zombiePitCard;
     }
-    
+
 
 
     public Card generateCard() {
@@ -1109,7 +1119,7 @@ public class LoopManiaWorld {
                 case 1: addExperience(rand.nextInt(5));
                 case 2: generateItem();
             }
-             
+
             removeCard(0);
         }
     }
@@ -1125,7 +1135,7 @@ public class LoopManiaWorld {
 
 
     public boolean checkAdjacentToPathTile(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        
+
         Pair<Integer, Integer> up = new Pair<>(x.get() - 1, y.get());
         Pair<Integer, Integer> down = new Pair<>(x.get() + 1, y.get());
         Pair<Integer, Integer> left = new Pair<>(x.get(), y.get() - 1);
@@ -1134,7 +1144,7 @@ public class LoopManiaWorld {
         for (Pair<Integer, Integer> pos : orderedPath) {
             if (pos.equals(up) || pos.equals(down) || pos.equals(left) || pos.equals(right)) return true;
         }
-        
+
         return false;
     }
 
@@ -1182,6 +1192,6 @@ public class LoopManiaWorld {
         return newBuilding;
     }
 
-    
+
 
 }
