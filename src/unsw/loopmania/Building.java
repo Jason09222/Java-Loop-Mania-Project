@@ -99,5 +99,4 @@ abstract public class Building extends StaticEntity {
         int startY = super.getY();
         return Math.sqrt(Math.pow(startX - destX, 2) - Math.pow(startY - destY, 2));
     }
-    
 }
