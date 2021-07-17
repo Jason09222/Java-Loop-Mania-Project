@@ -490,11 +490,8 @@ public class LoopManiaWorld {
     }
 
 
-<<<<<<< HEAD
-=======
 
     
->>>>>>> basicStructure
 
     /**
      * remove an item by x,y coordinates
