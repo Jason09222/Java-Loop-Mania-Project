@@ -612,21 +612,9 @@ public class LoopManiaWorld {
 
         for (BasicEnemy e : enemies) {
             for (int i = 0; i < e.getSpeed(); i++) {
-                Building nearestCamp = this.getShortestCampire(e);
+                Building nearestCamp = this.getShortestCampfire(e);
                 if (e.getType().equals("Vampire") && nearestCamp != null) {
-                    if (e.getDistance(nearestCamp.getX(), nearestCamp.getY()) <= 2) {
-                        e.moveDownPath();
-                        continue;
-                    } else if (e.getDistance(nearestCamp.getX(), nearestCamp.getY()) == 3) {
-                        if (e.getLastDirec().equals("Up")) {
-                            e.moveDownPath();
-                            e.setLastDirec("Down");
-                        } else {
-                            e.moveUpPath();
-                            e.setLastDirec("Up");
-                        }
-                        continue;
-                    }
+                    getAwayFromCampfire(e);
                 }
 
                 if (character.getInBattle()
@@ -758,7 +746,7 @@ public class LoopManiaWorld {
         this.experience += numGained;
     }
 
-    public Building getShortestCampire(BasicEnemy e) {
+    public Building getShortestCampfire(BasicEnemy e) {
         if (this.getCampfire().isEmpty())
             return null;
         int shortest = 1000;
@@ -771,6 +759,49 @@ public class LoopManiaWorld {
             }
         }
         return tmp;
+    }
+
+    public void getAwayFromCampfire(BasicEnemy e) {
+        int shortest = 1000;
+        int enemyPos = 0;
+        int placeToGo = 0;
+        int i = 0;
+        boolean flag = false;
+        for (Pair<Integer,Integer> pos : orderedPath) {
+            boolean isAvailable = true;
+            for (Building building : campfires) {
+                Campfire campfire = (Campfire) building;
+                if (campfire.getDistance(pos.getValue0(), pos.getValue1()) <= campfire.getcampRadius()) { 
+                    isAvailable = false;
+                    break;
+                }
+            }
+            if (isAvailable) {
+                if (e.getDistance(pos.getValue0(), pos.getValue1()) < shortest) {
+                    placeToGo = i;
+                    shortest = e.getDistance(pos.getValue0(), pos.getValue1());
+                }
+            }
+            i++;
+            if (pos.getValue0() == e.getX() && pos.getValue1() == e.getY()) {
+                flag = true;
+                enemyPos++;
+            }
+            if (!flag) {
+                enemyPos++;
+            }
+        }
+        if (shortest == 1000) {
+            e.move();
+            return;
+        } else {
+            int len = orderedPath.size() / 2;
+            if (enemyPos - placeToGo < len && enemyPos - placeToGo > 0) {
+                e.moveUpPath();
+            } else {
+                e.moveDownPath();
+            }
+        }
     }
 
     public void addUnequippedInventory(BasicItem item) {
@@ -1150,5 +1181,7 @@ public class LoopManiaWorld {
 
         return newBuilding;
     }
+
+    
 
 }

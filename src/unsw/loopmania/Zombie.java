@@ -4,7 +4,7 @@ public class Zombie extends BasicEnemy{
     //TODO can be changed
     private final String type = "Zombie";
     private final int FightR = 2;
-    private final int SupportR = 5;
+    private final int SupportR = 4;
     private final int gold = 300;
     private final int speed = 2;
     private final int damage = 100;
