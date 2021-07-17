@@ -149,6 +149,8 @@ public class LoopManiaWorldController {
     private Image villageCard;
     private Image zombiePitCard;
 
+    private Image allyImage;
+
     /**
      * the image currently being dragged, if there is one, otherwise null. Holding
      * the ImageView being dragged allows us to spawn it again in the drop location
@@ -236,6 +238,8 @@ public class LoopManiaWorldController {
         staffImage = new Image((new File("src/images/staff.png")).toURI().toString());
         stakeImage = new Image((new File("src/images/stake.png")).toURI().toString());
         theOneRingImage = new Image((new File("src/images/the_one_ring.png")).toURI().toString());
+
+        allyImage = new Image((new File("src/images/deep_elf_master_archer.png")).toURI().toString());
 
 
         currentlyDraggedImage = null;
@@ -681,7 +685,10 @@ public class LoopManiaWorldController {
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
                                 removeItemByCoordinates(nodeX, nodeY);
                                 //world.equipItem()
-                                targetGridPane.add(image, x, y, 1, 1);
+                                // TODO = fix for more item types/slots
+                                Sword sword = (Sword)world.equipItemByCoordinates(x, y);
+                                onLoad(sword);
+                                // targetGridPane.add(image, x, y, 1, 1);
                                 break;
                             default:
                                 break;
