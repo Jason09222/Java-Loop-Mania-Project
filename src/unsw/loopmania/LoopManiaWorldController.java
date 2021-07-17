@@ -664,7 +664,6 @@ public class LoopManiaWorldController {
                                 // TODO = spawn a building here of different types
 
                                 Building b = world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
-                                if (b == null) break;
                                 if (b instanceof VampireCastleBuilding) onLoad((VampireCastleBuilding)b);
                                 if (b instanceof Campfire) onLoad((Campfire)b);
                                 if (b instanceof Tower) onLoad((Tower)b);

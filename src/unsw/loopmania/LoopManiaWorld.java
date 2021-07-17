@@ -3,10 +3,14 @@ package unsw.loopmania;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 import java.lang.Math;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.effect.BlurType;
 
 /**
  * A backend world.
@@ -939,6 +943,7 @@ public class LoopManiaWorld {
                 tr.exertDamage(this);
             }
         }
+        
     }
 
     /**
