@@ -160,7 +160,7 @@ public class integrationTest {
         //assertEquals(gold + 100, world.getGold());
         world.spendGold(100);
         //assertEquals(gold, world.getGold());
-        //assertNotEquals(0, world.getExperience());
+        assertNotEquals(0, world.getExperience());
         world.addExperience(100);
         BasicItem sword = new Sword(x, y);
         world.addUnequippedInventory(sword);
