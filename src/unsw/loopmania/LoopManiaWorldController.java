@@ -1152,6 +1152,9 @@ public class LoopManiaWorldController {
                     pause();
                 }
                 break;
+            case E:
+                world.spendPotions();
+                break;
             default:
                 break;
         }
