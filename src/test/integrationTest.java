@@ -119,13 +119,14 @@ public class integrationTest {
         world.setCharacter(character);
         world.addEntity(character);
         world.getEnemy().add(slug);
+
+        assertNotEquals(2, world.possiblySpawnEnemies().size());
         world.getEnemy().add(vampire);
         world.getEnemy().add(zombie);
         assertEquals(3, world.getEnemy().size());
-        assertNotEquals(2, world.possiblySpawnEnemies().size());
         assertEquals(2, world.possiblySpawnItems().size());
         world.killEnemy(vampire);
-        world.killEnemy(zombie);
+        //world.killEnemy(zombie);
 
 
         List<BasicEnemy> enemies = new ArrayList<>();
@@ -186,6 +187,45 @@ public class integrationTest {
         world.getHealthPotionNum();
         world.getExpInt();
         world.addExperience(3);
+        world.getHpInt();
+        world.getAllyNum();
+        world.isGameOver();
+        world.getExp();
+        world.getHp();
+        world.getCylceNum();
+        world.isGameWin();
+        world.isShopTime();
+        world.updatePathCycle();
+        world.generateTrophy(slugb);
+        world.getShortestCampfire(slugb);
+        world.checkAdjacentToPathTile(x, y);
+        world.supportMove(slugb);
+        world.getAwayFromCampfire(slugb);
+        world.createbuilding("Trap", x, y);
+        world.charactersStepOnBuilding();
+        world.moveBasicEnemies();
+        world.createbuilding("Village", x, y);
+        world.createbuilding("Barracks", x, y);
+        world.createbuilding("Tower", x, y);
+        world.createbuilding("VampireCastleBuilding", x, y);
+        world.createbuilding("ZombiePit", x, y);
+        world.createbuilding("Campfire", x, y);
+        assertEquals(true, world.checkBuildingAlrdyExisted(x, y));
+        world.enemyStepOnBuilding();
+        Ally ally1 = new Ally(position);
+        Ally ally2 = new Ally(position);
+        Ally ally3 = new Ally(position);
+        world.addAlly(ally1);
+        world.addAlly(ally2);
+        world.addAlly(ally3);
+        world.runTickMoves();
+        for (int i = 0; i < 40; i++) {
+            world.generateCard();
+        }
+        for (int i = 0; i < 40; i++) {
+            world.generateItem();
+        }
+
 
 
 
