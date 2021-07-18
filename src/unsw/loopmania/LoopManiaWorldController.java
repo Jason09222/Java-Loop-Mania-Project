@@ -182,14 +182,21 @@ public class LoopManiaWorldController {
     @FXML 
     private StackPane stackPane;
 
+
+
+<<<<<<< src/unsw/loopmania/LoopManiaWorldController.java
     @FXML
-    private TextField allyNum;
-
-
+    private Label goldNum;
+    @FXML
+    private Label allyNum;
+    
     private IntegerProperty goldInNum;
-    private IntegerProperty hpInNum;
+    private IntegerProperty allyInNum;
 
     private SimpleIntegerProperty allyInWorld;
+
+    private IntegerProperty hpInNum;
+
 
     //private DoubleProperty goldInWorld;
     private DoubleProperty hpInWorld;
@@ -358,7 +365,18 @@ public class LoopManiaWorldController {
         layout.getChildren().add(goldNum);
         StackPane.setAlignment(goldNum, Pos.CENTER_RIGHT);
 
-        
+        ImageView allyView = new ImageView(allyImage);
+        allyNum = new Label("0");
+        allyInNum = world.getAllyNum();
+        allyNum.textProperty().bind(allyInNum.asString());
+        allyNum.setTextFill(Color.GRAY);
+        allyNum.setFont(new Font("Cambria", 40));
+
+        layout.getChildren().add(allyView);
+        StackPane.setAlignment(allyView, Pos.TOP_LEFT);
+        layout.getChildren().add(allyNum);
+        StackPane.setAlignment(allyNum, Pos.TOP_RIGHT);
+
         //Label hp = new Label("Hp");
         ImageView heartView = new ImageView(heartImage);
         hpProgress = new ProgressBar();
@@ -398,6 +416,8 @@ public class LoopManiaWorldController {
             hpInWorld = world.getHp();
             hpProgress.progressProperty().bind(hpInWorld);
 
+            allyInNum = world.getAllyNum();
+            allyNum.textProperty().bind(allyInNum.asString());
             //allyInWorld.set(world.getAllies().size());
             //allyNum.textProperty().bind(allyInWorld.asString());
             //goldInWorld = world.getGold();
