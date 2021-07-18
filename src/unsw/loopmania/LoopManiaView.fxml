@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -105,12 +103,7 @@
 
             <!-- clicking this button returns the human player to the main menu -->
             <Button onAction="#switchToMainMenu" text="Exit to Main Menu" />
-            <Label text="Hp">
-               <graphic>
-                  <ProgressBar prefHeight="18.0" prefWidth="122.0" progress="0.0" />
-               </graphic>
-            </Label>
-            <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0">
+            <StackPane fx:id="layout" prefHeight="150.0" prefWidth="200.0">
                <children>
                   <ImageView id="allyCell" fitHeight="40.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
                      <image>
@@ -119,11 +112,6 @@
                   </ImageView>
                </children>
             </StackPane>
-            <Label text="Gold">
-               <graphic>
-                  <ProgressBar prefHeight="18.0" prefWidth="122.0" progress="0.0" />
-               </graphic>
-            </Label>
          </children>
       </VBox>
    </HBox>

@@ -76,7 +76,7 @@ public class LoopManiaWorld {
     private SimpleIntegerProperty potionsOwned;  
     //private int potionsOwned;
     private int experience;
-
+    
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
      * them
@@ -205,7 +205,7 @@ public class LoopManiaWorld {
                     spawningEnemies.add(newZom);
                 }
             }
-        }
+        }   
         return spawningEnemies;
     }
 
@@ -235,7 +235,7 @@ public class LoopManiaWorld {
             boolean goldExist = false;
             boolean healthPotionExist = false;
             for (BasicItem item : unPickedItem) {
-                if (item instanceof Gold) {
+                if (item.getType() == ItemType.OTHER) {
                     goldExist = true;
                 }
                 if (item.getType() == ItemType.HEALTHPOTION) {
@@ -423,43 +423,29 @@ public class LoopManiaWorld {
 
 
 
-    public void generateItem() {
-        BasicItem reward = null;
+    public ItemType generateItem() {
         int totalRewards = 8;
         Random rand = new Random();
         int result = rand.nextInt(1000) % totalRewards;
-
-        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
-        SimpleIntegerProperty x = new SimpleIntegerProperty(firstAvailableSlot.getValue0());
-        SimpleIntegerProperty y = new SimpleIntegerProperty(firstAvailableSlot.getValue1());
         switch (result) {
             case 1:
-                reward = new Armour(x, y);
-                break;
+                return ItemType.ARMOUR;
             case 2:
-                reward = new HealthPotion(x, y);
-                break;
+                return ItemType.HEALTHPOTION;
+    
             case 3:
-                reward = new Helmet(x, y);
-                break;
+                return ItemType.HELMET;
             case 4:
-                reward = new Shield(x, y);
-                break;
+                return ItemType.SHIELD;
             case 5:
-                reward = new Staff(x, y);
-                break;
+                return ItemType.STAFF;
             case 6:
-                reward = new Stake(x, y);
-                break;
+                return ItemType.STAKE;
             case 7:
-                reward = new Sword(x, y);
-                break;
+                return ItemType.SWORD;
             default:
-                return;
+                return null;
         }
-        addUnequippedInventory(reward);
-
-        return;
     }
 
 
@@ -489,6 +475,9 @@ public class LoopManiaWorld {
         return sword;
     }
 
+    
+
+    
     /**
      * spawn an item in the world and return the item entity
      *
@@ -527,8 +516,10 @@ public class LoopManiaWorld {
                 break;
             case STAKE:
                 item = new Stake(x, y);
+                break;
             case STAFF:
                 item = new Staff(x, y);
+                break;
             case HELMET:
                 item = new Helmet(x, y);
                 break;
@@ -550,19 +541,25 @@ public class LoopManiaWorld {
         return item;
     }
 
-    /**
-     * moves an "item" from unequippedInventory into equippedInventory
-     *
-     * @param item to be equipped
-     *
-     */
 
+    /**
+     * removes the item from equippedItems list and adds it back to
+     * unequippedInventory
+     * @param slot of item to be removed
+     * @return
+     */
     public boolean unEquipItem(int slot) {
         // TODO = spawn the item back into the inventory
         equippedItems.unEquip(slot);
         return equippedItems.unEquip(slot);
     }
-
+    /**
+     * moves an item from unequippedInventory to equippedItems.
+     * Deletes the item and creates a new copy of it inside equippedItems
+     * @param nodeX of the item in unequippedInventory
+     * @param nodeY of the item in unequippedInventory
+     * @return item to be spawned inside the equippedItems gridpane
+     */
     public Item equipItemByCoordinates(int nodeX, int nodeY) {
         Item item = getUnequippedInventoryItemEntityByCoordinates(nodeX, nodeY);
         equippedItems.equip(item);
@@ -633,6 +630,7 @@ public class LoopManiaWorld {
                                 break;
                         }
                         enemies.add(enemy);
+                        
                         killAlly(ally);
                     } else {
                         ally.setRound(ally.getRound() - 1);
@@ -667,35 +665,28 @@ public class LoopManiaWorld {
         for (BasicItem item: toRemove) {
             unPickedItem.remove(item);
             item.destroy();
-            character.setHp(500);
+            addPotion(1);
         }
         /*//pick up gold or health potion
         double goldDistance = Math.sqrt(Math.pow(character.getX(), 2) + Math.pow(character.getY(), 2));
         double healthPotionDistance = Math.sqrt(Math.pow(character.getX() - 3, 2) + Math.pow(character.getY() - 3, 2));
-        List<BasicItem> toRemove = new ArrayList<>();
-
         if (goldDistance < 5) {
             for (BasicItem item : unPickedItem) {
                 if (item.getType() == ItemType.OTHER) {
-                    toRemove.add(item);
-                    
+                    item.destroy();
+                    unPickedItem.remove(item);
+                    goldOwned += 200;
+                    break;
                 }
 
             }
         }
-
-        for (BasicItem item : toRemove) {
-            item.destroy();
-            unPickedItem.remove(item);
-            goldOwned += 200;
-        }
-
-        toRemove.clear();
         if (healthPotionDistance < 5) {
             for (BasicItem item : unPickedItem) {
                 if (item.getType() == ItemType.HEALTHPOTION) {
-                    unPickedItem.remove(item);
                     item.destroy();
+                    unPickedItem.remove(item);
+                    addPotion(1);
                     break;
                 }
 
@@ -875,7 +866,7 @@ public class LoopManiaWorld {
     */
 
     public DoubleProperty getHp() {
-        return new SimpleDoubleProperty((double)this.character.getHp()/500.00);
+        return new SimpleDoubleProperty((double) this.character.getHp()/500.00);
     }
 
     public int getPotions() {
@@ -900,7 +891,7 @@ public class LoopManiaWorld {
     }
 
     public DoubleProperty getGold() {
-        return new SimpleDoubleProperty((double)this.goldOwned/1000.00);
+        return new SimpleDoubleProperty((double) this.goldOwned/1000.00);
     }
 
     public void addGold(int numGained) {
@@ -908,7 +899,7 @@ public class LoopManiaWorld {
     }
 
     public void spendGold(int numLost) {
-        this.goldOwned += numLost;
+        this.goldOwned -= numLost;
     }
 
     public int getExperience() {
@@ -978,10 +969,7 @@ public class LoopManiaWorld {
     }
 
     public void addUnequippedInventory(BasicItem item) {
-        if (this.unequippedInventoryItems.size() == 15) {
-            this.unequippedInventoryItems.remove(0);
-            this.goldOwned += 100;
-        }
+        
         this.unequippedInventoryItems.add(item);
     }
 
@@ -991,12 +979,15 @@ public class LoopManiaWorld {
         int int_random = rand.nextInt(3);
         SimpleIntegerProperty x = e.x();
         SimpleIntegerProperty y = e.y();
+
+       
+        
         switch (int_random) {
             case 0:
                 this.goldOwned += e.getGold();
                 break;
             case 1:
-                generateItem();
+                addUnequippedItem(generateItem());
                 break;
             case 2:
                 BasicItem healthP = new HealthPotion(x, y);
