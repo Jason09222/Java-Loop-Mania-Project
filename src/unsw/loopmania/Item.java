@@ -3,7 +3,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 public class Item extends StaticEntity {
     ItemType type;
-    String name;
     public Item(SimpleIntegerProperty x, SimpleIntegerProperty y, ItemType type) {
         super(x, y);
         this.type = type;

@@ -521,8 +521,10 @@ public class LoopManiaWorld {
                 break;
             case STAKE:
                 item = new Stake(x, y);
+                break;
             case STAFF:
                 item = new Staff(x, y);
+                break;
             case HELMET:
                 item = new Helmet(x, y);
                 break;
@@ -542,19 +544,25 @@ public class LoopManiaWorld {
         return item;
     }
 
-    /**
-     * moves an "item" from unequippedInventory into equippedInventory
-     *
-     * @param item to be equipped
-     *
-     */
 
+    /**
+     * removes the item from equippedItems list and adds it back to
+     * unequippedInventory
+     * @param slot of item to be removed
+     * @return
+     */
     public boolean unEquipItem(int slot) {
         // TODO = spawn the item back into the inventory
         equippedItems.unEquip(slot);
         return equippedItems.unEquip(slot);
     }
-
+    /**
+     * moves an item from unequippedInventory to equippedItems.
+     * Deletes the item and creates a new copy of it inside equippedItems
+     * @param nodeX of the item in unequippedInventory
+     * @param nodeY of the item in unequippedInventory
+     * @return item to be spawned inside the equippedItems gridpane
+     */
     public Item equipItemByCoordinates(int nodeX, int nodeY) {
         Item item = getUnequippedInventoryItemEntityByCoordinates(nodeX, nodeY);
         equippedItems.equip(item);
