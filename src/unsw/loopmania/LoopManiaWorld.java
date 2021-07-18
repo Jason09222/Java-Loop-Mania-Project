@@ -894,8 +894,8 @@ public class LoopManiaWorld {
         }
     }
 
-    public DoubleProperty getGold() {
-        return new SimpleDoubleProperty((double) this.goldOwned/1000.00);
+    public IntegerProperty getGold() {
+        return new SimpleIntegerProperty(this.goldOwned);
     }
 
     public void addGold(int numGained) {
@@ -1102,8 +1102,8 @@ public class LoopManiaWorld {
             if (srcX == destX && srcY == destY) {
                 if (b instanceof Village) {
                     Village v = (Village) b;
-                    //v.increaseHp(this.character);
-                    character.setHp(500);
+                    v.increaseHp(this.character);
+                    //character.setHp(500);
                 }
 
                 if (b instanceof Barracks) {
