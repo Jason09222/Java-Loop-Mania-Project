@@ -48,6 +48,7 @@ public class LoopManiaWorld {
     private List<Entity> nonSpecifiedEntities;
 
     private Character character;
+    private HeroCastle startCastle;
 
     // TODO = add more lists for other entities, for equipped inventory items,
     // etc...
@@ -120,6 +121,7 @@ public class LoopManiaWorld {
         allies = new ArrayList<>();
         campfires = new ArrayList<>();
         unPickedItem = new ArrayList<>();
+        startCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
     }
 
     public List<Ally> getAllies() {
@@ -886,9 +888,6 @@ public class LoopManiaWorld {
     }
     */
 
-    public DoubleProperty getHp() {
-        return new SimpleDoubleProperty((double) this.character.getHp()/500.00);
-    }
 
     public int getPotions() {
         return this.potionsOwned.get();
@@ -915,8 +914,18 @@ public class LoopManiaWorld {
         return new SimpleIntegerProperty(this.goldOwned);
     }
 
+
     public IntegerProperty getAllyNum() {
         return new SimpleIntegerProperty(allies.size());
+    }
+
+
+    public DoubleProperty getHp() {
+        return new SimpleDoubleProperty((double)this.character.getHp()/500.00);
+    }
+
+    public IntegerProperty getHpInt() {
+        return new SimpleIntegerProperty(this.character.getHp());
     }
 
     public void addGold(int numGained) {
@@ -1371,6 +1380,20 @@ public class LoopManiaWorld {
         shiftCardsDownFromXCoordinate(cardNodeX);
 
         return newBuilding;
+    }
+
+    public boolean isShopTime() {
+        if (character.getX() == startCastle.getX() && character.getY() == startCastle.getY()) {
+            return true;
+        }    
+        return false;
+    }
+
+    public boolean isGameOver() {
+        if (character.getHp() <= 0) {
+            return true;
+        }
+        else return false;
     }
 
 

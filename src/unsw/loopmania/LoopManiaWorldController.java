@@ -45,8 +45,6 @@ import java.util.EnumMap;
 import java.io.File;
 import java.io.IOException;
 
-
-import javafx.scene.control.TextField;
 /**
  * the draggable types. If you add more draggable types, add an enum value here.
  * This is so we can see what type is being dragged.
@@ -112,13 +110,17 @@ public class LoopManiaWorldController {
     private GridPane unequippedInventory;
 
     @FXML
-    private ProgressBar goldProgress;
+    private ProgressBar hpProgress;
 
     /*@FXML
     private ProgressBar goldProgress;
     */
     @FXML
-    private ProgressBar hpProgress;
+    private Label goldNum;
+
+    @FXML
+    private Label hpNum;
+
 
     @FXML
     private StackPane layout;
@@ -182,6 +184,7 @@ public class LoopManiaWorldController {
 
 
 
+<<<<<<< src/unsw/loopmania/LoopManiaWorldController.java
     @FXML
     private Label goldNum;
     @FXML
@@ -190,7 +193,10 @@ public class LoopManiaWorldController {
     private IntegerProperty goldInNum;
     private IntegerProperty allyInNum;
 
-    SimpleIntegerProperty allyInWorld;
+    private SimpleIntegerProperty allyInWorld;
+
+    private IntegerProperty hpInNum;
+
 
     //private DoubleProperty goldInWorld;
     private DoubleProperty hpInWorld;
@@ -376,10 +382,18 @@ public class LoopManiaWorldController {
         hpProgress = new ProgressBar();
         hpInWorld = world.getHp();
         hpProgress.progressProperty().bind(hpInWorld);
+
+        hpNum = new Label("0");
+        hpInNum = world.getHpInt();
+        hpNum.textProperty().bind(hpInNum.asString());
+        hpNum.setTextFill(Color.RED);
+        
         layout.getChildren().add(hpProgress);
         StackPane.setAlignment(hpProgress, Pos.BOTTOM_RIGHT);
         layout.getChildren().add(heartView);
         StackPane.setAlignment(heartView, Pos.BOTTOM_LEFT);
+        layout.getChildren().add(hpNum);
+        StackPane.setAlignment(hpNum, Pos.BOTTOM_RIGHT);
     }
 
     /**
@@ -395,6 +409,9 @@ public class LoopManiaWorldController {
             world.runTickMoves();
             goldInNum = world.getGold();
             goldNum.textProperty().bind(goldInNum.asString());
+
+            hpInNum = world.getHpInt();
+            hpNum.textProperty().bind(hpInNum.asString());
 
             hpInWorld = world.getHp();
             hpProgress.progressProperty().bind(hpInWorld);
@@ -925,7 +942,10 @@ public class LoopManiaWorldController {
                                 if (b instanceof Village) onLoad((Village)b);
                                 if (b instanceof ZombiePit) onLoad((ZombiePit)b);
                                 if (b instanceof Barracks) onLoad((Barracks)b);
-
+                                //VampireCastleBuilding newBuilding = (VampireCastleBuilding)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                //Campfire campfire = (Campfire)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                //onLoad(newBuilding);
+                                //onLoad(campfire);
                                 break;
                             case ITEM:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
