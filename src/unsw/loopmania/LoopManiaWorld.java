@@ -48,13 +48,14 @@ public class LoopManiaWorld {
     private List<Entity> nonSpecifiedEntities;
 
     private Character character;
+    private HeroCastle startCastle;
 
     // TODO = add more lists for other entities, for equipped inventory items,
     // etc...
 
     // TODO = expand the range of enemies
     private List<BasicEnemy> enemies;
-
+    List<BasicEnemy> transferZombies;
     // TODO = expand the range of cards
     private List<Card> cardEntities;
 
@@ -72,8 +73,14 @@ public class LoopManiaWorld {
     private List<Ally> allies;
 
     private int goldOwned;
+    
+
 
     private SimpleIntegerProperty potionsOwned;
+    
+    private SimpleIntegerProperty alliesOwned;
+
+
     //private int potionsOwned;
     private int experience;
     private int ringOwned;
@@ -105,7 +112,7 @@ public class LoopManiaWorld {
         buildingEntities = new ArrayList<>();
         goldOwned = 0;
         potionsOwned = new SimpleIntegerProperty(this, "0");
-
+        transferZombies = new ArrayList<BasicEnemy>();
 
 
         experience = 0;
@@ -114,6 +121,7 @@ public class LoopManiaWorld {
         allies = new ArrayList<>();
         campfires = new ArrayList<>();
         unPickedItem = new ArrayList<>();
+        startCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
     }
 
     public List<Ally> getAllies() {
@@ -208,6 +216,12 @@ public class LoopManiaWorld {
                 }
             }
         }
+
+        for (BasicEnemy e : transferZombies) {
+            spawningEnemies.add(e);
+        }
+
+        transferZombies.clear();
         return spawningEnemies;
     }
 
@@ -322,7 +336,7 @@ public class LoopManiaWorld {
         // without any damage!
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
         List<Ally> defeatedAllies = new ArrayList<Ally>();
-        List<BasicEnemy> transferZombies = new ArrayList<BasicEnemy>();
+        
         boolean inBattle = false;
         for (BasicEnemy e : enemies) {
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
@@ -339,16 +353,20 @@ public class LoopManiaWorld {
                     inBattle = true;
                     e.attack_ally(ally);
                     hasAttacked = true;
-                    if (ally.getHp() <= 0) {
-                        if (e.getType().equals("Zombie")) {
-                            Random rand = new Random();
-                            int int_random = rand.nextInt(5);
-                            if (int_random == 0) {
-                                BasicEnemy newZombie = new Zombie(ally.getPathPosition());
-                                transferZombies.add(newZombie);
+                    //if (ally.getHp() <= 0) {
+                    if (e.getType().equals("Zombie")) {
+                        Random rand = new Random();
+                        int int_random = rand.nextInt(5);
+                        if (int_random == 0) {
+                            BasicEnemy newZombie = new Zombie(ally.getPathPosition());
+                            transferZombies.add(newZombie);
+                            defeatedAllies.add(ally);
+                        } else {
+                            e.attack_ally(ally);
+                            if (ally.getHp() <= 0) {
+                                defeatedAllies.add(ally);
                             }
                         }
-                        defeatedAllies.add(ally);
                     }
                     break;
                 }
@@ -364,9 +382,10 @@ public class LoopManiaWorld {
                 }
             }
 
-            for (BasicEnemy enemy : transferZombies) {
-                enemies.add(enemy);
-            }
+        }
+        for (BasicEnemy enemy : transferZombies) {
+            enemies.add(enemy);
+            
         }
 
         for (Ally ally : allies) {
@@ -895,6 +914,12 @@ public class LoopManiaWorld {
         return new SimpleIntegerProperty(this.goldOwned);
     }
 
+
+    public IntegerProperty getAllyNum() {
+        return new SimpleIntegerProperty(allies.size());
+    }
+
+
     public DoubleProperty getHp() {
         return new SimpleDoubleProperty((double)this.character.getHp()/500.00);
     }
@@ -902,7 +927,6 @@ public class LoopManiaWorld {
     public IntegerProperty getHpInt() {
         return new SimpleIntegerProperty(this.character.getHp());
     }
-
 
     public void addGold(int numGained) {
         this.goldOwned += numGained;
@@ -1356,6 +1380,20 @@ public class LoopManiaWorld {
         shiftCardsDownFromXCoordinate(cardNodeX);
 
         return newBuilding;
+    }
+
+    public boolean isShopTime() {
+        if (character.getX() == startCastle.getX() && character.getY() == startCastle.getY()) {
+            return true;
+        }    
+        return false;
+    }
+
+    public boolean isGameOver() {
+        if (character.getHp() <= 0) {
+            return true;
+        }
+        else return false;
     }
 
 
