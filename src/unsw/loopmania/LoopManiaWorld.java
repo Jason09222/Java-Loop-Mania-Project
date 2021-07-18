@@ -1363,9 +1363,12 @@ public class LoopManiaWorld {
 
     public boolean isGameOver() {
         if (character.getHp() <= 0) {
+            character.setHp(0);
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
 
