@@ -82,7 +82,7 @@ public class LoopManiaWorld {
     //private int potionsOwned;
     private int experience;
     private int ringOwned;
-
+    private Goals goal;
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
      * them
@@ -120,6 +120,7 @@ public class LoopManiaWorld {
         campfires = new ArrayList<>();
         unPickedItem = new ArrayList<>();
         startCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        goal = new Goals();
     }
 
     public List<Ally> getAllies() {
@@ -559,7 +560,14 @@ public class LoopManiaWorld {
                 item = null;
                 break;
             default:
+                Random rand = new Random();
+                int result = rand.nextInt(5);
+                if (result == 1) {
+                    ringOwned += 1;
+                } 
                 item = null;
+                
+                
         }
         unequippedInventoryItems.add(item);
         return item;
@@ -900,7 +908,7 @@ public class LoopManiaWorld {
 
     public void spendPotions() {
         
-        if (potionsOwned >= 0) {
+        if (potionsOwned > 0) {
             character.setHp(500);
             addPotion(-1);;
         }
@@ -916,6 +924,10 @@ public class LoopManiaWorld {
 
     public IntegerProperty getCylceNum() {
         return new SimpleIntegerProperty(this.pathCycle / orderedPath.size()); 
+    }
+
+    public IntegerProperty getRingNum() {
+        return new SimpleIntegerProperty(this.ringOwned);
     }
 
     public IntegerProperty getGold() {
@@ -1408,6 +1420,14 @@ public class LoopManiaWorld {
         }
     }
 
+    public boolean isGameWin() {
+        if (goal.goalComplete(getGold().get(), getExpInt().get(), getCylceNum().get())) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 
 }
