@@ -115,8 +115,7 @@ public class LoopManiaWorldController {
     /*@FXML
     private ProgressBar goldProgress;
     */
-    @FXML
-    private Label goldNum;
+
 
     @FXML
     private Label hpNum;
@@ -182,9 +181,6 @@ public class LoopManiaWorldController {
     @FXML 
     private StackPane stackPane;
 
-
-
-<<<<<<< src/unsw/loopmania/LoopManiaWorldController.java
     @FXML
     private Label goldNum;
     @FXML
