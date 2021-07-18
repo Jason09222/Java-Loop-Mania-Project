@@ -311,7 +311,7 @@ public class LoopManiaWorldController {
             world.runTickMoves();
             List<BasicItem> items = world.possiblySpawnItems();
             for (BasicItem item: items) {
-                // onLoad(item);
+                onLoad(item);
             }
             List<BasicEnemy> defeatedEnemies = world.runBattles();
             for (BasicEnemy e : defeatedEnemies) {
@@ -638,12 +638,21 @@ public class LoopManiaWorldController {
                 view = new ImageView(armourImage);
             case SHIELD:
                 view = new ImageView(shieldImage);
+            case OTHER:
+                view = new ImageView(goldImage);
             default:
-                view = new ImageView(swordImage);
+                view = new ImageView(brilliantBlueNewImage);
         }
-        addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
-        addEntity(item, view);
-        unequippedInventory.getChildren().add(view);
+        if (item.getType() == ItemType.OTHER || item.getType() == ItemType.HEALTHPOTION) {
+            addEntity(item, view);
+            squares.getChildren().add(view);
+        }
+        else {
+            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
+            addEntity(item, view);
+            unequippedInventory.getChildren().add(view);
+        }
+        
     }
 
     /**
