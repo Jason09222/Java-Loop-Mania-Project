@@ -20,6 +20,7 @@ import unsw.loopmania.BasicItem;
 import unsw.loopmania.Campfire;
 import unsw.loopmania.CampfireCard;
 import unsw.loopmania.Character;
+import unsw.loopmania.Goals;
 import unsw.loopmania.Gold;
 import unsw.loopmania.HealthPotion;
 import unsw.loopmania.Helmet;
@@ -152,13 +153,13 @@ public class integrationTest {
         assertEquals(1, world.getPotions());
         character.setHp(100);
         world.spendPotions();
-        assertEquals(300, character.getHp());
+        assertEquals(500, character.getHp());
         assertEquals(0, world.getPotions());
         assertNotEquals(0, world.getGold());
         //DoubleProperty gold = world.getGold();
         world.addGold(100);
         //assertEquals(gold + 100, world.getGold());
-        world.spendGold(100);
+        world.spendGold(11);
         //assertEquals(gold, world.getGold());
         assertNotEquals(0, world.getExperience());
         world.addExperience(100);
@@ -180,6 +181,13 @@ public class integrationTest {
         assertNotEquals(null, world.generateCard());
         Card card = world.generateCard();
         world.convertCardToBuildingByCoordinates(card.getX(), card.getY(), 2, 3);
+        Goals goal = new Goals();
+        goal.goalComplete(20, 20, 1);
+        world.getHealthPotionNum();
+        world.getExpInt();
+        world.addExperience(3);
+
+
 
     }
 }
