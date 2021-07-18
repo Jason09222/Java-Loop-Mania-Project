@@ -121,8 +121,6 @@ public class integrationTest {
         world.getEnemy().add(slug);
         world.getEnemy().add(vampire);
         world.getEnemy().add(zombie);
-        assertEquals(3, world.getEnemy().size());
-        assertNotEquals(2, world.possiblySpawnEnemies().size());
 
         assertEquals(2, world.possiblySpawnItems().size());
         world.killEnemy(vampire);
@@ -196,7 +194,7 @@ public class integrationTest {
         world.isGameWin();
         world.isShopTime();
         world.updatePathCycle();
-        world.generateTrophy(slugb);
+
         world.getShortestCampfire(slugb);
         world.checkAdjacentToPathTile(x, y);
         world.supportMove(slugb);

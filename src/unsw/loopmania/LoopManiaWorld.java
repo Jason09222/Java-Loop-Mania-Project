@@ -75,7 +75,7 @@ public class LoopManiaWorld {
     private int goldOwned;
 
     private int potionsOwned;
-
+    
     private SimpleIntegerProperty alliesOwned;
 
 
@@ -339,7 +339,7 @@ public class LoopManiaWorld {
         // without any damage!
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
         List<Ally> defeatedAllies = new ArrayList<Ally>();
-
+        
         boolean inBattle = false;
         for (BasicEnemy e : enemies) {
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
@@ -388,7 +388,7 @@ public class LoopManiaWorld {
         }
         for (BasicEnemy enemy : transferZombies) {
             enemies.add(enemy);
-
+            
         }
 
         for (Ally ally : allies) {
@@ -449,7 +449,7 @@ public class LoopManiaWorld {
 
 
     public ItemType generateItem() {
-        int totalRewards = 8;
+        int totalRewards = 7;
         Random rand = new Random();
         int result = rand.nextInt(1000) % totalRewards;
         switch (result) {
@@ -466,7 +466,7 @@ public class LoopManiaWorld {
                 return ItemType.STAFF;
             case 6:
                 return ItemType.STAKE;
-            case 7:
+            case 0:
                 return ItemType.SWORD;
             default:
                 return null;
@@ -511,6 +511,13 @@ public class LoopManiaWorld {
      */
 
     public BasicItem addUnequippedItem(ItemType type) {
+        Random rand = new Random();
+        int result = rand.nextInt(30);
+        if (result == 0) {
+            ringOwned += 1;
+        } 
+
+
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null) {
             // eject the oldest unequipped item and replace it... oldest item is that at
@@ -518,8 +525,8 @@ public class LoopManiaWorld {
             removeItemByPositionInUnequippedInventoryItems(0);
             firstAvailableSlot = getFirstAvailableSlotForItem();
             // gives random amount of cash/experience reward for discarding oldest item
-            Random rand = new Random();
-            int result = rand.nextInt(10) % 2;
+            rand = new Random();
+            result = rand.nextInt(10) % 2;
             switch (result) {
                 case 0:
                     addExperience(rand.nextInt(10));
@@ -535,10 +542,12 @@ public class LoopManiaWorld {
         SimpleIntegerProperty y = new SimpleIntegerProperty(firstAvailableSlot.getValue1());
         // insert new item as it is now we know we have a slot available
         BasicItem item;
+        //ringOwned+=1;
         switch (type) {
             case SWORD:
                 item = new Sword(x, y);
                 break;
+            
             case STAKE:
                 item = new Stake(x, y);
                 break;
@@ -559,8 +568,12 @@ public class LoopManiaWorld {
                 potionsOwned += 1;
                 item = null;
                 break;
+            
             default:
+                
                 item = null;
+                
+                
         }
         unequippedInventoryItems.add(item);
         return item;
@@ -893,14 +906,14 @@ public class LoopManiaWorld {
     */
 
 
-
+    
 
     public void addPotion(int numGained) {
         potionsOwned += numGained;
     }
 
     public void spendPotions() {
-
+        
         if (potionsOwned > 0) {
             character.setHp(500);
             addPotion(-1);;
@@ -916,7 +929,11 @@ public class LoopManiaWorld {
     }
 
     public IntegerProperty getCylceNum() {
-        return new SimpleIntegerProperty(this.pathCycle / orderedPath.size());
+        return new SimpleIntegerProperty(this.pathCycle / orderedPath.size()); 
+    }
+
+    public IntegerProperty getRingNum() {
+        return new SimpleIntegerProperty(this.ringOwned);
     }
 
     public IntegerProperty getGold() {
@@ -1396,12 +1413,17 @@ public class LoopManiaWorld {
     public boolean isShopTime() {
         if (character.getX() == startCastle.getX() && character.getY() == startCastle.getY()) {
             return true;
-        }
+        }    
         return false;
     }
 
     public boolean isGameOver() {
         if (character.getHp() <= 0) {
+            if (ringOwned > 0) {
+                ringOwned--;
+                character.setHp(500);
+                return false;
+            }
             return true;
         }
         else {
