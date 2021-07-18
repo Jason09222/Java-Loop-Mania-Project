@@ -112,11 +112,6 @@ public class LoopManiaWorldController {
     @FXML
     private ProgressBar hpProgress;
 
-    /*@FXML
-    private ProgressBar goldProgress;
-
-    @FXML
-    private ProgressBar hpProgress;*/
 
     @FXML
     private StackPane layout;
@@ -326,13 +321,13 @@ public class LoopManiaWorldController {
         //ProgressBar hpProgress = new ProgressBar(0.25);
         //hpProgress.setProgress(0.25f);
         
-        /*Label gold = new Label("Gold");
+        Label gold = new Label("Gold");
         goldProgress = new ProgressBar();
         goldInWorld = world.getGold();
         goldProgress.progressProperty().bind(goldInWorld);
 
         layout.getChildren().add(goldProgress);
-        layout.getChildren().add(gold);*/
+        layout.getChildren().add(gold);
         
         Label hp = new Label("Hp");
         hpProgress = new ProgressBar();

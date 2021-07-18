@@ -110,8 +110,8 @@ public class BuildingTest {
         List<Pair<Integer, Integer>> orderedPath = world.getOrderedPath();
         int index = orderedPath.indexOf(pair1);
         PathPosition position = new PathPosition(index, orderedPath);
-        SimpleIntegerProperty x = new SimpleIntegerProperty(1);
-        SimpleIntegerProperty y = new SimpleIntegerProperty(2);
+        // SimpleIntegerProperty x = new SimpleIntegerProperty(1);
+        // SimpleIntegerProperty y = new SimpleIntegerProperty(2);
         Tower tower = new Tower(position.getX(), position.getY());
         // assertEquals(tower.getX(), 1);
         // assertEquals(tower.getY(), 2);
@@ -138,7 +138,7 @@ public class BuildingTest {
         vampire.setInBattle(true);
         world.getEnemy().add(vampire);
         assertEquals(vampire.getHP(), 800);//???
-        
+
     }
 
     @Test
@@ -298,7 +298,7 @@ public class BuildingTest {
         campfire.characterLeave();
         assertEquals(campfire.getCharacterStepOn(), false);
         assertNotEquals(campfire.getNearestPath(world), null);
-        assertEquals(campfire.getcampRadius(), 2);
+        assertEquals(campfire.getcampRadius(), 3);
         Character character = new Character(position);
         campfire.doubleDamage(character);
         assertEquals(vampire.getHP(), 600);
