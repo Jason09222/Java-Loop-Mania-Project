@@ -666,6 +666,7 @@ public class LoopManiaWorld {
             unPickedItem.remove(item);
             item.destroy();
             addPotion(1);
+            //character.setHp(500);
         }
         /*//pick up gold or health potion
         double goldDistance = Math.sqrt(Math.pow(character.getX(), 2) + Math.pow(character.getY(), 2));
@@ -795,6 +796,7 @@ public class LoopManiaWorld {
                 } else {
                     e.move();
                 }
+                enemyStepOnBuilding();
                 // supportMove(e);
             }
         }
@@ -1094,11 +1096,12 @@ public class LoopManiaWorld {
             int destY = b.getY();
             int srcX = this.character.getPathPosition().getX().get();
             int srcY = this.character.getPathPosition().getY().get();
-
-            if (this.character.getPathPosition().getX().get() == b.getX() && this.character.getPathPosition().getY().get() == b.getY()) {
+            
+            if (srcX == destX && srcY == destY) {
                 if (b instanceof Village) {
                     Village v = (Village) b;
-                    v.increaseHp(this.character);
+                    //v.increaseHp(this.character);
+                    character.setHp(500);
                 }
 
                 if (b instanceof Barracks) {
@@ -1106,7 +1109,7 @@ public class LoopManiaWorld {
                     ba.produceAlly(this);
                 }
             }
-
+            
             if (b instanceof Campfire) {
                 Campfire c = (Campfire) b;
                 int distance = (int)Math.sqrt(Math.pow(destX - srcX,2) + Math.pow(destY - srcY , 2));
@@ -1138,7 +1141,7 @@ public class LoopManiaWorld {
             this.buildings.remove(b);
             b.destroy();
         }
-
+        toRemove.clear();
     }
 
     /**

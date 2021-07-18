@@ -296,7 +296,7 @@ public class LoopManiaWorldController {
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
-
+        
         // Add the ground first so it is below all other entities (inculding all the
         // twists and turns)
         for (int x = 0; x < world.getWidth(); x++) {
@@ -306,7 +306,7 @@ public class LoopManiaWorldController {
                 squares.add(groundView, x, y);
             }
         }
-
+        
         // load entities loaded from the file in the loader into the squares gridpane
         for (ImageView entity : entityImages) {
             squares.getChildren().add(entity);
@@ -318,7 +318,7 @@ public class LoopManiaWorldController {
             groundView.setViewport(imagePart);
             cards.add(groundView, x, 0);
         }
-
+        
         // add the empty slot images for the unequipped inventory
         for (int x = 0; x < LoopManiaWorld.unequippedInventoryWidth; x++) {
             for (int y = 0; y < LoopManiaWorld.unequippedInventoryHeight; y++) {
@@ -326,13 +326,15 @@ public class LoopManiaWorldController {
                 unequippedInventory.add(emptySlotView, x, y);
             }
         }
-
+        
         // create the draggable icon
         draggedEntity = new DragIcon();
         draggedEntity.setVisible(false);
         draggedEntity.setOpacity(0.7);
         anchorPaneRoot.getChildren().add(draggedEntity);
-
+        
+        Building heroCastle = new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0));
+        onLoad((HeroCastle)heroCastle);
 
         Label gold = new Label("Gold");
         goldProgress = new ProgressBar();
@@ -790,6 +792,15 @@ public class LoopManiaWorldController {
      *
      * @param building
      */
+
+
+    private void onLoad(HeroCastle building) {
+        ImageView view = new ImageView(heroCastleImage);
+        addEntity(building, view);
+        squares.getChildren().add(view);
+    } 
+    
+    
     private void onLoad(VampireCastleBuilding building) {
         ImageView view = new ImageView(basicBuildingImage);
         addEntity(building, view);
