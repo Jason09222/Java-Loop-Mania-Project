@@ -14,9 +14,9 @@ Client requirement does not specify how the enemies will move along the path, on
 2. Zombies will move 1 tile anticlockwise every turn.
 3. Vampires will move 1 tile anticlockwise however they will reverse if their next turn will place them into a campfire battle radius.
 
-Players will have 12 slots for equipment
-
-Players will have 13 slots for cards
+Players will have 16 slots for equipment
+Unequipped inventory is only for equippable items
+Players will have 7 slots for cards
 
 The shop at the Hero's Castle will offer six items every cycle at random. Can range from potions, weapons, armour, helmet, shield.
 
