@@ -45,8 +45,6 @@ import java.util.EnumMap;
 import java.io.File;
 import java.io.IOException;
 
-
-import javafx.scene.control.TextField;
 /**
  * the draggable types. If you add more draggable types, add an enum value here.
  * This is so we can see what type is being dragged.
@@ -112,13 +110,15 @@ public class LoopManiaWorldController {
     private GridPane unequippedInventory;
 
     @FXML
-    private ProgressBar goldProgress;
+    private ProgressBar hpProgress;
 
     /*@FXML
     private ProgressBar goldProgress;
     */
+
     @FXML
-    private ProgressBar hpProgress;
+    private Label hpNum;
+
 
     @FXML
     private StackPane layout;
@@ -181,15 +181,17 @@ public class LoopManiaWorldController {
     private StackPane stackPane;
 
     @FXML
-    private TextField allyNum;
-
-    @FXML
     private Label goldNum;
-
+    @FXML
+    private Label allyNum;
+    
     private IntegerProperty goldInNum;
+    private IntegerProperty allyInNum;
 
+    private SimpleIntegerProperty allyInWorld;
 
-    SimpleIntegerProperty allyInWorld;
+    private IntegerProperty hpInNum;
+
 
     //private DoubleProperty goldInWorld;
     private DoubleProperty hpInWorld;
@@ -360,16 +362,35 @@ public class LoopManiaWorldController {
         layout.getChildren().add(goldNum);
         StackPane.setAlignment(goldNum, Pos.CENTER_RIGHT);
 
-        
+        ImageView allyView = new ImageView(allyImage);
+        allyNum = new Label("0");
+        allyInNum = world.getAllyNum();
+        allyNum.textProperty().bind(allyInNum.asString());
+        allyNum.setTextFill(Color.GRAY);
+        allyNum.setFont(new Font("Cambria", 40));
+
+        layout.getChildren().add(allyView);
+        StackPane.setAlignment(allyView, Pos.TOP_LEFT);
+        layout.getChildren().add(allyNum);
+        StackPane.setAlignment(allyNum, Pos.TOP_RIGHT);
+
         //Label hp = new Label("Hp");
         ImageView heartView = new ImageView(heartImage);
         hpProgress = new ProgressBar();
         hpInWorld = world.getHp();
         hpProgress.progressProperty().bind(hpInWorld);
+
+        hpNum = new Label("0");
+        hpInNum = world.getHpInt();
+        hpNum.textProperty().bind(hpInNum.asString());
+        hpNum.setTextFill(Color.RED);
+        
         layout.getChildren().add(hpProgress);
         StackPane.setAlignment(hpProgress, Pos.BOTTOM_RIGHT);
         layout.getChildren().add(heartView);
         StackPane.setAlignment(heartView, Pos.BOTTOM_LEFT);
+        layout.getChildren().add(hpNum);
+        StackPane.setAlignment(hpNum, Pos.BOTTOM_RIGHT);
     }
 
     /**
@@ -386,9 +407,14 @@ public class LoopManiaWorldController {
             goldInNum = world.getGold();
             goldNum.textProperty().bind(goldInNum.asString());
 
+            hpInNum = world.getHpInt();
+            hpNum.textProperty().bind(hpInNum.asString());
+
             hpInWorld = world.getHp();
             hpProgress.progressProperty().bind(hpInWorld);
 
+            allyInNum = world.getAllyNum();
+            allyNum.textProperty().bind(allyInNum.asString());
             //allyInWorld.set(world.getAllies().size());
             //allyNum.textProperty().bind(allyInWorld.asString());
             //goldInWorld = world.getGold();
@@ -921,7 +947,10 @@ public class LoopManiaWorldController {
                                 if (b instanceof Village) onLoad((Village)b);
                                 if (b instanceof ZombiePit) onLoad((ZombiePit)b);
                                 if (b instanceof Barracks) onLoad((Barracks)b);
-
+                                //VampireCastleBuilding newBuilding = (VampireCastleBuilding)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                //Campfire campfire = (Campfire)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                //onLoad(newBuilding);
+                                //onLoad(campfire);
                                 break;
                             case ITEM:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
