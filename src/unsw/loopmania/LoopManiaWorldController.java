@@ -263,6 +263,8 @@ public class LoopManiaWorldController {
      */
     private MenuSwitcher mainMenuSwitcher;
 
+    private MenuSwitcher gameOverSwitcher;
+
     /**
      * @param world           world object loaded from file
      * @param initialEntities the initial JavaFX nodes (ImageViews) which should be
@@ -515,6 +517,7 @@ public class LoopManiaWorldController {
                 onLoad(newEnemy);
             }
             printThreadingNotes("HANDLED TIMER");
+            checkGameOver();
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -532,6 +535,14 @@ public class LoopManiaWorldController {
 
     public void terminate() {
         pause();
+    }
+
+    private void checkGameOver() {
+        if (world.isGameOver() == true) {
+            System.out.println("oops dead");
+            terminate();
+            gameOverSwitcher.switchMenu();
+        }
     }
 
     /**
@@ -1277,6 +1288,10 @@ public class LoopManiaWorldController {
     public void setMainMenuSwitcher(MenuSwitcher mainMenuSwitcher) {
         // TODO = possibly set other menu switchers
         this.mainMenuSwitcher = mainMenuSwitcher;
+    }
+
+    public void setGameOverSwitcher(MenuSwitcher gameOverSwitcher) {
+        this.gameOverSwitcher = gameOverSwitcher;
     }
 
     /**
