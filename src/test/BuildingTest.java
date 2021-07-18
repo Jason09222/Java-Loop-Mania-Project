@@ -259,8 +259,9 @@ public class BuildingTest {
         trap.addEnemy(slug);
         trap.addEnemy(vampire);
         assertEquals(trap.getEnemies().size(), 2);
+        trap.exertDamage(world, new ArrayList<>());
         trap.removeEnemy(slug);
-        assertEquals(trap.getEnemies().size(), 1);
+        assertEquals(trap.getEnemies().size(), 0);
         // trap.characterSteppingOn();
         // assertEquals(trap.getCharacterStepOn(), true);
         // trap.characterLeave();
@@ -270,10 +271,10 @@ public class BuildingTest {
         // world.getBuildings().add(trap);
         //Can't add buliding in world
         // assertEquals(world.getBuildings().size(), 1);
-        world.createbuilding("VampireCastleBuilding", x, y);
-        trap.destroyTrap(world);
+        //world.getBuildings().add(trap);
+        //trap.destroyTrap(world);
         assertEquals(world.getBuildings().size(), 0);
-        trap.exertDamage(world, new ArrayList<>());
+
         assertEquals(vampire.getHP(), 800);// Should kill the ememy
     }
 

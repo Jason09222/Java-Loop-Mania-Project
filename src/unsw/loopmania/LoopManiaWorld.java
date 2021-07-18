@@ -75,7 +75,7 @@ public class LoopManiaWorld {
     private int goldOwned;
 
     private int potionsOwned;
-    
+
     private SimpleIntegerProperty alliesOwned;
 
 
@@ -339,7 +339,7 @@ public class LoopManiaWorld {
         // without any damage!
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
         List<Ally> defeatedAllies = new ArrayList<Ally>();
-        
+
         boolean inBattle = false;
         for (BasicEnemy e : enemies) {
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
@@ -388,7 +388,7 @@ public class LoopManiaWorld {
         }
         for (BasicEnemy enemy : transferZombies) {
             enemies.add(enemy);
-            
+
         }
 
         for (Ally ally : allies) {
@@ -818,7 +818,7 @@ public class LoopManiaWorld {
     /**
      * move all enemies
      */
-    private void moveBasicEnemies() {
+    public void moveBasicEnemies() {
         // TODO = expand to more types of enemy
 
         for (BasicEnemy e : enemies) {
@@ -906,14 +906,14 @@ public class LoopManiaWorld {
     */
 
 
-    
+
 
     public void addPotion(int numGained) {
         potionsOwned += numGained;
     }
 
     public void spendPotions() {
-        
+
         if (potionsOwned > 0) {
             character.setHp(500);
             addPotion(-1);;
@@ -929,7 +929,7 @@ public class LoopManiaWorld {
     }
 
     public IntegerProperty getCylceNum() {
-        return new SimpleIntegerProperty(this.pathCycle / orderedPath.size()); 
+        return new SimpleIntegerProperty(this.pathCycle / orderedPath.size());
     }
 
     public IntegerProperty getRingNum() {
@@ -1413,7 +1413,7 @@ public class LoopManiaWorld {
     public boolean isShopTime() {
         if (character.getX() == startCastle.getX() && character.getY() == startCastle.getY()) {
             return true;
-        }    
+        }
         return false;
     }
 
