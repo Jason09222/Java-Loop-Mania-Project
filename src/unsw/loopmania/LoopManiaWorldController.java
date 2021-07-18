@@ -42,6 +42,8 @@ import java.util.EnumMap;
 import java.io.File;
 import java.io.IOException;
 
+
+import javafx.scene.control.TextField;
 /**
  * the draggable types. If you add more draggable types, add an enum value here.
  * This is so we can see what type is being dragged.
@@ -173,6 +175,13 @@ public class LoopManiaWorldController {
 
     private Image allyImage;
 
+    @FXML 
+    private StackPane stackPane;
+
+    @FXML
+    TextField allyNum;
+
+    SimpleIntegerProperty allyInWorld;
     /**
      * the image currently being dragged, if there is one, otherwise null. Holding
      * the ImageView being dragged allows us to spawn it again in the drop location
@@ -321,6 +330,11 @@ public class LoopManiaWorldController {
         draggedEntity.setOpacity(0.7);
         anchorPaneRoot.getChildren().add(draggedEntity);
 
+
+        /*allyNum = new TextField("0");
+        allyInWorld = new SimpleIntegerProperty(world.getAllies().size());
+        allyNum.textProperty().bind(allyInWorld.asString());
+        stackPane.getChildren().add(allyNum);
         //ProgressBar hpProgress = new ProgressBar(0.25);
         //hpProgress.setProgress(0.25f);
         
@@ -335,7 +349,7 @@ public class LoopManiaWorldController {
         //layout.getChildren().add(hpProgress);
         layout.getChildren().add(goldProgress);
         layout.getChildren().add(gold);
-        //layout.getChildren().add(goldValue);
+        //layout.getChildren().add(goldValue);*/
     }
 
     /**
@@ -349,6 +363,9 @@ public class LoopManiaWorldController {
         // framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             world.runTickMoves();
+
+            //allyInWorld.set(world.getAllies().size());
+            //allyNum.textProperty().bind(allyInWorld.asString());
             goldInWorld = world.getGold();
 
             List<BasicItem> items = world.possiblySpawnItems();
@@ -853,10 +870,16 @@ public class LoopManiaWorldController {
                             case CARD:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn a building here of different types
-                                VampireCastleBuilding newBuilding = (VampireCastleBuilding)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
-                                Campfire campfire = (Campfire)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
-                                onLoad(newBuilding);
-                                onLoad(campfire);
+
+                                Building b = world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                if (b instanceof VampireCastleBuilding) onLoad((VampireCastleBuilding)b);
+                                if (b instanceof Campfire) onLoad((Campfire)b);
+                                if (b instanceof Tower) onLoad((Tower)b);
+                                if (b instanceof Trap) onLoad((Trap)b);
+                                if (b instanceof Village) onLoad((Village)b);
+                                if (b instanceof ZombiePit) onLoad((ZombiePit)b);
+                                if (b instanceof Barracks) onLoad((Barracks)b);
+
                                 break;
                             case ITEM:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
