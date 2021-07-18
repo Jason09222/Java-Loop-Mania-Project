@@ -119,11 +119,9 @@ public class integrationTest {
         world.setCharacter(character);
         world.addEntity(character);
         world.getEnemy().add(slug);
-
-        assertNotEquals(2, world.possiblySpawnEnemies().size());
         world.getEnemy().add(vampire);
         world.getEnemy().add(zombie);
-        
+
         assertEquals(2, world.possiblySpawnItems().size());
         world.killEnemy(vampire);
         //world.killEnemy(zombie);
