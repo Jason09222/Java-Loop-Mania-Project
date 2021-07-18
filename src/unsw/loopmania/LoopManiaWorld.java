@@ -9,6 +9,9 @@ import javax.swing.text.html.HTMLDocument.Iterator;
 import java.lang.Math;
 import org.javatuples.Pair;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.effect.BlurType;
 
@@ -234,7 +237,7 @@ public class LoopManiaWorld {
                 }
             }
             Random rand = new Random();
-            if (goldExist == false && this.pathCycle % (3 * orderedPath.size()) == 0) {
+            if (goldExist == false && this.pathCycle % (1 * orderedPath.size()) == 0) {
                 int indexInOrderedPath = rand.nextInt(orderedPath.size() - 1);
                 Pair<Integer, Integer> newPos = orderedPath.get(indexInOrderedPath);
 
@@ -866,8 +869,8 @@ public class LoopManiaWorld {
 
 
 
-    public int getGold() {
-        return this.goldOwned;
+    public DoubleProperty getGold() {
+        return new SimpleDoubleProperty(this.goldOwned/1000);
     }
 
     public void addGold(int numGained) {
