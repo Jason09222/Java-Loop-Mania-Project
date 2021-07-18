@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.ArrayList;
@@ -35,9 +36,13 @@ public class BuildingTest {
         List<Pair<Integer, Integer>> orderedPath = world.getOrderedPath();
         int index = orderedPath.indexOf(pair1);
         PathPosition position = new PathPosition(index, orderedPath);
+        position.moveDownPath();
+        position.moveUpPath();
         SimpleIntegerProperty x = new SimpleIntegerProperty(1);
         SimpleIntegerProperty y = new SimpleIntegerProperty(2);
         VampireCastleBuilding vampireCastleBuilding = new VampireCastleBuilding(x, y);
+        vampireCastleBuilding.setX(1);
+        vampireCastleBuilding.setY(2);
         assertEquals(vampireCastleBuilding.getX(), 1);
         assertEquals(vampireCastleBuilding.getY(), 2);
         assertEquals(vampireCastleBuilding.checkPathCycle(world), true);
@@ -94,6 +99,7 @@ public class BuildingTest {
         //assertEquals(zombiePit.getCharacterStepOn(), true);
         //zombiePit.characterLeave();
         //assertEquals(zombiePit.getCharacterStepOn(), false);
+        assertFalse(zombiePit.checkPathCycle(world));
         assertNotEquals(zombiePit.getNearestPath(world), null);
         zombiePit.spawnZombie(world);
         assertEquals(world.getEnemy().get(0).getType(), "Zombie");
@@ -122,11 +128,16 @@ public class BuildingTest {
         assertEquals(tower.getPathCycle(), 3);
         Slug slug = new Slug(position);
         Vampire vampire = new Vampire(position);
-        tower.addEnemy(slug);
-        tower.addEnemy(vampire);
-        assertEquals(tower.getEnemies().size(), 2);
-        tower.removeEnemy(slug);
+        slug.setInBattle(true);
+        world.getEnemy().add(slug);
+        world.getEnemy().add(vampire);
+        tower.addEnemiesWorld(world);
+        tower.addEnemyNearBy(world);
         assertEquals(tower.getEnemies().size(), 1);
+        tower.decreaseHp();
+        tower.removeEnemy(slug);
+        assertEquals(tower.getEnemies().size(), 0);
+
         // tower.characterSteppingOn();
         // assertEquals(tower.getCharacterStepOn(), true);
         // tower.characterLeave();
@@ -257,12 +268,13 @@ public class BuildingTest {
         assertNotEquals(trap.getNearestPath(world), null);
         assertEquals(trap.getDamage(), 4);
         // world.getBuildings().add(trap);
-        // //Can't add buliding in world
+        //Can't add buliding in world
         // assertEquals(world.getBuildings().size(), 1);
+        world.createbuilding("VampireCastleBuilding", x, y);
         trap.destroyTrap(world);
         assertEquals(world.getBuildings().size(), 0);
-        //trap.exertDamage(world);
-        //assertEquals(vampire.getHP(), 796);// Should kill the ememy
+        trap.exertDamage(world, new ArrayList<>());
+        assertEquals(vampire.getHP(), 800);// Should kill the ememy
     }
 
     @Test

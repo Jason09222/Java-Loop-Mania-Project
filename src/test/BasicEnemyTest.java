@@ -30,6 +30,8 @@ public class BasicEnemyTest {
         List<Pair<Integer, Integer>> orderedPath = world.getOrderedPath();
         int index = orderedPath.indexOf(pair1);
         PathPosition position = new PathPosition(index, orderedPath);
+        position.moveUpPath();
+        position.moveDownPath();
         Slug slug = new Slug(position);
         assertEquals("Slug", slug.getType());
         assertEquals(300, slug.getHP());
@@ -50,6 +52,8 @@ public class BasicEnemyTest {
         slug.attack_ally(ally);
         assertEquals(280, ally.getHp());
         assertEquals(2, slug.getDistance(3, 4));
+        Character character = new Character(position);
+        slug.attack_character(character);
 
     }
 
@@ -67,14 +71,31 @@ public class BasicEnemyTest {
         Vampire vampire = new Vampire(position);
         Ally ally = new Ally(position);
         vampire.attack_ally(ally);
+        vampire.attack_ally(ally);
+        vampire.attack_ally(ally);
+        vampire.attack_ally(ally);
+        vampire.attack_ally(ally);
+        vampire.attack_ally(ally);
+        vampire.attack_ally(ally);
+        vampire.attack_ally(ally);
+        vampire.attack_ally(ally);
         assertNotEquals(300, ally.getHp());
         Character character = new Character(position);
+        vampire.attack_character(character);
+        vampire.attack_character(character);
+        vampire.attack_character(character);
+        vampire.attack_character(character);
+        vampire.attack_character(character);
+        vampire.attack_character(character);
+        vampire.attack_character(character);
+        vampire.attack_character(character);
         vampire.attack_character(character);
         assertNotEquals(500, character.getHp());
         vampire.setCriticalPoss(100);
         assertEquals(100, vampire.getCriticalPoss());
         vampire.setCriticalBack();
         assertEquals(10, vampire.getCriticalPoss());
+        vampire.move();
     }
 
     @Test

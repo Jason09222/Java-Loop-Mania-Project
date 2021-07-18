@@ -26,6 +26,9 @@ public class BasicItemTest {
         SimpleIntegerProperty x = new SimpleIntegerProperty(1);
         SimpleIntegerProperty y = new SimpleIntegerProperty(2);
         Sword sword = new Sword(x, y);
+        Character character = new Character(null);
+        Slug enemy = new Slug(null);
+        character.useSword(sword, enemy);
         assertEquals(sword.getDamage(), 200);
         assertEquals(sword.getPrice(), 1000);
         assertEquals(sword.getType(), ItemType.SWORD);
@@ -146,6 +149,9 @@ public class BasicItemTest {
         character.setHp(200);
         character.useHealthPotion(healthPotion);
         assertEquals(character.getHp(), 400);
+        character.setHp(500);
+        character.shouldExist();
+        character.useHealthPotion(healthPotion);
         assertEquals(healthPotion.getHealth(), 200);
         assertEquals(healthPotion.getPrice(), 2000);
         assertEquals(healthPotion.getType(), ItemType.HEALTHPOTION);

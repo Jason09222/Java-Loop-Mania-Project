@@ -25,6 +25,9 @@ public class CharacterTest {
         int index = orderedPath.indexOf(pair1);
         PathPosition position = new PathPosition(index, orderedPath);
         Character character = new Character(position);
+        character.setHp(-1);
+        character.setHp(10000);
+        character.setHp(500);
         character.setHp(300);
         assertEquals(300, character.getHp());
         assertEquals(100, character.getDamage());
