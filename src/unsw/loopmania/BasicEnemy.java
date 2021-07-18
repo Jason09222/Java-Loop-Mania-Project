@@ -1,6 +1,9 @@
 package unsw.loopmania;
 
 import java.util.Random;
+
+import javafx.beans.property.SimpleIntegerProperty;
+
 import java.lang.Math;
 /**
  * a basic form of enemy in the world
@@ -20,11 +23,11 @@ public class BasicEnemy extends MovingEntity {
     private int gold;
     private int speed;
     private boolean inBattle;
-
-
+    private String lastMoveDirection;
     public BasicEnemy(PathPosition position) {
         super(position);
         this.inBattle = false;
+        this.lastMoveDirection = "Up";
     }
 
 
@@ -68,28 +71,12 @@ public class BasicEnemy extends MovingEntity {
         return this.inBattle;
     }
 
-
-    public void generateTrophy() {
-    
-        Random rand = new Random();
-        int int_random = rand.nextInt(3);
-        switch(int_random) {
-            case 0:
-                //TODO set some amount of gold to map
-                break;
-            case 1:
-                //TODO: set some kind of weapon to map
-                break;
-            case 2:
-                //TODO: set one health potion to map
-                break;
-            case 3:
-                //TODO: set one card to map
-                break;
-            default:
-                return;
-        }
+    public String getLastDirec() {
+        return this.lastMoveDirection;
     }
+
+
+    
     
     
     public void setType(String type) {
@@ -97,6 +84,7 @@ public class BasicEnemy extends MovingEntity {
     }
     
     public void setHP(int hp) {
+        // TODO: set the limit of hp
         this.hp = hp;
     }
 
@@ -133,9 +121,19 @@ public class BasicEnemy extends MovingEntity {
         this.inBattle = flag;
     }
 
-    public void attack() {
+
+    public void setLastDirec(String s) {
+        this.lastMoveDirection = s;
+    }
+
+  
+    public void attack_ally(Ally ally) {
         //TODO
-        return;
+        ally.setHp(ally.getHp() - this.getDamage());
+    }
+
+    public void attack_character(Character c) {
+        c.setHp(c.getHp() - this.getDamage());
     }
 
 
@@ -145,19 +143,24 @@ public class BasicEnemy extends MovingEntity {
     public void move(){
         // TODO = modify this, since this implementation doesn't provide the expected enemy behaviour
         // this basic enemy moves in a random direction... 25% chance up or down, 50% chance not at all...
+        
+        
+
         int directionChoice = (new Random()).nextInt(2);
-        if (directionChoice == 0){
-            moveUpPath();
-        }
-        else if (directionChoice == 1){
-            moveDownPath();
-        }
+            if (directionChoice == 0){
+                moveUpPath();
+                this.lastMoveDirection = "Down";
+            }
+            else if (directionChoice == 1){
+                moveDownPath();
+                this.lastMoveDirection = "Up";
+            }
+       
     }
 
 
-    public int getDistance(PathPosition dest) {
-        int destX = dest.getX().get();
-        int destY = dest.getY().get();
+    public int getDistance(int destX, int destY) {
+
         int srcX = this.getX();
         int srcY = this.getY();
         return (int)Math.sqrt(Math.pow(destX - srcX,2) + Math.pow(destY - srcY , 2));
