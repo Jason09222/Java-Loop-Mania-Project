@@ -55,7 +55,7 @@ public class EquipmentTest {
         Item sword1 = world.equipItemByCoordinates(1, 0);
         assertEquals(sword1.getX(), 0);
         Item helmet1 = world.equipItemByCoordinates(0, 0);
-        assertEquals(helmet1.getX(), 2);
+        assertEquals(helmet1.getX(), 1);
         Item shield = world.addUnequippedItem(ItemType.SHIELD);
         assertEquals(shield.getX(), 0);
         Item shield1 = world.equipItemByCoordinates(0, 0);
