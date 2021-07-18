@@ -354,7 +354,7 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * load a vampire card from the world, and pair it with an image in the GUI
+     * load a card from the world, and pair it with an image in the GUI
      */
     private void loadVampireCard() {
         // TODO = load more types of card
@@ -400,7 +400,7 @@ public class LoopManiaWorldController {
 
 
     /**
-     * load a sword from the world, and pair it with an image in the GUI
+     * load an item into the world and pair it with an image in the GUI
      */
     private void loadSword() {
         // TODO = load more types of weapon
@@ -448,10 +448,11 @@ public class LoopManiaWorldController {
         // enemy
         
         generateItem();
-        //loadVampireCard();
         generateCard();
     }
-
+    /**
+     * generates a random card from the available cards
+     */
     public void generateCard() {
         int totalCards = 7;
         Random rand = new Random();
@@ -483,7 +484,9 @@ public class LoopManiaWorldController {
         }
 
     }
-
+    /**
+     * generates a random item from the available rewards
+     */
     public void generateItem() {
         int totalRewards = 6;
         Random rand = new Random();
@@ -651,7 +654,13 @@ public class LoopManiaWorldController {
         addEntity(armour, view);
         unequippedInventory.getChildren().add(view);
     } */
-
+    /**
+     * loads an item into the GUI depending on the ItemType given
+     * connects the item to the drag detection event handler and places it in 
+     * unequippedInventory if it is an equippable item.
+     * Otherwise item will be loaded onto the map due to our implementation.
+     * @param item
+     */
     private void onLoad(BasicItem item) {
         ImageView view;
         switch(item.getType()) {
