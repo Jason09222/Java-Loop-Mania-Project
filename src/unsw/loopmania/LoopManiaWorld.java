@@ -54,7 +54,7 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of enemies
     private List<BasicEnemy> enemies;
-
+    List<BasicEnemy> transferZombies;
     // TODO = expand the range of cards
     private List<Card> cardEntities;
 
@@ -111,7 +111,7 @@ public class LoopManiaWorld {
         buildingEntities = new ArrayList<>();
         goldOwned = 0;
         potionsOwned = new SimpleIntegerProperty(this, "0");
-
+        transferZombies = new ArrayList<BasicEnemy>();
 
 
         experience = 0;
@@ -214,6 +214,12 @@ public class LoopManiaWorld {
                 }
             }
         }
+
+        for (BasicEnemy e : transferZombies) {
+            spawningEnemies.add(e);
+        }
+
+        transferZombies.clear();
         return spawningEnemies;
     }
 
@@ -328,7 +334,7 @@ public class LoopManiaWorld {
         // without any damage!
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
         List<Ally> defeatedAllies = new ArrayList<Ally>();
-        List<BasicEnemy> transferZombies = new ArrayList<BasicEnemy>();
+        
         boolean inBattle = false;
         for (BasicEnemy e : enemies) {
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
@@ -345,16 +351,20 @@ public class LoopManiaWorld {
                     inBattle = true;
                     e.attack_ally(ally);
                     hasAttacked = true;
-                    if (ally.getHp() <= 0) {
-                        if (e.getType().equals("Zombie")) {
-                            //Random rand = new Random();
-                            //int int_random = rand.nextInt(5);
-                            //if (int_random == 0) {
-                                BasicEnemy newZombie = new Zombie(ally.getPathPosition());
-                                transferZombies.add(newZombie);
-                            //}
+                    //if (ally.getHp() <= 0) {
+                    if (e.getType().equals("Zombie")) {
+                        Random rand = new Random();
+                        int int_random = rand.nextInt(5);
+                        if (int_random == 0) {
+                            BasicEnemy newZombie = new Zombie(ally.getPathPosition());
+                            transferZombies.add(newZombie);
+                            defeatedAllies.add(ally);
+                        } else {
+                            e.attack_ally(ally);
+                            if (ally.getHp() <= 0) {
+                                defeatedAllies.add(ally);
+                            }
                         }
-                        defeatedAllies.add(ally);
                     }
                     break;
                 }
@@ -370,10 +380,10 @@ public class LoopManiaWorld {
                 }
             }
 
-            for (BasicEnemy enemy : transferZombies) {
-                enemies.add(enemy);
-                
-            }
+        }
+        for (BasicEnemy enemy : transferZombies) {
+            enemies.add(enemy);
+            
         }
 
         for (Ally ally : allies) {
