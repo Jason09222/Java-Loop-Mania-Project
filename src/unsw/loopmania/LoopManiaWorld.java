@@ -69,7 +69,7 @@ public class LoopManiaWorld {
     private List<Ally> allies;
 
     private int goldOwned;
-
+    private int potionsOwned;
     private int experience;
     
     /**
@@ -98,6 +98,7 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         goldOwned = 0;
+        potionsOwned = 0;
         experience = 0;
         buildings = new ArrayList<>();
         allies = new ArrayList<>();
@@ -671,7 +672,7 @@ public class LoopManiaWorld {
         for (BasicItem item: toRemove) {
             unPickedItem.remove(item);
             item.destroy();
-            character.setHp(300);
+            addPotion(1);
         }
         /*//pick up gold or health potion
         double goldDistance = Math.sqrt(Math.pow(character.getX(), 2) + Math.pow(character.getY(), 2));
@@ -692,6 +693,7 @@ public class LoopManiaWorld {
                 if (item.getType() == ItemType.HEALTHPOTION) {
                     item.destroy();
                     unPickedItem.remove(item);
+                    addPotion(1);
                     break;
                 }
 
@@ -872,6 +874,26 @@ public class LoopManiaWorld {
 
 
 
+    public int getPotions() {
+        return this.potionsOwned;
+    }
+
+    public void addPotion(int numGained) {
+        this.potionsOwned += numGained;
+    }
+
+    public void spendPotions() {
+        int tempHP = character.getHp();
+        if (this.getPotions() != 0) {
+            if ((tempHP + 200) >= 500) {
+                character.setHp(500);
+            }
+            else {
+                character.setHp(tempHP + 200);
+            }
+            this.potionsOwned--;
+        }
+    }
 
     public int getGold() {
         return this.goldOwned;
@@ -882,7 +904,7 @@ public class LoopManiaWorld {
     }
 
     public void spendGold(int numLost) {
-        this.goldOwned += numLost;
+        this.goldOwned -= numLost;
     }
 
     public int getExperience() {
