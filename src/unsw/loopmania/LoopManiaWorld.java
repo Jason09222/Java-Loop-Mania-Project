@@ -871,9 +871,6 @@ public class LoopManiaWorld {
     }
     */
 
-    public DoubleProperty getHp() {
-        return new SimpleDoubleProperty((double) this.character.getHp()/500.00);
-    }
 
     public int getPotions() {
         return this.potionsOwned.get();
@@ -899,6 +896,15 @@ public class LoopManiaWorld {
     public IntegerProperty getGold() {
         return new SimpleIntegerProperty(this.goldOwned);
     }
+
+    public DoubleProperty getHp() {
+        return new SimpleDoubleProperty((double)this.character.getHp()/500.00);
+    }
+
+    public IntegerProperty getHpInt() {
+        return new SimpleIntegerProperty(this.character.getHp());
+    }
+
 
     public void addGold(int numGained) {
         this.goldOwned += numGained;
