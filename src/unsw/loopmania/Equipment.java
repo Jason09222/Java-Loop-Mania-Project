@@ -11,7 +11,11 @@ public class Equipment {
         items = new BasicItem[4];
         this.inv = unequippedInventoryItems;
     }
-
+    /**
+     * add item to be equipped and remove it from the inventory 
+     * @param item to be equipped
+     * @return equipped item to be spawned by the GUI
+     */
     public boolean equip(Item item) {
         int index = item.getSlot();
         // if item is not equippable, return false
@@ -34,6 +38,12 @@ public class Equipment {
         return true;
     }
 
+    /**
+     * spawns the item inside the equippedItems slot
+     * @param index of item inside equippedItems
+     * @param type of item to be spawned
+     * @return equipped item to be spawned in GUI
+     */
     public Item spawnEquippedItem(int index, ItemType type) {
         Item item;
         SimpleIntegerProperty equipX = new SimpleIntegerProperty(index);
@@ -44,8 +54,10 @@ public class Equipment {
                 break;
             case STAKE:
                 item = new Stake(equipX, equipY);
+                break;
             case STAFF:
                 item = new Staff(equipX, equipY);
+                break;
             case HELMET:
                 item = new Helmet(equipX, equipY);
                 break;
