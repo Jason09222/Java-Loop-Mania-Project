@@ -264,6 +264,8 @@ public class LoopManiaWorldController {
     private MenuSwitcher mainMenuSwitcher;
 
     private MenuSwitcher gameOverSwitcher;
+    private MenuSwitcher gameWinSwitcher;
+
 
     /**
      * @param world           world object loaded from file
@@ -517,7 +519,8 @@ public class LoopManiaWorldController {
                 onLoad(newEnemy);
             }
             printThreadingNotes("HANDLED TIMER");
-            checkGameOver();
+            checkGameState();
+            System.out.println(world.getExpInt().get() + " gold:" + world.getGold().get() + " cycle:" + world.getCylceNum().get());
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -537,11 +540,16 @@ public class LoopManiaWorldController {
         pause();
     }
 
-    private void checkGameOver() {
+    private void checkGameState() {
         if (world.isGameOver() == true) {
             System.out.println("oops dead");
             terminate();
             gameOverSwitcher.switchMenu();
+        }
+        if (world.isGameWin()) {
+            System.out.println("you won");
+            terminate();
+            gameWinSwitcher.switchMenu();
         }
     }
 
@@ -1292,6 +1300,10 @@ public class LoopManiaWorldController {
 
     public void setGameOverSwitcher(MenuSwitcher gameOverSwitcher) {
         this.gameOverSwitcher = gameOverSwitcher;
+    }
+
+    public void setGameWinSwitcher(MenuSwitcher gameWinSwitcher) {
+        this.gameWinSwitcher = gameWinSwitcher;
     }
 
     /**

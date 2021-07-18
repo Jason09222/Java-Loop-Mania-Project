@@ -82,7 +82,7 @@ public class LoopManiaWorld {
     //private int potionsOwned;
     private int experience;
     private int ringOwned;
-
+    private Goals goal;
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
      * them
@@ -120,6 +120,7 @@ public class LoopManiaWorld {
         campfires = new ArrayList<>();
         unPickedItem = new ArrayList<>();
         startCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        goal = new Goals();
     }
 
     public List<Ally> getAllies() {
@@ -900,7 +901,7 @@ public class LoopManiaWorld {
 
     public void spendPotions() {
         
-        if (potionsOwned >= 0) {
+        if (potionsOwned > 0) {
             character.setHp(500);
             addPotion(-1);;
         }
@@ -1408,6 +1409,14 @@ public class LoopManiaWorld {
         }
     }
 
+    public boolean isGameWin() {
+        if (goal.goalComplete(getGold().get(), getExpInt().get(), getCylceNum().get())) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 
 }
