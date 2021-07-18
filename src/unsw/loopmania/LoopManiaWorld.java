@@ -37,6 +37,8 @@ public class LoopManiaWorld {
      */
     private int height;
 
+    private int pathCycle = 0;
+
     /**
      * generic entitites - i.e. those which don't have dedicated fields
      */
@@ -231,13 +233,20 @@ public class LoopManiaWorld {
                     healthPotionExist = true;
                 }
             }
-            if (goldExist == false) {
-                BasicItem gold = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+            Random rand = new Random();
+            if (goldExist == false && this.pathCycle % (3 * orderedPath.size()) == 0) {
+                int indexInOrderedPath = rand.nextInt(orderedPath.size() - 1);
+                Pair<Integer, Integer> newPos = orderedPath.get(indexInOrderedPath);
+
+                BasicItem gold = new Gold(new SimpleIntegerProperty(newPos.getValue0()), new SimpleIntegerProperty(newPos.getValue1()));
                 unPickedItem.add(gold);
                 spawningItems.add(gold);
             }
-            if (healthPotionExist == false) {
-                BasicItem healthPotion = new HealthPotion(new SimpleIntegerProperty(3), new SimpleIntegerProperty(3));
+
+            if (healthPotionExist == false && this.pathCycle % (4 * orderedPath.size()) == 0) {
+                int indexInOrderedPath = rand.nextInt(orderedPath.size() - 1);
+                Pair<Integer, Integer> newPos = orderedPath.get(indexInOrderedPath);
+                BasicItem healthPotion = new HealthPotion(new SimpleIntegerProperty(newPos.getValue0()), new SimpleIntegerProperty(newPos.getValue1()));
                 unPickedItem.add(healthPotion);
                 spawningItems.add(healthPotion);
             }
@@ -471,6 +480,9 @@ public class LoopManiaWorld {
         return sword;
     }
 
+    
+
+    
     /**
      * spawn an item in the world and return the item entity
      *
@@ -621,7 +633,36 @@ public class LoopManiaWorld {
                 }
             }
         }
-        //pick up gold or health potion
+
+
+        // Pick up gold or health potion
+        List<BasicItem> toRemove = new ArrayList<>();
+        for (BasicItem item: unPickedItem) {
+            if (item instanceof Gold && character.getX() == item.getX() && character.getY() == item.getY()) {
+                toRemove.add(item);
+            }
+        }
+
+        for (BasicItem item: toRemove) {
+            unPickedItem.remove(item);
+            item.destroy();
+            goldOwned += 200;
+        }
+
+
+        toRemove.clear();
+        for (BasicItem item: unPickedItem) {
+            if (item instanceof HealthPotion && character.getX() == item.getX() && character.getY() == item.getY()) {
+                toRemove.add(item);
+            }
+        }
+
+        for (BasicItem item: toRemove) {
+            unPickedItem.remove(item);
+            item.destroy();
+            character.setHp(300);
+        }
+        /*//pick up gold or health potion
         double goldDistance = Math.sqrt(Math.pow(character.getX(), 2) + Math.pow(character.getY(), 2));
         double healthPotionDistance = Math.sqrt(Math.pow(character.getX() - 3, 2) + Math.pow(character.getY() - 3, 2));
         if (goldDistance < 5) {
@@ -644,10 +685,14 @@ public class LoopManiaWorld {
                 }
 
             }
-        }
+        }*/
+
     }
 
+    
+
     public void updatePathCycle() {
+        this.pathCycle += 1;
         for (Building b : this.buildings) {
             b.setPathCycle(b.getPathCycle() + 1);
         }
