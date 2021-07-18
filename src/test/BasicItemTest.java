@@ -69,7 +69,7 @@ public class BasicItemTest {
         character.useStake(stake, vampire);
         character.useStake(stake, slug);
         assertEquals(vampire.getHP(), 400);
-        assertEquals(slug.getHP(), -150);
+        assertEquals(slug.getHP(), 50);
         assertEquals(stake.getDamage(vampire), 300);
         assertEquals(stake.getDamage(slug), 150);
         assertEquals(stake.getPrice(), 1500);
@@ -90,7 +90,7 @@ public class BasicItemTest {
         character.useStaff(staff, vampire, loopManiaWorld);
         character.useStaff(staff, slug, loopManiaWorld);
         assertEquals(vampire.getHP(), 600);
-        assertEquals(slug.getHP(), -100);
+        assertEquals(slug.getHP(), 100);
         assertEquals(staff.getDamage(), 100);
         assertEquals(staff.getPrice(), 2000);
         assertEquals(staff.getType(), ItemType.STAFF);
@@ -129,7 +129,7 @@ public class BasicItemTest {
         //Vampire vampire = new Vampire(null);
         Slug slug = new Slug(null);
         Character character = new Character(null);
-        assertEquals(character.getHp()-slug.getDamage()+helmet.getDefense(), 600);
+        assertEquals(character.getHp()-slug.getDamage()+helmet.getDefense(), 630);
         assertEquals(helmet.getDefense(), 150);
         assertEquals(helmet.getPrice(), 1500);
         assertEquals(helmet.getType(), ItemType.HELMET);
@@ -159,7 +159,7 @@ public class BasicItemTest {
         SimpleIntegerProperty y = new SimpleIntegerProperty(2);
         Armour armour = new Armour(x, y);
         Slug slug = new Slug(null);
-        assertEquals(armour.getDefense(slug), 25);
+        assertEquals(armour.getDefense(slug), 10);
         assertEquals(armour.getPrice(), 1000);
         assertEquals(armour.getType(), ItemType.ARMOUR);
         assertEquals(armour.getX(), 1);
