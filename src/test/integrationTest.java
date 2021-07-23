@@ -195,7 +195,7 @@ public class integrationTest {
         world.isShopTime();
         world.updatePathCycle();
 
-        world.getShortestCampfire(slugb);
+
         world.checkAdjacentToPathTile(x, y);
         world.supportMove(slugb);
         world.getAwayFromCampfire(slugb);
@@ -208,6 +208,7 @@ public class integrationTest {
         world.createbuilding("VampireCastleBuilding", x, y);
         world.createbuilding("ZombiePit", x, y);
         world.createbuilding("Campfire", x, y);
+        world.getShortestCampfire(slugb);
         assertEquals(true, world.checkBuildingAlrdyExisted(x, y));
         world.enemyStepOnBuilding();
         Ally ally1 = new Ally(position);
@@ -223,6 +224,7 @@ public class integrationTest {
         for (int i = 0; i < 40; i++) {
             world.generateItem();
         }
+        world.getRingNum();
 
 
 

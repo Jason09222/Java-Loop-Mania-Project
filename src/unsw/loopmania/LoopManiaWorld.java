@@ -354,7 +354,7 @@ public class LoopManiaWorld {
                         .pow(e.getFightRadius(), 2)) {
                     character.setInBattle(true);
                     inBattle = true;
-                    e.attack_ally(ally);
+                    //e.attack_ally(ally);
                     hasAttacked = true;
                     //if (ally.getHp() <= 0) {
                     if (e.getType().equals("Zombie")) {
@@ -364,12 +364,12 @@ public class LoopManiaWorld {
                             BasicEnemy newZombie = new Zombie(ally.getPathPosition());
                             transferZombies.add(newZombie);
                             defeatedAllies.add(ally);
-                        } else {
-                            e.attack_ally(ally);
-                            if (ally.getHp() <= 0) {
-                                defeatedAllies.add(ally);
-                            }
+                            break;
                         }
+                    }
+                    e.attack_ally(ally);
+                    if (ally.getHp() <= 0) {
+                        defeatedAllies.add(ally);
                     }
                     break;
                 }
