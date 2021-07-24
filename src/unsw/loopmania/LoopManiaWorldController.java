@@ -374,7 +374,7 @@ public class LoopManiaWorldController {
         draggedEntity.setOpacity(0.7);
         anchorPaneRoot.getChildren().add(draggedEntity);
         
-        Building heroCastle = new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0));
+        BuildingProperty heroCastle = new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0));
         onLoad((HeroCastle)heroCastle);
 
         ImageView view = new ImageView(goldImage);
@@ -1055,7 +1055,7 @@ public class LoopManiaWorldController {
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn a building here of different types
 
-                                Building b = world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                BuildingProperty b = world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
                                 if (b instanceof VampireCastleBuilding) onLoad((VampireCastleBuilding)b);
                                 if (b instanceof Campfire) onLoad((Campfire)b);
                                 if (b instanceof Tower) onLoad((Tower)b);

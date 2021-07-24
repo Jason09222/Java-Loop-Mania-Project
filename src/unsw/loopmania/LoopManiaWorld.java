@@ -67,8 +67,8 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of buildings
     private List<VampireCastleBuilding> buildingEntities;
-    private List<Building> campfires;
-    private List<Building> buildings;
+    private List<BuildingProperty> campfires;
+    private List<BuildingProperty> buildings;
 
     private List<Ally> allies;
 
@@ -131,7 +131,7 @@ public class LoopManiaWorld {
         return this.enemies;
     }
 
-    public List<Building> getCampfire() {
+    public List<BuildingProperty> getCampfire() {
         return this.campfires;
     }
 
@@ -216,7 +216,9 @@ public class LoopManiaWorld {
 
 
         // Spawn vampires from vampire castle
-        for (Building b : this.buildings) {
+        for (BuildingProperty b : this.buildings) {
+            
+            /*
             if (b instanceof VampireCastleBuilding) {
                 VampireCastleBuilding v = (VampireCastleBuilding)b;
                 if (v.checkPathCycle(this)) {
@@ -231,7 +233,8 @@ public class LoopManiaWorld {
                     Zombie newZom = z.spawnZombie(this);
                     spawningEnemies.add(newZom);
                 }
-            }
+            }*/
+            b.spawnEnemy(this, spawningEnemies);
         }
 
         for (EnemyProperty e : transferZombies) {
@@ -732,7 +735,7 @@ public class LoopManiaWorld {
 
     public void updatePathCycle() {
         this.pathCycle += 1;
-        for (Building b : this.buildings) {
+        for (BuildingProperty b : this.buildings) {
             b.setPathCycle(b.getPathCycle() + 1);
         }
     }
@@ -817,7 +820,7 @@ public class LoopManiaWorld {
 
         for (EnemyProperty e : enemies) {
             for (int i = 0; i < e.getSpeed(); i++) {
-                Building nearestCamp = this.getShortestCampfire(e);
+                BuildingProperty nearestCamp = this.getShortestCampfire(e);
                 if (e.getType().equals("Vampire") && nearestCamp != null) {
                     getAwayFromCampfire(e);
                 }
@@ -939,12 +942,12 @@ public class LoopManiaWorld {
         this.experience += numGained;
     }
 
-    public Building getShortestCampfire(EnemyProperty e) {
+    public BuildingProperty getShortestCampfire(EnemyProperty e) {
         if (this.getCampfire().isEmpty())
             return null;
         int shortest = 1000;
-        Building tmp = new Campfire(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        for (Building b : this.getCampfire()) {
+        BuildingProperty tmp = new Campfire(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        for (BuildingProperty b : this.getCampfire()) {
             int currDist = e.getDistance(b.getX(), b.getY());
             if (currDist < shortest) {
                 tmp = b;
@@ -962,7 +965,7 @@ public class LoopManiaWorld {
         boolean flag = false;
         for (Pair<Integer,Integer> pos : orderedPath) {
             boolean isAvailable = true;
-            for (Building building : campfires) {
+            for (BuildingProperty building : campfires) {
                 Campfire campfire = (Campfire) building;
                 if (campfire.getDistance(pos.getValue0(), pos.getValue1()) <= campfire.getcampRadius()) {
                     isAvailable = false;
@@ -1044,12 +1047,9 @@ public class LoopManiaWorld {
     }
 
 
-    public List<Building> getBuildings() {
-        return this.buildings;
-    }
 
-    public Building createbuilding(String type, SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        Building newBuilding = null;
+    public BuildingProperty createbuilding(String type, SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        BuildingProperty newBuilding = null;
         if (!checkBuildingAlrdyExisted(x, y)) {
             switch(type) {
                 case "Village":
@@ -1081,7 +1081,7 @@ public class LoopManiaWorld {
     }
 
     public boolean checkBuildingAlrdyExisted(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        for (Building b : this.buildings) {
+        for (BuildingProperty b : this.buildings) {
             if (x.get() == b.getX() && y.get() == b.getY()) {
                 return true;
             }
@@ -1090,7 +1090,7 @@ public class LoopManiaWorld {
     }
 
     public void charactersStepOnBuilding() {
-        for (Building b : this.buildings) {
+        for (BuildingProperty b : this.buildings) {
             int destX = b.getX();
             int destY = b.getY();
             int srcX = this.character.getPathPosition().getX().get();
@@ -1123,8 +1123,9 @@ public class LoopManiaWorld {
     }
 
     public void enemyStepOnBuilding() {
-        List<Building> toRemove = new ArrayList<Building>();
-        for (Building b : this.buildings) {
+        List<BuildingProperty> toRemove = new ArrayList<BuildingProperty>();
+        for (BuildingProperty b : this.buildings) {
+            /*
             if (b instanceof Tower) {
                 Tower t = (Tower) b;
                 t.attack(this);
@@ -1133,14 +1134,16 @@ public class LoopManiaWorld {
             if (b instanceof Trap) {
                 Trap tr = (Trap) b;
                 tr.exertDamage(this, toRemove);
-            }
+            }*/
+            b.enemyStepOn(this, toRemove);
         }
-
+        
         for (Building b : toRemove) {
             this.buildings.remove(b);
             b.destroy();
         }
         toRemove.clear();
+        
     }
 
     /**
@@ -1326,7 +1329,7 @@ public class LoopManiaWorld {
      * @param buildingNodeX x index from 0 to width-1 of building to be added
      * @param buildingNodeY y index from 0 to height-1 of building to be added
      */
-    public Building convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+    public BuildingProperty convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
         // start by getting card
         Card card = null;
         for (Card c: cardEntities){
@@ -1339,7 +1342,7 @@ public class LoopManiaWorld {
         String type = card.getType();
 
         // now spawn building
-        Building newBuilding = createbuilding(type, new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
+        BuildingProperty newBuilding = createbuilding(type, new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
 
         // destroy the card
         card.destroy();
@@ -1379,5 +1382,11 @@ public class LoopManiaWorld {
         }
     }
 
+    public Character getCharacter() {
+        return this.character;
+    }
+    public List<BuildingProperty> getBuildings() {
+        return this.buildings;
+    }
 
 }

@@ -1,8 +1,10 @@
 package unsw.loopmania;
 
+import java.util.List;
+
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class Tower extends Building {
+public class Tower extends BuildingProperty {
     private final int shootRadius = 5; // TODO: this value may be changed later
     private final int damage = 5;
 
@@ -51,4 +53,21 @@ public class Tower extends Building {
         int startY = super.getY();
         return Math.sqrt(Math.pow(startX - destX, 2) - Math.pow(startY - destY, 2));
     }*/
+
+
+
+    @Override
+    public void spawnEnemy(LoopManiaWorld l, List<EnemyProperty> spawningEnemies) {
+        return;
+    }
+
+    @Override
+    public void characterStepOn(LoopManiaWorld l) {
+        return;
+    }
+
+    @Override
+    public void enemyStepOn(LoopManiaWorld l, List<BuildingProperty> toRemove) {
+        attack(l);
+    }
 }
