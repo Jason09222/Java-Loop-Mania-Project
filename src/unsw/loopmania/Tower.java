@@ -5,8 +5,8 @@ import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Tower extends BuildingProperty {
-    private final int shootRadius = 5; // TODO: this value may be changed later
-    private final int damage = 5;
+    private final int shootRadius = 500; // TODO: this value may be changed later
+    private final int damage = 5000;
 
     public Tower(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);

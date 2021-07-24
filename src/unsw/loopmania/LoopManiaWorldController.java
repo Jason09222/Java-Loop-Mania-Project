@@ -516,8 +516,8 @@ public class LoopManiaWorldController {
             ringInNum.set(world.getRing());
             cycleInNum.set(world.getCycle());
 
-            List<BasicItem> items = world.possiblySpawnItems();
-            for (BasicItem item: items) {
+            List<ItemProperty> items = world.possiblySpawnItems();
+            for (ItemProperty item: items) {
                 onLoad(item);
             }
             List<EnemyProperty> defeatedEnemies = world.runBattles();
@@ -895,7 +895,7 @@ public class LoopManiaWorldController {
      * Otherwise item will be loaded onto the map due to our implementation.
      * @param item
      */
-    private void onLoad(BasicItem item) {
+    private void onLoad(ItemProperty item) {
         ImageView view;
         switch(item.getType()) {
             case SWORD:
@@ -1073,7 +1073,7 @@ public class LoopManiaWorldController {
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
                                 //world.equipItem()
                                 // TODO = fix for more item types/slots
-                                BasicItem item = (BasicItem)world.equipItemByCoordinates(nodeX, nodeY);
+                                ItemProperty item = (ItemProperty)world.equipItemByCoordinates(nodeX, nodeY);
                                 // Helmet helmet = (Helmet)world.equipItemByCoordinates(x, y);
                                 targetGridPane.add(image, item.getSlot(), y, 1, 1);
                                 // onLoad(item);
