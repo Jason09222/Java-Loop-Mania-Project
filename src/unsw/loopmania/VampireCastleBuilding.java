@@ -1,16 +1,20 @@
 package unsw.loopmania;
 
+import java.io.File;
 import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * a basic form of building in the world
  */
 public class VampireCastleBuilding extends BuildingProperty {
-
+    private Image vampireCastleImage;
     public VampireCastleBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        vampireCastleImage = new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
     }
 
 
@@ -45,5 +49,12 @@ public class VampireCastleBuilding extends BuildingProperty {
     @Override
     public void enemyStepOn(LoopManiaWorld l, List<BuildingProperty> toRemove) {
         return;
+    }
+
+
+    @Override
+    public ImageView onLoadBuilding() {
+        // TODO Auto-generated method stub
+        return new ImageView(vampireCastleImage);
     }
 }

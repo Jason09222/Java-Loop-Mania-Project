@@ -217,23 +217,6 @@ public class LoopManiaWorld {
 
         // Spawn vampires from vampire castle
         for (BuildingProperty b : this.buildings) {
-            
-            /*
-            if (b instanceof VampireCastleBuilding) {
-                VampireCastleBuilding v = (VampireCastleBuilding)b;
-                if (v.checkPathCycle(this)) {
-                    Vampire newVam = v.spawnVampire(this);
-                    spawningEnemies.add(newVam);
-                }
-            }
-
-            if (b instanceof ZombiePit) {
-                ZombiePit z = (ZombiePit) b;
-                if (z.checkPathCycle(this)) {
-                    Zombie newZom = z.spawnZombie(this);
-                    spawningEnemies.add(newZom);
-                }
-            }*/
             b.spawnEnemy(this, spawningEnemies);
         }
 
@@ -256,21 +239,7 @@ public class LoopManiaWorld {
      * @return list of the gold to be displayed on screen
      */
     public List<ItemProperty> possiblySpawnItems() {
-        // Pair<Integer, Integer> pos1 = possiblyGetBasicItemSpawnPosition();
-        // Pair<Integer, Integer> pos2 = possiblyGetBasicItemSpawnPosition();
         List<ItemProperty> spawningItems = new ArrayList<>();
-        // if (pos1 != null && pos2 != null) {
-        //     int indexInPath1 = orderedPath.indexOf(pos1);
-        //     int indexInPath2 = orderedPath.indexOf(pos2);
-        //     PathPosition newPathPosition1 = new PathPosition(indexInPath1, orderedPath);
-        //     PathPosition newPathPosition2 = new PathPosition(indexInPath2, orderedPath);
-        //     BasicItem gold = new Gold(newPathPosition1.getX(), newPathPosition1.getY());
-        //     BasicItem healthPotion = new HealthPotion(newPathPosition2.getX(), newPathPosition2.getY());
-        //     unPickedItem.add(gold);
-        //     spawningItems.add(gold);
-        //     unPickedItem.add(healthPotion);
-        //     spawningItems.add(healthPotion);
-        // }
         if (unPickedItem.size() < 2) {
             boolean goldExist = false;
             boolean healthPotionExist = false;
@@ -420,10 +389,6 @@ public class LoopManiaWorld {
 
         for (Ally ally : defeatedAllies) {
             killAlly(ally);
-        }
-        if (character.getHp() <= 0) {
-            // TODO
-            // Lose Game;
         }
         if (!inBattle) {
 
@@ -1094,16 +1059,6 @@ public class LoopManiaWorld {
     public void enemyStepOnBuilding() {
         List<BuildingProperty> toRemove = new ArrayList<BuildingProperty>();
         for (BuildingProperty b : this.buildings) {
-            /*
-            if (b instanceof Tower) {
-                Tower t = (Tower) b;
-                t.attack(this);
-            }
-
-            if (b instanceof Trap) {
-                Trap tr = (Trap) b;
-                tr.exertDamage(this, toRemove);
-            }*/
             b.enemyStepOn(this, toRemove);
         }
         
@@ -1211,18 +1166,6 @@ public class LoopManiaWorld {
         int totalCards = 7;
         Random rand = new Random();
         int result = rand.nextInt(1000) % totalCards;
-
-        /*switch (result) {
-            case 0: return loadCard("VampireCastleCard");
-            case 1: return loadCard("CampfireCard");
-            case 2: return loadCard("TowerCard");
-            case 3: return loadCard("TrapCard");
-            case 4: return loadCard("VillageCard");
-            case 5: return loadCard("ZombiePitCard");
-            case 6: return loadCard("BarracksCard");
-            default: return null;
-        }*/
-
         switch (result) {
             case 0: return loadVampireCard();
             case 1: return loadCampfireCard();

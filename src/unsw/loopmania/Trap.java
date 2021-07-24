@@ -1,15 +1,19 @@
 package unsw.loopmania;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Trap extends BuildingProperty {
     private final int damage = 4; // TODO: this value can be changed later
-
+    private Image trapImage;
     public Trap (SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        trapImage = new Image((new File("src/images/trap.png")).toURI().toString());
     }
 
 
@@ -53,5 +57,12 @@ public class Trap extends BuildingProperty {
     public void enemyStepOn(LoopManiaWorld l, List<BuildingProperty> toRemove) {
         exertDamage(l, toRemove);
         
+    }
+
+
+    @Override
+    public ImageView onLoadBuilding() {
+        // TODO Auto-generated method stub
+        return new ImageView(trapImage);
     }
 }

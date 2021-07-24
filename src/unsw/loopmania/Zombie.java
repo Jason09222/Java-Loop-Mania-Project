@@ -1,6 +1,10 @@
 package unsw.loopmania;
+import java.io.File;
 import java.util.List;
 import java.util.Random;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 public class Zombie extends EnemyProperty{
     //TODO can be changed
     private final String type = "Zombie";
@@ -14,6 +18,7 @@ public class Zombie extends EnemyProperty{
     private final int hp = 500;
     private final int exp = 100;
     private final int criticalPoss = 10;
+    private Image zombieImage;
     public Zombie(PathPosition position) {
         super(position);
         setType(this.type);
@@ -27,6 +32,7 @@ public class Zombie extends EnemyProperty{
         setGold(this.gold); //TODO can be changed
         setSpeed(this.speed);
         setCriticalPoss(criticalPoss);
+        zombieImage = new Image((new File("src/images/zombie.png")).toURI().toString());
     }
 
     @Override
@@ -92,6 +98,12 @@ public class Zombie extends EnemyProperty{
             attack_character(l.getCharacter());
         }
         
+    }
+
+    @Override
+    public ImageView onLoadEnemy() {
+        // TODO Auto-generated method stub
+        return new ImageView(zombieImage);
     }
 
 
