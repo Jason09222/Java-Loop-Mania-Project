@@ -3,6 +3,7 @@ package unsw.loopmania;
 import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.ImageView;
 
 public class HeroCastle extends BuildingProperty {
     private boolean offerWindow = false;
@@ -49,5 +50,11 @@ public class HeroCastle extends BuildingProperty {
     @Override
     public void enemyStepOn(LoopManiaWorld l, List<BuildingProperty> toRemove) {
         return;
+    }
+
+    @Override
+    public ImageView onLoadBuilding() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

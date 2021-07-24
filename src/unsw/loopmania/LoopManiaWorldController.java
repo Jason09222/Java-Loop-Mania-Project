@@ -172,26 +172,19 @@ public class LoopManiaWorldController {
     private Image stakeImage;
     private Image theOneRingImage;
     
-    private Image basicEnemyImage;
-    private Image vampireImage;
-    private Image zombieImage;
+    //private Image basicEnemyImage;
+    //private Image vampireImage;
+    //private Image zombieImage;
 
-    private Image basicBuildingImage;
-    private Image zombiePitImage;
-    private Image towerImage;
-    private Image trapImage;
+  
     private Image heroCastleImage;
-    private Image villageImage;
-    private Image barracksImage;
-    private Image campfireImage;
-    
     private Image vampireCastleCardImage;
     private Image barracksCardImage;
     private Image campfireCardImage;
     private Image towerCardImage;
     private Image trapCard;
     private Image villageCard;
-    private Image zombiePitCard;
+    private Image zombiePitCardImage;
 
     private Image allyImage;
 
@@ -287,21 +280,15 @@ public class LoopManiaWorldController {
         towerCardImage = new Image((new File("src/images/tower_card.png")).toURI().toString());
         trapCard = new Image((new File("src/images/trap_card.png")).toURI().toString());
         villageCard = new Image((new File("src/images/village_card.png")).toURI().toString());
-        zombiePitCard = new Image((new File("src/images/zombie_pit_card.png")).toURI().toString());
+        zombiePitCardImage = new Image((new File("src/images/zombie_pit_card.png")).toURI().toString());
         
-        zombiePitImage = new Image((new File("src/images/zombie_pit.png")).toURI().toString());
-        basicBuildingImage = new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
-        towerImage = new Image((new File("src/images/tower.png")).toURI().toString());
-        trapImage = new Image((new File("src/images/trap.png")).toURI().toString());
-        barracksImage = new Image((new File("src/images/barracks.png")).toURI().toString());
-        villageImage = new Image((new File("src/images/village.png")).toURI().toString());
-        heroCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
-        campfireImage = new Image((new File("src/images/campfire.png")).toURI().toString());
-
+        
+        /*
         basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
         vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
         zombieImage = new Image((new File("src/images/zombie.png")).toURI().toString());
-
+        */
+        heroCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
         
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         stakeImage = new Image((new File("src/images/stake.png")).toURI().toString());
@@ -829,7 +816,7 @@ public class LoopManiaWorldController {
     }
 
     private void onLoad(ZombiePitCard zombiePitCard) {
-        ImageView view = new ImageView(zombiePitImage);
+        ImageView view = new ImageView(zombiePitCardImage);
 
         // FROM
         // https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
@@ -941,13 +928,7 @@ public class LoopManiaWorldController {
      */
     private void onLoad(EnemyProperty enemy) {
         ImageView view;
-        if (enemy instanceof Slug) {
-            view = new ImageView(basicEnemyImage);
-        } else if (enemy instanceof Zombie) {
-            view = new ImageView(zombieImage);
-        } else {
-            view = new ImageView(vampireImage);
-        }
+        view = enemy.onLoadEnemy();
         //ImageView view = new ImageView(basicEnemyImage);
         addEntity(enemy, view);
         squares.getChildren().add(view);
@@ -966,51 +947,7 @@ public class LoopManiaWorldController {
         squares.getChildren().add(view);
     } 
     
-    
-    private void onLoad(VampireCastleBuilding building) {
-        ImageView view = new ImageView(basicBuildingImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-
-    private void onLoad(Campfire building) {
-        ImageView view = new ImageView(campfireImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-    private void onLoad(Barracks building) {
-        ImageView view = new ImageView(barracksImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-    private void onLoad(Tower building) {
-        ImageView view = new ImageView(towerImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-    private void onLoad(Trap building) {
-        ImageView view = new ImageView(trapImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-    private void onLoad(ZombiePit building) {
-        ImageView view = new ImageView(zombiePitImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-    private void onLoad(Village building) {
-        ImageView view = new ImageView(villageImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-
+   
 
     /**
      * add drag event handlers for dropping into gridpanes, dragging over the background, dropping over the background.
@@ -1056,6 +993,7 @@ public class LoopManiaWorldController {
                                 // TODO = spawn a building here of different types
 
                                 BuildingProperty b = world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                /*
                                 if (b instanceof VampireCastleBuilding) onLoad((VampireCastleBuilding)b);
                                 if (b instanceof Campfire) onLoad((Campfire)b);
                                 if (b instanceof Tower) onLoad((Tower)b);
@@ -1063,6 +1001,10 @@ public class LoopManiaWorldController {
                                 if (b instanceof Village) onLoad((Village)b);
                                 if (b instanceof ZombiePit) onLoad((ZombiePit)b);
                                 if (b instanceof Barracks) onLoad((Barracks)b);
+                                */
+                                ImageView view = b.onLoadBuilding();
+                                addEntity(b, view);
+                                squares.getChildren().add(view);
                                 //VampireCastleBuilding newBuilding = (VampireCastleBuilding)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
                                 //Campfire campfire = (Campfire)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
                                 //onLoad(newBuilding);

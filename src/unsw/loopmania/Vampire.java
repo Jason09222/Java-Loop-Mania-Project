@@ -1,6 +1,10 @@
 package unsw.loopmania;
+import java.io.File;
 import java.util.List;
 import java.util.Random;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 public class Vampire extends EnemyProperty{
     private final String type = "Vampire";
     private final int FightR = 2;
@@ -14,7 +18,7 @@ public class Vampire extends EnemyProperty{
     private final int exp = 300;
 
     private int criticalPoss = 10;
-
+    private Image vampireImage;
     public Vampire(PathPosition position) {
         super(position);
         setType(type);
@@ -28,6 +32,7 @@ public class Vampire extends EnemyProperty{
         setGold(this.gold); //TODO can be changed
         setSpeed(this.speed);
         this.setCriticalPoss(criticalPoss);
+        vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
     }
 
     @Override
@@ -106,6 +111,12 @@ public class Vampire extends EnemyProperty{
             attack_character(l.getCharacter());
         }
         
+    }
+
+    @Override
+    public ImageView onLoadEnemy() {
+        // TODO Auto-generated method stub
+        return new ImageView(vampireImage);
     }
 
 }

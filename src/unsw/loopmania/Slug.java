@@ -1,6 +1,10 @@
 package unsw.loopmania;
 
+import java.io.File;
 import java.util.List;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 //import java.util.Random;
 public class Slug extends EnemyProperty{
@@ -16,6 +20,7 @@ public class Slug extends EnemyProperty{
     private final int hp = 300;
     private final int exp = 100;
     private final int criticalPoss = 0;
+    private Image basicEnemyImage;
     public Slug(PathPosition position) {
         super(position);
         setType(this.type);
@@ -29,7 +34,7 @@ public class Slug extends EnemyProperty{
         setGold(this.gold); //TODO can be changed
         setSpeed(this.speed);
         setCriticalPoss(criticalPoss);
-
+        basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
     }
 
     @Override 
@@ -83,6 +88,12 @@ public class Slug extends EnemyProperty{
             attack_character(l.getCharacter());
         }
         
+    }
+
+    @Override
+    public ImageView onLoadEnemy() {
+        // TODO Auto-generated method stub
+        return new ImageView(basicEnemyImage);
     }
 
     

@@ -1,15 +1,19 @@
 package unsw.loopmania;
 
+import java.io.File;
 import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Tower extends BuildingProperty {
     private final int shootRadius = 500; // TODO: this value may be changed later
     private final int damage = 5000;
-
+    private Image towerImage;
     public Tower(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        towerImage = new Image((new File("src/images/tower.png")).toURI().toString());
     }
 
 
@@ -69,5 +73,12 @@ public class Tower extends BuildingProperty {
     @Override
     public void enemyStepOn(LoopManiaWorld l, List<BuildingProperty> toRemove) {
         attack(l);
+    }
+
+
+    @Override
+    public ImageView onLoadBuilding() {
+        // TODO Auto-generated method stub
+        return new ImageView(towerImage);
     }
 }
