@@ -1,5 +1,6 @@
 package unsw.loopmania;
 
+import java.util.List;
 import java.util.Random;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -7,7 +8,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 /**
  * represents an equipped or unequipped Staff in the backend world
  */
-public class Staff extends BasicItem {
+public class Staff extends ItemProperty {
     private final int damage = 100;
     private final int price = 2000;
 
@@ -23,7 +24,7 @@ public class Staff extends BasicItem {
         return price;
     }
 
-    public void trance(BasicEnemy enemy, LoopManiaWorld world) {
+    public void trance(EnemyProperty enemy, LoopManiaWorld world) {
         Random rand = new Random();
         int random = rand.nextInt(5);
         if (random == 0) {
@@ -34,5 +35,21 @@ public class Staff extends BasicItem {
             ally.setOriginalType(enemy.getType());
             world.addAlly(ally);
         }
+    }
+
+    @Override
+    public void useDuringBattle(EnemyProperty e, Character c) {
+        // TODO Auto-generated method stub
+        c.setDamage(c.getDamage() + damage);
+        
+    }
+
+ 
+
+    @Override
+    public void characterStepOn(LoopManiaWorld l, List<ItemProperty> toRemoveGold,
+            List<ItemProperty> toRemoveHealthPotion) {
+        // TODO Auto-generated method stub
+        
     }
 }

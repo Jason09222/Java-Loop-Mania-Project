@@ -1,10 +1,17 @@
 package unsw.loopmania;
 
-import javafx.beans.property.SimpleIntegerProperty;
+import java.io.File;
+import java.util.List;
 
-public class ZombiePit extends Building {
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+public class ZombiePit extends BuildingProperty {
+    private Image zombiePitImage;
     public ZombiePit(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        zombiePitImage = new Image((new File("src/images/zombie_pit.png")).toURI().toString());
     }
 
 
@@ -22,4 +29,31 @@ public class ZombiePit extends Building {
         l.getEnemy().add(newZom);
         return newZom;
     }
+
+    @Override
+    public void spawnEnemy(LoopManiaWorld l, List<EnemyProperty> spawningEnemies) {
+        if (checkPathCycle(l)) {
+            Zombie newZom = spawnZombie(l);
+            spawningEnemies.add(newZom);
+        }
+    }
+
+    @Override
+    public void characterStepOn(LoopManiaWorld l) {
+        return;
+    }
+
+    @Override
+    public void enemyStepOn(LoopManiaWorld l, List<BuildingProperty> toRemove) {
+        return;
+    }
+
+
+    @Override
+    public ImageView onLoadBuilding() {
+        // TODO Auto-generated method stub
+        return new ImageView(zombiePitImage);
+    }
+
+    
 }

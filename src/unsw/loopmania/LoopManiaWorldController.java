@@ -112,10 +112,6 @@ public class LoopManiaWorldController {
     @FXML
     private ProgressBar hpProgress;
 
-    /*@FXML
-    private ProgressBar goldProgress;
-    */
-
     @FXML
     private ProgressBar expProgress;
 
@@ -176,26 +172,19 @@ public class LoopManiaWorldController {
     private Image stakeImage;
     private Image theOneRingImage;
     
-    private Image basicEnemyImage;
-    private Image vampireImage;
-    private Image zombieImage;
+    //private Image basicEnemyImage;
+    //private Image vampireImage;
+    //private Image zombieImage;
 
-    private Image basicBuildingImage;
-    private Image zombiePitImage;
-    private Image towerImage;
-    private Image trapImage;
+  
     private Image heroCastleImage;
-    private Image villageImage;
-    private Image barracksImage;
-    private Image campfireImage;
-    
     private Image vampireCastleCardImage;
     private Image barracksCardImage;
     private Image campfireCardImage;
     private Image towerCardImage;
     private Image trapCard;
     private Image villageCard;
-    private Image zombiePitCard;
+    private Image zombiePitCardImage;
 
     private Image allyImage;
 
@@ -209,16 +198,18 @@ public class LoopManiaWorldController {
     @FXML
     private Label healthPotionNum;
 
-    private IntegerProperty goldInNum;
     private IntegerProperty allyInNum;
     private IntegerProperty healthPotionInNum;
     private IntegerProperty ringInNum;
     private IntegerProperty cycleInNum;
     private SimpleIntegerProperty allyInWorld;
 
+    //private Experience gold;
+
     private IntegerProperty hpInNum;
 
     private IntegerProperty expInNum;
+    private IntegerProperty goldInt;
     //private DoubleProperty goldInWorld;
     private DoubleProperty hpInWorld;
 
@@ -289,21 +280,15 @@ public class LoopManiaWorldController {
         towerCardImage = new Image((new File("src/images/tower_card.png")).toURI().toString());
         trapCard = new Image((new File("src/images/trap_card.png")).toURI().toString());
         villageCard = new Image((new File("src/images/village_card.png")).toURI().toString());
-        zombiePitCard = new Image((new File("src/images/zombie_pit_card.png")).toURI().toString());
+        zombiePitCardImage = new Image((new File("src/images/zombie_pit_card.png")).toURI().toString());
         
-        zombiePitImage = new Image((new File("src/images/zombie_pit.png")).toURI().toString());
-        basicBuildingImage = new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
-        towerImage = new Image((new File("src/images/tower.png")).toURI().toString());
-        trapImage = new Image((new File("src/images/trap.png")).toURI().toString());
-        barracksImage = new Image((new File("src/images/barracks.png")).toURI().toString());
-        villageImage = new Image((new File("src/images/village.png")).toURI().toString());
-        heroCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
-        campfireImage = new Image((new File("src/images/campfire.png")).toURI().toString());
-
+        
+        /*
         basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
         vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
         zombieImage = new Image((new File("src/images/zombie.png")).toURI().toString());
-
+        */
+        heroCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
         
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         stakeImage = new Image((new File("src/images/stake.png")).toURI().toString());
@@ -376,15 +361,21 @@ public class LoopManiaWorldController {
         draggedEntity.setOpacity(0.7);
         anchorPaneRoot.getChildren().add(draggedEntity);
         
-        Building heroCastle = new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0));
+        BuildingProperty heroCastle = new HeroCastle(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0));
         onLoad((HeroCastle)heroCastle);
 
         ImageView view = new ImageView(goldImage);
     
         //Label gold = new Label("Gold: $");
+
+
+
         goldNum = new Label("0");
-        goldInNum = world.getGold();
-        goldNum.textProperty().bind(goldInNum.asString());
+        
+        
+        goldInt = world.getGold();
+        
+        goldNum.textProperty().bind(goldInt.asString());
         goldNum.setTextFill(Color.ORANGE);
         goldNum.setFont(new Font("Cambria", 40));
 
@@ -393,9 +384,10 @@ public class LoopManiaWorldController {
         layout.getChildren().add(goldNum);
         StackPane.setAlignment(goldNum, Pos.CENTER_RIGHT);
 
+
         ImageView allyView = new ImageView(allyImage);
-        allyNum = new Label("0");
         allyInNum = world.getAllyNum();
+        allyNum = new Label("0");
         allyNum.textProperty().bind(allyInNum.asString());
         allyNum.setTextFill(Color.GRAY);
         allyNum.setFont(new Font("Cambria", 40));
@@ -410,6 +402,9 @@ public class LoopManiaWorldController {
         healthPotionInNum = world.getHealthPotionNum();
         healthPotionNum.textProperty().bind(healthPotionInNum.asString());
         healthPotionNum.setTextFill(Color.BLUE);
+        
+
+
         healthPotionNum.setFont(new Font("Cambria", 40));
         layout2.getChildren().add(healthPotionView);
         StackPane.setAlignment(healthPotionView, Pos.TOP_LEFT);
@@ -445,7 +440,6 @@ public class LoopManiaWorldController {
         layout2.getChildren().add(cycleNum);
         StackPane.setAlignment(cycleNum, Pos.BOTTOM_RIGHT);
         
-        //Label hp = new Label("Hp");
         ImageView heartView = new ImageView(heartImage);
         hpProgress = new ProgressBar();
         hpInWorld = world.getHp();
@@ -498,48 +492,27 @@ public class LoopManiaWorldController {
         // framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             world.runTickMoves();
-            goldInNum = world.getGold();
-            goldNum.textProperty().bind(goldInNum.asString());
 
-            hpInNum = world.getHpInt();
-            hpNum.textProperty().bind(hpInNum.asString());
+            goldInt.set(world.getGolds());
+            hpInNum.set(world.getHpValue());
+            hpInWorld.set((double)world.getHpValue() / 500.00);
+            expInNum.set(world.getExperience());
+            expInWorld.set((double)world.getExperience()/123456.00);
+            allyInNum.set(world.getAllies().size());
+            healthPotionInNum.set(world.getHealthPotion());
+            ringInNum.set(world.getRing());
+            cycleInNum.set(world.getCycle());
 
-            hpInWorld = world.getHp();
-            hpProgress.progressProperty().bind(hpInWorld);
-
-
-            expInNum = world.getExpInt();
-            expNum.textProperty().bind(expInNum.asString());
-
-            expInWorld = world.getExp();
-            expProgress.progressProperty().bind(expInWorld);
-
-            allyInNum = world.getAllyNum();
-            allyNum.textProperty().bind(allyInNum.asString());
-
-            healthPotionInNum = world.getHealthPotionNum();
-            healthPotionNum.textProperty().bind(healthPotionInNum.asString());
-
-            ringInNum = world.getRingNum();
-            ringNum.textProperty().bind(ringInNum.asString());
-
-            cycleInNum = world.getCylceNum();
-            cycleNum.textProperty().bind(cycleInNum.asString());
-
-            //allyInWorld.set(world.getAllies().size());
-            //allyNum.textProperty().bind(allyInWorld.asString());
-            //goldInWorld = world.getGold();
-
-            List<BasicItem> items = world.possiblySpawnItems();
-            for (BasicItem item: items) {
+            List<ItemProperty> items = world.possiblySpawnItems();
+            for (ItemProperty item: items) {
                 onLoad(item);
             }
-            List<BasicEnemy> defeatedEnemies = world.runBattles();
-            for (BasicEnemy e : defeatedEnemies) {
+            List<EnemyProperty> defeatedEnemies = world.runBattles();
+            for (EnemyProperty e : defeatedEnemies) {
                 reactToEnemyDefeat(e);
             }
-            List<BasicEnemy> newEnemies = world.possiblySpawnEnemies();
-            for (BasicEnemy newEnemy : newEnemies) {
+            List<EnemyProperty> newEnemies = world.possiblySpawnEnemies();
+            for (EnemyProperty newEnemy : newEnemies) {
                 onLoad(newEnemy);
             }
             printThreadingNotes("HANDLED TIMER");
@@ -677,14 +650,26 @@ public class LoopManiaWorldController {
      *
      * @param enemy defeated enemy for which we should react to the death of
      */
-    private void reactToEnemyDefeat(BasicEnemy enemy) {
+    private void reactToEnemyDefeat(EnemyProperty enemy) {
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of
         // enemy
         
-        generateItem();
-        generateCard();
+        Random rand = new Random();
+        int result = rand.nextInt(2);
+        world.addGold(enemy.getGold());
+        switch(result) {
+            case 0:
+                generateCard();
+                break;
+            case 1:
+                generateItem();
+                break;
+            default:    
+                break;
+        }
+        
     }
     /**
      * generates a random card from the available cards
@@ -831,7 +816,7 @@ public class LoopManiaWorldController {
     }
 
     private void onLoad(ZombiePitCard zombiePitCard) {
-        ImageView view = new ImageView(zombiePitImage);
+        ImageView view = new ImageView(zombiePitCardImage);
 
         // FROM
         // https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
@@ -897,7 +882,7 @@ public class LoopManiaWorldController {
      * Otherwise item will be loaded onto the map due to our implementation.
      * @param item
      */
-    private void onLoad(BasicItem item) {
+    private void onLoad(ItemProperty item) {
         ImageView view;
         switch(item.getType()) {
             case SWORD:
@@ -941,15 +926,9 @@ public class LoopManiaWorldController {
      *
      * @param enemy
      */
-    private void onLoad(BasicEnemy enemy) {
+    private void onLoad(EnemyProperty enemy) {
         ImageView view;
-        if (enemy instanceof Slug) {
-            view = new ImageView(basicEnemyImage);
-        } else if (enemy instanceof Zombie) {
-            view = new ImageView(zombieImage);
-        } else {
-            view = new ImageView(vampireImage);
-        }
+        view = enemy.onLoadEnemy();
         //ImageView view = new ImageView(basicEnemyImage);
         addEntity(enemy, view);
         squares.getChildren().add(view);
@@ -968,51 +947,7 @@ public class LoopManiaWorldController {
         squares.getChildren().add(view);
     } 
     
-    
-    private void onLoad(VampireCastleBuilding building) {
-        ImageView view = new ImageView(basicBuildingImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-
-    private void onLoad(Campfire building) {
-        ImageView view = new ImageView(campfireImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-    private void onLoad(Barracks building) {
-        ImageView view = new ImageView(barracksImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-    private void onLoad(Tower building) {
-        ImageView view = new ImageView(towerImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-    private void onLoad(Trap building) {
-        ImageView view = new ImageView(trapImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-    private void onLoad(ZombiePit building) {
-        ImageView view = new ImageView(zombiePitImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-    private void onLoad(Village building) {
-        ImageView view = new ImageView(villageImage);
-        addEntity(building, view);
-        squares.getChildren().add(view);
-    }
-
-
+   
 
     /**
      * add drag event handlers for dropping into gridpanes, dragging over the background, dropping over the background.
@@ -1057,7 +992,8 @@ public class LoopManiaWorldController {
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn a building here of different types
 
-                                Building b = world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                BuildingProperty b = world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                /*
                                 if (b instanceof VampireCastleBuilding) onLoad((VampireCastleBuilding)b);
                                 if (b instanceof Campfire) onLoad((Campfire)b);
                                 if (b instanceof Tower) onLoad((Tower)b);
@@ -1065,6 +1001,10 @@ public class LoopManiaWorldController {
                                 if (b instanceof Village) onLoad((Village)b);
                                 if (b instanceof ZombiePit) onLoad((ZombiePit)b);
                                 if (b instanceof Barracks) onLoad((Barracks)b);
+                                */
+                                ImageView view = b.onLoadBuilding();
+                                addEntity(b, view);
+                                squares.getChildren().add(view);
                                 //VampireCastleBuilding newBuilding = (VampireCastleBuilding)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
                                 //Campfire campfire = (Campfire)world.convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
                                 //onLoad(newBuilding);
@@ -1075,7 +1015,7 @@ public class LoopManiaWorldController {
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
                                 //world.equipItem()
                                 // TODO = fix for more item types/slots
-                                BasicItem item = (BasicItem)world.equipItemByCoordinates(nodeX, nodeY);
+                                ItemProperty item = (ItemProperty)world.equipItemByCoordinates(nodeX, nodeY);
                                 // Helmet helmet = (Helmet)world.equipItemByCoordinates(x, y);
                                 targetGridPane.add(image, item.getSlot(), y, 1, 1);
                                 // onLoad(item);

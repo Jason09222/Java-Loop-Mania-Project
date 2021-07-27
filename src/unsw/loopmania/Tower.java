@@ -1,13 +1,19 @@
 package unsw.loopmania;
 
+import java.io.File;
+import java.util.List;
+
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
-public class Tower extends Building {
-    private final int shootRadius = 5; // TODO: this value may be changed later
-    private final int damage = 5;
-
+public class Tower extends BuildingProperty {
+    private final int shootRadius = 500; // TODO: this value may be changed later
+    private final int damage = 5000;
+    private Image towerImage;
     public Tower(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        towerImage = new Image((new File("src/images/tower.png")).toURI().toString());
     }
 
 
@@ -17,12 +23,12 @@ public class Tower extends Building {
         // if it is in radius
         // add to the list
         super.getEnemies().clear();
-        for (BasicEnemy enemy : l.getEnemy()) {
+        for (EnemyProperty enemy : l.getEnemy()) {
             double distance = getDistance(enemy.getX(), enemy.getY());
             if (distance <= this.shootRadius && enemy.getInBattle()) {
                 super.addEnemy(enemy);
             } else {
-                for (BasicEnemy e : l.getEnemy()) {
+                for (EnemyProperty e : l.getEnemy()) {
                     if (e.equals(enemy)) super.removeEnemy(e);
                 }
             }
@@ -31,7 +37,7 @@ public class Tower extends Building {
     }
 
     public void decreaseHp() {
-        for (BasicEnemy enemy : super.getEnemies()) {
+        for (EnemyProperty enemy : super.getEnemies()) {
             enemy.setHP(enemy.getHP() - this.damage);
         }
     }
@@ -51,4 +57,28 @@ public class Tower extends Building {
         int startY = super.getY();
         return Math.sqrt(Math.pow(startX - destX, 2) - Math.pow(startY - destY, 2));
     }*/
+
+
+
+    @Override
+    public void spawnEnemy(LoopManiaWorld l, List<EnemyProperty> spawningEnemies) {
+        return;
+    }
+
+    @Override
+    public void characterStepOn(LoopManiaWorld l) {
+        return;
+    }
+
+    @Override
+    public void enemyStepOn(LoopManiaWorld l, List<BuildingProperty> toRemove) {
+        attack(l);
+    }
+
+
+    @Override
+    public ImageView onLoadBuilding() {
+        // TODO Auto-generated method stub
+        return new ImageView(towerImage);
+    }
 }
