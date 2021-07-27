@@ -192,6 +192,10 @@ public class LoopManiaWorld {
     public int getGolds() {
         return this.goldOwned;
     }
+
+    public int getDoggieCoin() {
+        return this.doggieCoinOwned;
+    }
     public int getHpValue() {
         return character.getHp();
     }
@@ -902,6 +906,10 @@ public class LoopManiaWorld {
         this.goldOwned += numGained;
     }
 
+    public void addDoggieCoin(int num) {
+        this.doggieCoinOwned += num;
+    }
+
     public void spendGold(int numLost) {
         this.goldOwned -= numLost;
     }
@@ -1126,10 +1134,7 @@ public class LoopManiaWorld {
 
     public VampireCastleCard loadVampireCard(){
         // if adding more cards than have, remove the first card...
-        if (cardEntities.size() >= getWidth()){
-            // TODO = give some cash/experience/item rewards for the discarding of the oldest card
-            removeCard(0);
-        }
+        checkCardEntity();
         VampireCastleCard vampireCastleCard = new VampireCastleCard("VampireCastleBuilding", new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
         cardEntities.add(vampireCastleCard);
         return vampireCastleCard;
@@ -1179,24 +1184,6 @@ public class LoopManiaWorld {
         return zombiePitCard;
     }
 
-
-
-    public Card generateCard() {
-        int totalCards = 7;
-        Random rand = new Random();
-        int result = rand.nextInt(1000) % totalCards;
-        switch (result) {
-            case 0: return loadVampireCard();
-            case 1: return loadCampfireCard();
-            case 2: return loadTowerCard();
-            case 3: return loadTrapCard();
-            case 4: return loadBarracksCard();
-            case 5: return loadVillageCard();
-            case 6: return loadZombiePitCard();
-            default: return null;
-        }
-
-    }
 
 
 
@@ -1323,5 +1310,14 @@ public class LoopManiaWorld {
     public ItemProperty[] getEquipItems() {
         return equippedItems.getEquipment();
     }
+
+    public boolean isBossAlive() {
+        for (EnemyProperty e : enemies) {
+            if (e.isBoss()) return true;
+        }
+        return !hasSpawnMuske;
+    }
+
+    
 
 }

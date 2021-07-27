@@ -24,7 +24,11 @@ public class Shield extends ItemProperty {
     @Override
     public void useDuringBattle(EnemyProperty e, Character c) {
         // TODO Auto-generated method stub
-        e.setDamage(e.getDamage() - defense);
+        if (e.getDamage() < defense) {
+            e.setDamage(0);
+        } else {
+            e.setDamage(e.getDamage() - defense);
+        }
         if (e.getType().equals("Vampire")) {
             e.setCriticalPoss((int)(e.getCriticalPoss() / 0.4));
         }

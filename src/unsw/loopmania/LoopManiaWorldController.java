@@ -659,6 +659,7 @@ public class LoopManiaWorldController {
         Random rand = new Random();
         int result = rand.nextInt(2);
         world.addGold(enemy.getGold());
+        if (enemy.getType().equals("Doggie")) world.addDoggieCoin(2);
         switch(result) {
             case 0:
                 generateCard();

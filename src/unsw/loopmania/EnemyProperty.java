@@ -16,4 +16,5 @@ public abstract class EnemyProperty extends BasicEnemy{
     abstract public ImageView onLoadEnemy();
 
     abstract public boolean isBoss();
+    
 }
