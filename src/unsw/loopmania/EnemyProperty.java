@@ -10,9 +10,11 @@ public abstract class EnemyProperty extends BasicEnemy{
         //TODO Auto-generated constructor stub
     }
 
-    public abstract boolean isSlug();
 
     abstract public void attack(LoopManiaWorld l, List<Ally> defeatedAllies, List<EnemyProperty> transferZombies, boolean inBattle, ItemProperty[] equipments);
 
     abstract public ImageView onLoadEnemy();
+
+    abstract public boolean isBoss();
+    
 }

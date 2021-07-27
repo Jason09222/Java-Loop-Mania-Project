@@ -22,7 +22,7 @@ public class Sword extends ItemProperty {
     public int getDamage() {
         return this.damage;
     }
-
+    @Override
     public int getPrice() {
         return price;
     }

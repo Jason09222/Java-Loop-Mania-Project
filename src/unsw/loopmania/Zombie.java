@@ -42,12 +42,6 @@ public class Zombie extends EnemyProperty{
         return;
     }
 
-
-    @Override
-    public boolean isSlug() {
-        return false;
-    }
-
     @Override
     public void setAllPropertyBack() {
         setDamage(40);
@@ -94,6 +88,12 @@ public class Zombie extends EnemyProperty{
         if (!hasAttacked) {
             l.getCharacter().setInBattle(true);
             inBattle = true;
+            for (ItemProperty item : equipments) {
+                if (item == null) {
+                    continue;
+                } 
+                item.useDuringBattle(this, l.getCharacter());
+            }
             //for (ItemProperty item : l)
             attack_character(l.getCharacter());
         }
@@ -104,6 +104,12 @@ public class Zombie extends EnemyProperty{
     public ImageView onLoadEnemy() {
         // TODO Auto-generated method stub
         return new ImageView(zombieImage);
+    }
+
+    @Override
+    public boolean isBoss() {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 

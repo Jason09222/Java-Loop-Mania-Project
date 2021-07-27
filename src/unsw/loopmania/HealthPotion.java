@@ -18,6 +18,7 @@ public class HealthPotion extends ItemProperty {
         super(x, y, ItemType.HEALTHPOTION);
         brilliantBlueNewImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString());
     }
+    @Override
     public int getPrice() {
         return price;
     }

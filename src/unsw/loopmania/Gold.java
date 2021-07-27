@@ -18,7 +18,8 @@ public class Gold extends ItemProperty {
         super(x, y, ItemType.OTHER);
         goldImage = new Image((new File("src/images/gold_pile.png")).toURI().toString());
     }
-    public int getValue() {
+    @Override
+    public int getPrice() {
         return value;
     }
     @Override

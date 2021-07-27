@@ -22,6 +22,8 @@ public class Helmet extends ItemProperty {
     public int getDefense() {
         return this.defense;
     }
+    
+    @Override
     public int getPrice() {
         return this.price;
     }

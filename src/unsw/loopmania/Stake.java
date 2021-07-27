@@ -27,6 +27,7 @@ public class Stake extends ItemProperty {
         }
 
     }
+    @Override
     public int getPrice() {
         return price;
     }

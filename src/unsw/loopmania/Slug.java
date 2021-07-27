@@ -36,12 +36,6 @@ public class Slug extends EnemyProperty{
         setCriticalPoss(criticalPoss);
         basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
     }
-
-    @Override 
-    public boolean isSlug() {
-        return true;
-    }
-
     @Override
     public void setAllPropertyBack() {
         setDamage(20);
@@ -94,6 +88,12 @@ public class Slug extends EnemyProperty{
     public ImageView onLoadEnemy() {
         // TODO Auto-generated method stub
         return new ImageView(basicEnemyImage);
+    }
+
+    @Override
+    public boolean isBoss() {
+        // TODO Auto-generated method stub
+        return false;
     }
 
     
