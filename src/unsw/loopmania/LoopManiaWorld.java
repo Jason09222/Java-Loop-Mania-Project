@@ -83,6 +83,7 @@ public class LoopManiaWorld {
     private int experience;
     private int ringOwned;
     private Goals goal;
+    private GoalLogic totaGoal;
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
      * them
@@ -121,6 +122,15 @@ public class LoopManiaWorld {
         unPickedItem = new ArrayList<>();
         startCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         goal = new Goals();
+    }
+
+
+    public GoalLogic getGoal() {
+        return totaGoal;
+    }
+
+    public void setGoal(GoalLogic goal) {
+        this.totaGoal = goal; 
     }
 
     public List<Ally> getAllies() {
@@ -653,6 +663,7 @@ public class LoopManiaWorld {
             addPotion(1);
             //character.setHp(500);
         }
+        toRemoveHealthPotion.clear();
     }
 
 
@@ -1257,12 +1268,13 @@ public class LoopManiaWorld {
     }
 
     public boolean isGameWin() {
-        if (goal.goalComplete(getGold().get(), getExpInt().get(), getCylceNum().get())) {
+        /*if (goal.goalComplete(getGold().get(), getExpInt().get(), getCylceNum().get())) {
             return true;
         }
         else {
             return false;
-        }
+        }*/
+        return totaGoal.goalReached();
     }
 
     public Character getCharacter() {
