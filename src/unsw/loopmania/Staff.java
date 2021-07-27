@@ -19,7 +19,7 @@ public class Staff extends ItemProperty {
     public int getDamage() {
         return damage;
     }
-
+    @Override
     public int getPrice() {
         return price;
     }

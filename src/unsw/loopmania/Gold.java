@@ -12,7 +12,8 @@ public class Gold extends ItemProperty {
     public Gold(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y, ItemType.OTHER);
     }
-    public int getValue() {
+    @Override
+    public int getPrice() {
         return value;
     }
     @Override

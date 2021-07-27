@@ -537,7 +537,7 @@ public class LoopManiaWorldController {
     }
 
     private void checkGameState() {
-        if (world.isGameOver() == true) {
+        if (world.isGameOver()) {
             System.out.println("oops dead");
             terminate();
             gameOverSwitcher.switchMenu();
@@ -655,7 +655,8 @@ public class LoopManiaWorldController {
         Random rand = new Random();
         int result = rand.nextInt(2);
         world.addGold(enemy.getGold());
-        switch (result) {
+        if (enemy.getType().equals("Doggie")) world.addDoggieCoin(2);
+        switch(result) {
             case 0:
                 generateCard();
                 break;

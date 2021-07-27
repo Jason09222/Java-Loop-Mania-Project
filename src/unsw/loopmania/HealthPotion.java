@@ -13,6 +13,7 @@ public class HealthPotion extends ItemProperty {
     public HealthPotion(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y, ItemType.HEALTHPOTION);
     }
+    @Override
     public int getPrice() {
         return price;
     }

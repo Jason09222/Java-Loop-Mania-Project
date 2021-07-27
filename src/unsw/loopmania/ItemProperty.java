@@ -13,5 +13,6 @@ public abstract class ItemProperty extends BasicItem{
 
     abstract public void useDuringBattle(EnemyProperty e, Character c);
     abstract public void characterStepOn(LoopManiaWorld l,List<ItemProperty> toRemoveGold, List<ItemProperty> toRemoveHealthPotion);
+    abstract public int getPrice();
     
 }

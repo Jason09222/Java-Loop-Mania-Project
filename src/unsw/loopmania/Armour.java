@@ -16,6 +16,7 @@ public class Armour extends ItemProperty {
     public int getDefense(EnemyProperty enemy) {
         return enemy.getDamage()/2;
     }
+    @Override
     public int getPrice() {
         return this.price;
     }
