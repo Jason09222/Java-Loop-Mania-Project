@@ -77,7 +77,7 @@ public class LoopManiaWorld {
     private int potionsOwned;
     
     private SimpleIntegerProperty alliesOwned;
-
+    private int doggieCoinOwned;
 
     //private int potionsOwned;
     private int experience;
@@ -130,6 +130,7 @@ public class LoopManiaWorld {
         shouldSpawnDoggie = false;
         shouldSpawnMuske = false;
         hasSpawnMuske = false;
+        doggieCoinOwned = 0;
     }
 
     public List<Ally> getAllies() {
@@ -651,7 +652,7 @@ public class LoopManiaWorld {
             // Tranced ally turns back to enemy
             for (Ally ally : allies) {
                 PathPosition position = ally.getPathPosition();
-                if (!ally.getOriginalType().equals(null)) {
+                if (ally.getOriginalType() != null) {
                     if (ally.getRound() - 1 == 0) {
                         String type = ally.getOriginalType();
                         EnemyProperty enemy;
@@ -688,7 +689,7 @@ public class LoopManiaWorld {
         for (ItemProperty item: toRemoveGold) {
             unPickedItem.remove(item);
             item.destroy();
-            goldOwned += 200;
+            goldOwned += ((Gold)item).getPrice();
         }
         toRemoveGold.clear();
 
