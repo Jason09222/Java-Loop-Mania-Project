@@ -83,6 +83,12 @@ public class LoopManiaWorld {
     private int experience;
     private int ringOwned;
     private Goals goal;
+
+    private boolean shouldSpawnDoggie;
+    private boolean shouldSpawnMuske;
+    private boolean hasSpawnMuske;
+
+
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
      * them
@@ -121,6 +127,9 @@ public class LoopManiaWorld {
         unPickedItem = new ArrayList<>();
         startCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         goal = new Goals();
+        shouldSpawnDoggie = false;
+        shouldSpawnMuske = false;
+        hasSpawnMuske = false;
     }
 
     public List<Ally> getAllies() {
@@ -204,8 +213,35 @@ public class LoopManiaWorld {
      */
     public List<EnemyProperty> possiblySpawnEnemies() {
         // TODO = expand this very basic version
-        Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
+        Pair<Integer, Integer> pos; 
         List<EnemyProperty> spawningEnemies = new ArrayList<>();
+        if (shouldSpawnDoggie) {
+            pos = possiblyGetBasicEnemySpawnPosition();
+            if (pos != null) {
+                int indexInPath = orderedPath.indexOf(pos);
+                
+                EnemyProperty enemy = new Doggie(new PathPosition(indexInPath, orderedPath));
+                enemies.add(enemy);
+                spawningEnemies.add(enemy);
+            }
+            shouldSpawnDoggie = false;
+        }
+        
+        if (shouldSpawnMuske) {
+            pos = possiblyGetBasicEnemySpawnPosition();
+            if (pos != null) {
+                int indexInPath = orderedPath.indexOf(pos);
+                
+                EnemyProperty enemy = new ElanMuske(new PathPosition(indexInPath, orderedPath));
+                enemies.add(enemy);
+                spawningEnemies.add(enemy);
+                shouldSpawnMuske = false;
+                hasSpawnMuske = true;
+            }
+        }
+        
+
+        pos = possiblyGetBasicEnemySpawnPosition();
         if (pos != null) {
             int indexInPath = orderedPath.indexOf(pos);
             
@@ -224,6 +260,7 @@ public class LoopManiaWorld {
             spawningEnemies.add(e);
         }
 
+        
         transferZombies.clear();
         return spawningEnemies;
     }
@@ -369,7 +406,7 @@ public class LoopManiaWorld {
             // add character attacked
             if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= 4) {
                 inBattle = true;
-                character.attack(e);
+                character.attack(e, equippedItems.getEquipment());
                 if (e.getHP() <= 0) {
                     defeatedEnemies.add(e);
                 }
@@ -431,6 +468,8 @@ public class LoopManiaWorld {
      *
      * @return a sword to be spawned in the controller as a JavaFX node
      */
+
+    /*
     public Sword addUnequippedSword() {
         // TODO = expand this - we would like to be able to add multiple types of items,
         // apart from swords
@@ -451,7 +490,7 @@ public class LoopManiaWorld {
         unequippedInventoryItems.add(sword);
         return sword;
     }
-
+    */
 
 
 
@@ -584,6 +623,13 @@ public class LoopManiaWorld {
             character.moveDownPath();
             updatePathCycle();
         }
+        if (pathCycle % orderedPath.size() == 0 && pathCycle >= 20 && pathCycle % 5 == 0) {
+            shouldSpawnDoggie = true;
+        }
+
+        if (getCycle() == 40 && experience >= 10000 && !hasSpawnMuske) {
+            shouldSpawnMuske = true;
+        }
         moveBasicEnemies();
         charactersStepOnBuilding();
         enemyStepOnBuilding();
@@ -653,6 +699,7 @@ public class LoopManiaWorld {
             addPotion(1);
             //character.setHp(500);
         }
+        toRemoveHealthPotion.clear();
     }
 
 
@@ -777,11 +824,11 @@ public class LoopManiaWorld {
         // TODO = change based on spec
         int slugNum = 0;
         for ( EnemyProperty enemy : enemies) {
-            if (enemy.isSlug()) {
+            if (enemy.getType().equals("Slug")) {
                 slugNum++;
             }
         }
-        if ((choice == 0) && (slugNum < 2)){
+        if (shouldSpawnDoggie || shouldSpawnMuske || ((choice == 0) && (slugNum < 2))){
             List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
             int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
             // inclusive start and exclusive end of range of positions not allowed

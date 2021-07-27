@@ -67,11 +67,6 @@ public class Vampire extends EnemyProperty{
     }
 
 
-    @Override
-    public boolean isSlug() {
-        return false;
-    }
-
     @Override 
     public void setAllPropertyBack() {
         setDamage(60);
@@ -107,6 +102,13 @@ public class Vampire extends EnemyProperty{
         if (!hasAttacked) {
             l.getCharacter().setInBattle(true);
             inBattle = true;
+
+            for (ItemProperty item : equipments) {
+                if (item == null) {
+                    continue;
+                } 
+                item.useDuringBattle(this, l.getCharacter());
+            }
             //for (ItemProperty item : l)
             attack_character(l.getCharacter());
         }
@@ -117,6 +119,12 @@ public class Vampire extends EnemyProperty{
     public ImageView onLoadEnemy() {
         // TODO Auto-generated method stub
         return new ImageView(vampireImage);
+    }
+
+    @Override
+    public boolean isBoss() {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

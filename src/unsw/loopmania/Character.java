@@ -10,12 +10,20 @@ public class Character extends MovingEntity {
     private int hp = 500;
     private int damage = 100;
     private Boolean inBattle;
-
+    private int stunTimes;
     public Character(PathPosition position) {
         super(position);
         setHp(this.hp);
         setDamage(this.damage);
         this.inBattle = false;
+        stunTimes = 0;
+    }
+    public int getStuntimes() {
+        return this.stunTimes;
+    }
+
+    public void setStunTimes(int newTimes) {
+        this.stunTimes = newTimes;
     }
 
     public int getHp() {
@@ -50,8 +58,18 @@ public class Character extends MovingEntity {
 
 
     //TODO : check equipped item and use weapon
-    public void attack(EnemyProperty e) {
+    public void attack(EnemyProperty e, ItemProperty[] equipments) {
         //TODO
+        for (ItemProperty item : equipments) {
+            if (item == null) {
+                continue;
+            } 
+            item.useDuringBattle(e, this);
+        }
+        if (getStuntimes() > 0) {
+            setStunTimes(getStuntimes() - 1);
+            return;
+        }
         e.setHP(e.getHP() - this.getDamage());
     }
 

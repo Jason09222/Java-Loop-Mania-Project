@@ -538,7 +538,7 @@ public class LoopManiaWorldController {
     }
 
     private void checkGameState() {
-        if (world.isGameOver() == true) {
+        if (world.isGameOver()) {
             System.out.println("oops dead");
             terminate();
             gameOverSwitcher.switchMenu();
