@@ -49,7 +49,7 @@ public class Slug extends EnemyProperty{
         if (Math.pow((l.getCharacter().getX() - getX()), 2) + Math.pow((l.getCharacter().getY() - getY()), 2) > Math
                     .pow(getFightRadius(), 2)) {
             return;
-                    }
+        }
 
         boolean hasAttacked = false;
         for (Ally ally : l.getAllies()) {
