@@ -34,6 +34,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
@@ -466,6 +468,13 @@ public class LoopManiaWorldController {
 
         layout2.getChildren().add(expNum);
         StackPane.setAlignment(expNum, Pos.CENTER_RIGHT);
+
+
+        
+        File audioFile = new File("src/images/audio.mp3");
+        Media audio = new Media(audioFile.toURI().toString());
+        MediaPlayer audioPlayer = new MediaPlayer(audio);
+        audioPlayer.setAutoPlay(true);
 
     }
 
