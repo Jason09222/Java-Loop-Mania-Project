@@ -276,6 +276,8 @@ public class LoopManiaWorldController {
     private MenuSwitcher gameOverSwitcher;
     private MenuSwitcher gameWinSwitcher;
 
+    private MenuSwitcher heroCastleMenuSwitcher;
+
     /**
      * @param world           world object loaded from file
      * @param initialEntities the initial JavaFX nodes (ImageViews) which should be
@@ -488,8 +490,16 @@ public class LoopManiaWorldController {
         // trigger adding code to process main game logic to queue. JavaFX will target
         // framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
-            world.runTickMoves();
 
+            world.runTickMoves();
+            if (world.isShopTime()) {
+                try {
+                    switchToShop();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             goldInt.set(world.getGolds());
             hpInNum.set(world.getHpValue());
             hpInWorld.set((double) world.getHpValue() / 500.00);
@@ -1212,6 +1222,10 @@ public class LoopManiaWorldController {
         this.gameWinSwitcher = gameWinSwitcher;
     }
 
+    public void setHeroCastleMenuSwitcher(MenuSwitcher heroCastleMenuSwitcher) {
+        this.heroCastleMenuSwitcher = heroCastleMenuSwitcher;
+    }
+
     /**
      * this method is triggered when click button to go to main menu in FXML
      *
@@ -1222,6 +1236,12 @@ public class LoopManiaWorldController {
         // TODO = possibly set other menu switchers
         pause();
         mainMenuSwitcher.switchMenu();
+    }
+
+    @FXML
+    private void switchToShop() throws IOException {
+        pause();
+        heroCastleMenuSwitcher.switchMenu();
     }
 
     /**
