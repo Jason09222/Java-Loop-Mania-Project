@@ -13,7 +13,7 @@ public class ElanMuske extends EnemyProperty{
     private final int SupportR = 1;
     private final int gold = 100;
     private final int speed = 2;
-    private int damage = 20;
+    private int damage = 150;
     //private final boolean cirtical = true;
     private final boolean weak = false;
     private final int hp = 3000;
@@ -99,6 +99,14 @@ public class ElanMuske extends EnemyProperty{
         for (EnemyProperty e : enemies) {
             e.setHP((int)(e.getHP() * 1.1));
         }
+    }
+
+    @Override
+    public void setAllPropertyBack() {
+        // TODO Auto-generated method stub
+        this.setDamage(150);
+        this.setCriticalPoss(10);
+        
     }
     
 }
