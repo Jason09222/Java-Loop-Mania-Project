@@ -838,7 +838,7 @@ public class LoopManiaWorldController {
      *
      * @param item
      */
-    private void onLoad(ItemProperty item) {
+    public void onLoad(ItemProperty item) {
         ImageView view = item.onLoadItems();
         
         if (item.getType() == ItemType.OTHER || item.getType() == ItemType.HEALTHPOTION) {

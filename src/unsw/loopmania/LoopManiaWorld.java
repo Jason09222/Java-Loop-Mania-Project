@@ -1326,6 +1326,29 @@ public class LoopManiaWorld {
         return !hasSpawnMuske;
     }
 
-    
+    public int getItemPrice(ItemType itemType) {
+        if (itemType == ItemType.ARMOUR) {
+            return 1000;
+        }
+        else if (itemType == ItemType.HELMET) {
+            return 1500;
+        }
+        else if (itemType == ItemType.SHIELD) {
+            return 2000;
+        }
+        else if (itemType == ItemType.STAFF) {
+            return 2000;
+        }
+        else if (itemType == ItemType.STAKE) {
+            return 1500;
+        }
+        else if (itemType == ItemType.SWORD) {
+            return 1000;
+        }
+        else if (itemType == ItemType.HEALTHPOTION) {
+            return 2000;
+        }
+        return 0;
+    }
 
 }

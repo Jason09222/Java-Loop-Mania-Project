@@ -29,6 +29,7 @@ public class LoopManiaWorldControllerLoader extends LoopManiaWorldLoader {
     //Images
     private Image characterImage;
     private Image pathTilesImage;
+    private LoopManiaWorld world;
 
     public LoopManiaWorldControllerLoader(String filename)
             throws FileNotFoundException {
@@ -149,8 +150,12 @@ public class LoopManiaWorldControllerLoader extends LoopManiaWorldLoader {
      * @throws FileNotFoundException
      */
     public LoopManiaWorldController loadController() throws FileNotFoundException {
-        return new LoopManiaWorldController(load(), entities);        
+        world = load();
+        return new LoopManiaWorldController(world, entities);        
     }
 
+    public LoopManiaWorld getWorld() {
+        return world;
+    }
 
 }

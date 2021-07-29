@@ -55,7 +55,7 @@
                         <Image url="@../../images/gold_pile.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="swordPrice1" layoutX="115.0" layoutY="210.0" text="250">
+                  <Label fx:id="staffPrice" layoutX="115.0" layoutY="210.0" text="250">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -79,7 +79,7 @@
                         <Image url="@../../images/gold_pile.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="swordPrice11" layoutX="115.0" layoutY="210.0" text="250">
+                  <Label fx:id="stakePrice" layoutX="115.0" layoutY="210.0" text="250">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -103,7 +103,7 @@
                         <Image url="@../../images/gold_pile.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="swordPrice111" layoutX="115.0" layoutY="210.0" text="250">
+                  <Label fx:id="armourPrice" layoutX="115.0" layoutY="210.0" text="250">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -127,7 +127,7 @@
                         <Image url="@../../images/gold_pile.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="swordPrice1111" layoutX="115.0" layoutY="210.0" text="250">
+                  <Label fx:id="helmetPrice" layoutX="115.0" layoutY="210.0" text="250">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -151,7 +151,7 @@
                         <Image url="@../../images/gold_pile.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="swordPrice11111" layoutX="115.0" layoutY="210.0" text="250">
+                  <Label fx:id="helmetPrice" layoutX="115.0" layoutY="210.0" text="250">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -175,7 +175,7 @@
                         <Image url="@../../images/gold_pile.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="swordPrice111111" layoutX="115.0" layoutY="210.0" text="250">
+                  <Label fx:id="potionPrice" layoutX="115.0" layoutY="210.0" text="250">
                      <font>
                         <Font size="12.0" />
                      </font>
