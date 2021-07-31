@@ -57,6 +57,13 @@ public class LoopManiaApplication extends Application {
         gameWinLoader.setController(gameWinController);
         Parent gameWinRoot = gameWinLoader.load();
 
+        // load hero castle menu
+        HeroCastleMenuController heroCastleMenuController = new HeroCastleMenuController(loopManiaLoader.getWorld(), mainController);
+        FXMLLoader heroCastleMenuLoader = new FXMLLoader(getClass().getResource("HeroCastleMenuView.fxml"));
+        heroCastleMenuLoader.setController(heroCastleMenuController);
+        Parent heroCastleMenuRoot = heroCastleMenuLoader.load();
+
+
         // create new scene with the main menu (so we start with the main menu)
         Scene scene = new Scene(mainMenuRoot);
         
@@ -78,7 +85,13 @@ public class LoopManiaApplication extends Application {
             switchToRoot(scene, gameOverRoot, primaryStage);
         });
 
-        
+        mainController.setHeroCastleMenuSwitcher(() -> {switchToRoot(scene, heroCastleMenuRoot, primaryStage);});
+        heroCastleMenuController.setGameSwitcher(() -> {
+            switchToRoot(scene, gameRoot, primaryStage);
+            mainController.startTimer();
+        });
+
+
         // deploy the main onto the stage
         gameRoot.requestFocus();
         primaryStage.setScene(scene);

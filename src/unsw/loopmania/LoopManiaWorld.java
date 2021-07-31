@@ -75,7 +75,7 @@ public class LoopManiaWorld {
     private int goldOwned;
 
     private int potionsOwned;
-    
+
     private SimpleIntegerProperty alliesOwned;
     private int doggieCoinOwned;
 
@@ -137,7 +137,7 @@ public class LoopManiaWorld {
     }
 
     public void setGoal(GoalLogic goal) {
-        this.totaGoal = goal; 
+        this.totaGoal = goal;
     }
 
     public List<Ally> getAllies() {
@@ -225,25 +225,25 @@ public class LoopManiaWorld {
      */
     public List<EnemyProperty> possiblySpawnEnemies() {
         // TODO = expand this very basic version
-        Pair<Integer, Integer> pos; 
+        Pair<Integer, Integer> pos;
         List<EnemyProperty> spawningEnemies = new ArrayList<>();
         if (shouldSpawnDoggie) {
             pos = possiblyGetBasicEnemySpawnPosition();
             if (pos != null) {
                 int indexInPath = orderedPath.indexOf(pos);
-                
+
                 EnemyProperty enemy = new Doggie(new PathPosition(indexInPath, orderedPath));
                 enemies.add(enemy);
                 spawningEnemies.add(enemy);
             }
             shouldSpawnDoggie = false;
         }
-        
+
         if (shouldSpawnMuske) {
             pos = possiblyGetBasicEnemySpawnPosition();
             if (pos != null) {
                 int indexInPath = orderedPath.indexOf(pos);
-                
+
                 EnemyProperty enemy = new ElanMuske(new PathPosition(indexInPath, orderedPath));
                 enemies.add(enemy);
                 spawningEnemies.add(enemy);
@@ -251,7 +251,7 @@ public class LoopManiaWorld {
                 hasSpawnMuske = true;
             }
         }
-        
+
 
         pos = possiblyGetBasicEnemySpawnPosition();
         if (pos != null) {
@@ -271,7 +271,7 @@ public class LoopManiaWorld {
             spawningEnemies.add(e);
         }
 
-        
+
         transferZombies.clear();
         return spawningEnemies;
     }
@@ -421,6 +421,7 @@ public class LoopManiaWorld {
             // add character attacked
             if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= 4) {
                 inBattle = true;
+                e.setInBattle(true);
                 character.attack(e, equippedItems.getEquipment());
                 if (e.getHP() <= 0) {
                     defeatedEnemies.add(e);
@@ -1324,6 +1325,75 @@ public class LoopManiaWorld {
         return !hasSpawnMuske;
     }
 
-    
+    public int getItemPrice(ItemType itemType) {
+        if (itemType == ItemType.ARMOUR) {
+            return 1000;
+        }
+        else if (itemType == ItemType.HELMET) {
+            return 1500;
+        }
+        else if (itemType == ItemType.SHIELD) {
+            return 2000;
+        }
+        else if (itemType == ItemType.STAFF) {
+            return 2000;
+        }
+        else if (itemType == ItemType.STAKE) {
+            return 1500;
+        }
+        else if (itemType == ItemType.SWORD) {
+            return 1000;
+        }
+        else if (itemType == ItemType.HEALTHPOTION) {
+            return 2000;
+        }
+        return 0;
+
+    public IntegerProperty getBattleSlugNum() {
+        int num = 0;
+        for (EnemyProperty enemy : enemies) {
+            System.err.println(enemy.getInBattle());
+            if (enemy.getType().equals("Slug") && enemy.getInBattle())
+                num++;
+        }
+        return new SimpleIntegerProperty(num);
+    }
+
+    public IntegerProperty getBattleVampireNum() {
+        int num = 0;
+        for (EnemyProperty enemy : enemies) {
+            if (enemy.getType().equals("Vampire") && enemy.getInBattle())
+                num++;
+        }
+        return new SimpleIntegerProperty(num);
+    }
+
+    public IntegerProperty getBattleZombieNum() {
+        int num = 0;
+        for (EnemyProperty enemy : enemies) {
+            if (enemy.getType().equals("Zombie") && enemy.getInBattle())
+                num++;
+        }
+        return new SimpleIntegerProperty(num);
+    }
+
+    public IntegerProperty getBattleDoggieNum() {
+        int num = 0;
+        for (EnemyProperty enemy : enemies) {
+            if (enemy.getType().equals("Doggie") && enemy.getInBattle())
+                num++;
+        }
+        return new SimpleIntegerProperty(num);
+    }
+
+    public IntegerProperty getBattleMuskNum() {
+
+        int num = 0;
+        for (EnemyProperty enemy : enemies) {
+            if (enemy.getType().equals("ElanMuske") && enemy.getInBattle())
+                num++;
+        }
+        return new SimpleIntegerProperty(num);
+    }
 
 }
