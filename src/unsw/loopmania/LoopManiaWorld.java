@@ -218,6 +218,10 @@ public class LoopManiaWorld {
         return this.pathCycle / orderedPath.size();
     }
 
+    public List<ItemProperty> getUnequippedInventoryItems() {
+        return this.unequippedInventoryItems;
+    }
+
     /**
      * spawns enemies if the conditions warrant it, adds to world
      *
@@ -1348,6 +1352,7 @@ public class LoopManiaWorld {
             return 2000;
         }
         return 0;
+    }
 
     public IntegerProperty getBattleSlugNum() {
         int num = 0;
