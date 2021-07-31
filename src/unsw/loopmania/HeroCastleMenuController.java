@@ -138,11 +138,7 @@ public class HeroCastleMenuController {
     }
 
     public void initialiseInventory() {
-        if (inventory.getChildren().size() >= 0) {
-            for (Node n : inventory.getChildren()) {
-                inventory.getChildren().remove(n);
-            }
-        }
+        inventory.getChildren().clear();
     }
 
     @FXML
@@ -150,12 +146,10 @@ public class HeroCastleMenuController {
         switchToGame();
     }
 
-    public void updateInventory() {
-        this.inventory = controller.getUnequippedInventory();
-    }
 
     private void buyItem(ItemType itemType) {
         world.addGold(-1 * world.getItemPrice(itemType));
+        world.getGold().set(world.getGolds());
         if (itemType == ItemType.HEALTHPOTION) {
             world.addPotion(1);
 
@@ -233,6 +227,15 @@ public class HeroCastleMenuController {
         gold.setFont(new Font("Cambria", 40));
         currentGold.getChildren().add(gold);
         StackPane.setAlignment(gold, Pos.CENTER_RIGHT);
+
+        /*// add the empty slot images for the unequipped inventory
+        Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
+        for (int x = 0; x < LoopManiaWorld.unequippedInventoryWidth; x++) {
+            for (int y = 0; y < LoopManiaWorld.unequippedInventoryHeight; y++) {
+                ImageView emptySlotView = new ImageView(inventorySlotImage);
+                inventory.add(emptySlotView, x, y);
+            }
+        }*/
     }
 
 
@@ -252,11 +255,9 @@ public class HeroCastleMenuController {
     }
 
     public void initialisePane() {
-        if (paneToSell.getChildren().size() > 0) {
-            for (Node each: paneToSell.getChildren()) {
-                paneToSell.getChildren().remove(each);
-            }
-         }
+        for (Node each: paneToSell.getChildren()) {
+            paneToSell.getChildren().remove(each);
+        }
     }
 
     public void removeItem(String text) {
