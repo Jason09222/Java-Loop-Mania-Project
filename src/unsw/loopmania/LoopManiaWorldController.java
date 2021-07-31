@@ -703,17 +703,20 @@ public class LoopManiaWorldController {
      */
     private void loadVampireCard() {
         // TODO = load more types of card
+        checkCardEntity();
         VampireCastleCard vampireCastleCard = world.loadVampireCard();
         onLoad(vampireCastleCard);
     }
 
     private void loadCampfireCard() {
         // TODO = load more types of card
+        checkCardEntity();
         CampfireCard campfireCard = world.loadCampfireCard();
         onLoad(campfireCard);
     }
 
     private void loadTowerCard() {
+        checkCardEntity();
         // TODO = load more types of card
         TowerCard towerCard = world.loadTowerCard();
         onLoad(towerCard);
@@ -721,23 +724,27 @@ public class LoopManiaWorldController {
 
     private void loadTrapCard() {
         // TODO = load more types of card
+        checkCardEntity();
         TrapCard trapCard = world.loadTrapCard();
         onLoad(trapCard);
     }
 
     private void loadVillageCard() {
         // TODO = load more types of card
+        checkCardEntity();
         VillageCard villageCard = world.loadVillageCard();
         onLoad(villageCard);
     }
 
     private void loadBarracksCard() {
         // TODO = load more types of card
+        checkCardEntity();
         BarracksCard barracksCard = world.loadBarracksCard();
         onLoad(barracksCard);
     }
 
     public void loadZombiePitCard() {
+        checkCardEntity();
         ZombiePitCard zombiePitCard = world.loadZombiePitCard();
         onLoad(zombiePitCard);
     }
@@ -1463,5 +1470,27 @@ public class LoopManiaWorldController {
         System.out.println("current method = " + currentMethodLabel);
         System.out.println("In application thread? = " + Platform.isFxApplicationThread());
         System.out.println("Current system time = " + java.time.LocalDateTime.now().toString().replace('T', ' '));
+    }
+
+
+    public void checkCardEntity() {
+        if (world.getCardEntities().size() >= world.getWidth()){
+            // give some cash/experience/item rewards for the discarding of the oldest card
+            Random rand = new Random();
+            int result = rand.nextInt(10) % 3;
+            switch (result) {
+                case 0:
+                    world.addGold(rand.nextInt(5));
+                    break;
+                case 1:
+                    world.addExperience(rand.nextInt(5));
+                    break;
+                case 2:
+                    world.addUnequippedItem(world.generateItem());
+                    break;
+            }
+
+            world.removeCard(0);
+        }
     }
 }

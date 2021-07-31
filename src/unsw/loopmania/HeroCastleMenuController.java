@@ -19,6 +19,7 @@ import java.io.File;
 
 import javax.swing.Action;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.event.ActionEvent;
 
 public class HeroCastleMenuController {
@@ -26,7 +27,7 @@ public class HeroCastleMenuController {
     private MenuSwitcher gameSwitcher;
     private LoopManiaWorld world;
     private LoopManiaWorldController controller;
-
+    private IntegerProperty goldInt;
     @FXML
     private GridPane inventory;
 
@@ -108,6 +109,8 @@ public class HeroCastleMenuController {
     @FXML
     void updateInventory(ActionEvent event) {
         initialiseInventory();
+        goldInt.set(world.getGolds());
+        sell.setText("Sell");
         for(ItemProperty item: world.getUnequippedInventoryItems()) {
             if (item != null) {
 
@@ -146,13 +149,15 @@ public class HeroCastleMenuController {
 
     @FXML
     void handleExitButton(ActionEvent event) {
+        resetButtons();
         switchToGame();
     }
 
 
     private void buyItem(ItemType itemType) {
         world.addGold(-1 * world.getItemPrice(itemType));
-        world.getGold().set(world.getGolds());
+        goldInt.set(world.getGolds());
+        //gold.textProperty().bind(goldInt.asString());
         if (itemType == ItemType.HEALTHPOTION) {
             world.addPotion(1);
 
@@ -225,9 +230,11 @@ public class HeroCastleMenuController {
     @FXML
     public void initialize() {
         gold = new Label(String.valueOf(world.getGolds()));
-        gold.textProperty().bind(world.getGold().asString());
+        goldInt = world.getGold();
+        gold.textProperty().bind(goldInt.asString());
         gold.setTextFill(Color.ORANGE);
         gold.setFont(new Font("Cambria", 40));
+        goldInt.set(world.getGolds());
         currentGold.getChildren().add(gold);
         StackPane.setAlignment(gold, Pos.CENTER_RIGHT);
 
@@ -248,7 +255,7 @@ public class HeroCastleMenuController {
 
         removeItem(text);
         sell.setText("\u2713");
-        world.getGold().set(world.getGolds());
+        goldInt.set(world.getGolds());
     }
 
     public void initialisePane() {
@@ -261,10 +268,14 @@ public class HeroCastleMenuController {
                 world.getUnequippedInventoryItems().remove(item);
                 controller.unLoad(item);
                 world.addGold(item.getPrice());
+                item.destroy();
                 return;
             }
         }
     }
-
+    public void resetButtons() {
+        sell.setText("Sell");
+        purchaseSword.setText("Buy");
+    }
 
 }

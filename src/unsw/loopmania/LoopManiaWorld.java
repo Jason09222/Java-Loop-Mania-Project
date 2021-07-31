@@ -1136,14 +1136,12 @@ public class LoopManiaWorld {
 
     public VampireCastleCard loadVampireCard() {
         // if adding more cards than have, remove the first card...
-        checkCardEntity();
         VampireCastleCard vampireCastleCard = new VampireCastleCard("VampireCastleBuilding", new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
         cardEntities.add(vampireCastleCard);
         return vampireCastleCard;
     }
 
     public CampfireCard loadCampfireCard() {
-        checkCardEntity();
         CampfireCard campfireCard = new CampfireCard("Campfire", new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(campfireCard);
@@ -1151,7 +1149,6 @@ public class LoopManiaWorld {
     }
 
     public TowerCard loadTowerCard() {
-        checkCardEntity();
         TowerCard towerCard = new TowerCard("Tower", new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(towerCard);
@@ -1159,7 +1156,6 @@ public class LoopManiaWorld {
     }
 
     public TrapCard loadTrapCard() {
-        checkCardEntity();
         TrapCard trapCard = new TrapCard("Trap", new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(trapCard);
@@ -1167,7 +1163,6 @@ public class LoopManiaWorld {
     }
 
     public BarracksCard loadBarracksCard() {
-        checkCardEntity();
         BarracksCard barracksCard = new BarracksCard("Barracks", new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(barracksCard);
@@ -1175,7 +1170,6 @@ public class LoopManiaWorld {
     }
 
     public VillageCard loadVillageCard() {
-        checkCardEntity();
         VillageCard villageCard = new VillageCard("Village", new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(villageCard);
@@ -1183,7 +1177,6 @@ public class LoopManiaWorld {
     }
 
     public ZombiePitCard loadZombiePitCard() {
-        checkCardEntity();
         ZombiePitCard zombiePitCard = new ZombiePitCard("ZombiePit", new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(zombiePitCard);
@@ -1193,23 +1186,7 @@ public class LoopManiaWorld {
 
 
 
-    public void checkCardEntity () {
-        if (cardEntities.size() >= getWidth()){
-            // give some cash/experience/item rewards for the discarding of the oldest card
-            Random rand = new Random();
-            int result = rand.nextInt(10) % 3;
-            switch (result) {
-                case 0:
-                    addGold(rand.nextInt(5));
-                case 1:
-                    addExperience(rand.nextInt(5));
-                case 2:
-                    generateItem();
-            }
-
-            removeCard(0);
-        }
-    }
+    
 
     public boolean checkPathTile(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         Pair<Integer, Integer> position = new Pair<>(x.get(), y.get());
@@ -1241,7 +1218,7 @@ public class LoopManiaWorld {
      *
      * @param index the index of the card, from 0 to length-1
      */
-    private void removeCard(int index) {
+    public void removeCard(int index) {
         Card c = cardEntities.get(index);
         int x = c.getX();
         c.destroy();
@@ -1401,5 +1378,7 @@ public class LoopManiaWorld {
         }
         return new SimpleIntegerProperty(num);
     }
-
+    public List<Card> getCardEntities() {
+        return this.cardEntities;
+    }
 }
