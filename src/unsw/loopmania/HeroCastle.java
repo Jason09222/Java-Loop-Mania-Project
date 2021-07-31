@@ -1,8 +1,11 @@
 package unsw.loopmania;
 
-import javafx.beans.property.SimpleIntegerProperty;
+import java.util.List;
 
-public class HeroCastle extends Building {
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.ImageView;
+
+public class HeroCastle extends BuildingProperty {
     private boolean offerWindow = false;
 
     public HeroCastle(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -31,5 +34,27 @@ public class HeroCastle extends Building {
 
     public void closeOfferWindow() {
         this.offerWindow = false;
+    }
+
+    @Override
+    public void spawnEnemy(LoopManiaWorld l, List<EnemyProperty> spawningEnemies) {
+        return;
+    }
+
+    @Override
+    public void characterStepOn(LoopManiaWorld l) {
+        //TODO add open shop here
+        return;
+    }
+
+    @Override
+    public void enemyStepOn(LoopManiaWorld l, List<BuildingProperty> toRemove) {
+        return;
+    }
+
+    @Override
+    public ImageView onLoadBuilding() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

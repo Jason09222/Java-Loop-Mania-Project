@@ -1,22 +1,32 @@
 package unsw.loopmania;
 
+import java.io.File;
 import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
  * represents an equipped or unequipped TheOneRing in the backend world
  */
-public class TheOneRing extends RareItem {
-    public TheOneRing(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        super(x, y, ItemType.OTHER);
+public class Anduril extends RareItem {
+    private final int damage = 250;
+    private Image andurilImage;
+    public Anduril(SimpleIntegerProperty x, SimpleIntegerProperty y, ItemType type) {
+        super(x, y, type);
+        andurilImage = new Image((new File("src/images/anduril.png")).toURI().toString());
+        //TODO Auto-generated constructor stub
     }
 
     @Override
     public void useDuringBattle(EnemyProperty e, Character c) {
         // TODO Auto-generated method stub
-        
+        if (e.isBoss()) {
+            c.setDamage(c.getDamage() + 3 * damage);
+        } else {
+            c.setDamage(c.getDamage());
+        }
     }
 
     @Override
@@ -35,6 +45,12 @@ public class TheOneRing extends RareItem {
     @Override
     public ImageView onLoadItems() {
         // TODO Auto-generated method stub
-        return null;
+        return new ImageView(andurilImage);
+    }
+
+    @Override
+    public boolean canBePurchased() {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

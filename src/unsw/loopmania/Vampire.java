@@ -1,19 +1,24 @@
 package unsw.loopmania;
+import java.io.File;
+import java.util.List;
 import java.util.Random;
-public class Vampire extends BasicEnemy{
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+public class Vampire extends EnemyProperty{
     private final String type = "Vampire";
     private final int FightR = 2;
     private final int SupportR = 5;
     private final int gold = 500;
     private int speed = 3;
-    private final int damage = 60;
+    private int damage = 60;
     //private final boolean cirtical = true;
     private final boolean weak = false;
     private final int hp = 800;
     private final int exp = 300;
 
-    private int criticalPoss;
-
+    private int criticalPoss = 10;
+    private Image vampireImage;
     public Vampire(PathPosition position) {
         super(position);
         setType(type);
@@ -26,7 +31,8 @@ public class Vampire extends BasicEnemy{
         setIsWeak(this.weak);
         setGold(this.gold); //TODO can be changed
         setSpeed(this.speed);
-        this.setCriticalPoss(10);
+        this.setCriticalPoss(criticalPoss);
+        vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
     }
 
     @Override
@@ -60,18 +66,66 @@ public class Vampire extends BasicEnemy{
         return;
     }
 
-    public void setCriticalPoss(int value) {
-        this.criticalPoss = value;
+
+    @Override 
+    public void setAllPropertyBack() {
+        setDamage(60);
+        setCriticalPoss(10);
     }
 
-    public int getCriticalPoss() {
-        return this.criticalPoss;
+    @Override
+    public void attack(LoopManiaWorld l, List<Ally> defeatedAllies, List<EnemyProperty> transferZombies,
+            boolean inBattle, ItemProperty[] equipments) {
+        if (Math.pow((l.getCharacter().getX() - getX()), 2) + Math.pow((l.getCharacter().getY() - getY()), 2) > Math
+        .pow(getFightRadius(), 2)) {
+            return;
+        }
+
+        boolean hasAttacked = false;
+        for (Ally ally : l.getAllies()) {
+            if (ally.getHp() <= 0) {
+                continue;
+            }
+            
+            l.getCharacter().setInBattle(true);
+            inBattle = true;
+            //e.attack_ally(ally);
+            hasAttacked = true;
+            //if (ally.getHp() <= 0) {
+            
+            attack_ally(ally);
+            if (ally.getHp() <= 0) {
+                defeatedAllies.add(ally);
+            }
+            break;
+        }
+        if (!hasAttacked) {
+            l.getCharacter().setInBattle(true);
+            inBattle = true;
+
+            for (ItemProperty item : equipments) {
+                if (item == null) {
+                    continue;
+                } 
+                item.useDuringBattle(this, l.getCharacter());
+            }
+            //for (ItemProperty item : l)
+            attack_character(l.getCharacter());
+        }
+        
     }
 
-    public void setCriticalBack() {
-        this.criticalPoss = 10;
+    @Override
+    public ImageView onLoadEnemy() {
+        // TODO Auto-generated method stub
+        return new ImageView(vampireImage);
     }
 
+    @Override
+    public boolean isBoss() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
 }
 

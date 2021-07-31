@@ -1,17 +1,25 @@
 package unsw.loopmania;
 
+import java.io.File;
+import java.util.List;
+
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * represents an equipped or unequipped Stake in the backend world
  */
-public class Stake extends BasicItem {
+public class Stake extends ItemProperty {
     private final int damage = 150;
     private final int price = 1500;
+    private Image stakeImage;
     public Stake(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y, ItemType.STAKE);
+        stakeImage = new Image((new File("src/images/stake.png")).toURI().toString());
     }
-    public int getDamage(BasicEnemy enemy) {
+
+    public int getDamage(EnemyProperty enemy) {
         if (enemy.getType().equals("Vampire")) {
             return 2 * damage;
         } else {
@@ -19,7 +27,36 @@ public class Stake extends BasicItem {
         }
 
     }
+    @Override
     public int getPrice() {
         return price;
+    }
+    @Override
+    public void useDuringBattle(EnemyProperty e, Character c) {
+        // TODO Auto-generated method stub
+        if (e.getType().equals("Vampire")) {
+            c.setDamage(c.getDamage() + 2 * damage);
+        } else {
+            c.setDamage(c.getDamage() + damage);
+        }
+        
+    }
+
+    @Override
+    public void characterStepOn(LoopManiaWorld l, List<ItemProperty> toRemoveGold,
+            List<ItemProperty> toRemoveHealthPotion) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public ImageView onLoadItems() {
+        return new ImageView(stakeImage);
+    }
+
+    @Override
+    public boolean canBePurchased() {
+        // TODO Auto-generated method stub
+        return true;
     }
 }

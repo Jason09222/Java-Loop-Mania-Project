@@ -5,31 +5,35 @@ import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.ImageView;
 
-/**
- * represents an equipped or unequipped TheOneRing in the backend world
- */
-public class TheOneRing extends RareItem {
-    public TheOneRing(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        super(x, y, ItemType.OTHER);
+public class DoggieCoin extends ItemProperty{
+    private int price;
+    public DoggieCoin(SimpleIntegerProperty x, SimpleIntegerProperty y, ItemType type) {
+        super(x, y, type);
+        price = 200;
+        //TODO Auto-generated constructor stub
     }
 
     @Override
     public void useDuringBattle(EnemyProperty e, Character c) {
-        // TODO Auto-generated method stub
+        return;
         
     }
 
     @Override
     public void characterStepOn(LoopManiaWorld l, List<ItemProperty> toRemoveGold,
             List<ItemProperty> toRemoveHealthPotion) {
-        // TODO Auto-generated method stub
+        return;
         
     }
 
     @Override
     public int getPrice() {
         // TODO Auto-generated method stub
-        return 0;
+        return price;
+    }
+
+    public void setPrice(int value) {
+        this.price = value;
     }
 
     @Override
@@ -37,4 +41,11 @@ public class TheOneRing extends RareItem {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public boolean canBePurchased() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+    
 }
