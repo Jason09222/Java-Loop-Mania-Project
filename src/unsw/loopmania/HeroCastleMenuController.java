@@ -180,13 +180,13 @@ public class HeroCastleMenuController {
         inventory.getChildren().clear();
         this.nextAvailableX = 0;
         this.nextAvailableY = 0;
-        Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
+        /* Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         for (int x = 0; x < LoopManiaWorld.unequippedInventoryWidth; x++) {
             for (int y = 0; y < LoopManiaWorld.unequippedInventoryHeight; y++) {
                 ImageView emptySlotView = new ImageView(inventorySlotImage);
                 inventory.add(emptySlotView, x, y);
             }
-        }
+        } */
     }
 
     @FXML
