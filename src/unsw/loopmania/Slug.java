@@ -14,13 +14,12 @@ public class Slug extends EnemyProperty{
     private final int SupportR = 1;
     private final int gold = 100;
     private final int speed = 2;
-    private int damage = 20;
+    private int damage = 2;
     //private final boolean cirtical = true;
     private final boolean weak = false;
-    private final int hp = 300;
+    private final int hp = 3000;
     private final int exp = 100;
     private int criticalPoss = 0;
-    private Image basicEnemyImage;
     public Slug(PathPosition position) {
         super(position);
         setType(this.type);
@@ -34,23 +33,22 @@ public class Slug extends EnemyProperty{
         setGold(this.gold); //TODO can be changed
         setSpeed(this.speed);
         setCriticalPoss(criticalPoss);
-        basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
     }
     @Override
     public void setAllPropertyBack() {
-        setDamage(20);
+        setDamage(2);
         setCriticalPoss(0);
     }
 
     @Override
-    public void attack(LoopManiaWorld l, List<Ally> defeatedAllies, List<EnemyProperty> transferZombies, boolean inBattle, ItemProperty[] equipments) {
+    public boolean attack(LoopManiaWorld l, List<Ally> defeatedAllies, List<EnemyProperty> transferZombies, boolean inBattle, ItemProperty[] equipments) {
         // TODO Auto-generated method stub
 
         if (Math.pow((l.getCharacter().getX() - getX()), 2) + Math.pow((l.getCharacter().getY() - getY()), 2) > Math
                     .pow(getFightRadius(), 2)) {
-            return;
+            return false;
         }
-
+        inBattle = true;
         boolean hasAttacked = false;
         for (Ally ally : l.getAllies()) {
             if (ally.getHp() <= 0) {
@@ -58,7 +56,7 @@ public class Slug extends EnemyProperty{
             }
 
             l.getCharacter().setInBattle(true);
-            inBattle = true;
+
             //e.attack_ally(ally);
             hasAttacked = true;
             //if (ally.getHp() <= 0) {
@@ -71,7 +69,7 @@ public class Slug extends EnemyProperty{
         }
         if (!hasAttacked) {
             l.getCharacter().setInBattle(true);
-            inBattle = true;
+            //inBattle = true;
             //for (ItemProperty item : l)
             for (ItemProperty item : equipments) {
                 if (item == null) {
@@ -81,13 +79,13 @@ public class Slug extends EnemyProperty{
             }
             attack_character(l.getCharacter());
         }
-
+        return true;
     }
 
     @Override
     public ImageView onLoadEnemy() {
         // TODO Auto-generated method stub
-        return new ImageView(basicEnemyImage);
+        return new ImageView(new Image((new File("src/images/slug.png")).toURI().toString()));
     }
 
     @Override

@@ -18,7 +18,6 @@ public class Zombie extends EnemyProperty{
     private final int hp = 500;
     private final int exp = 100;
     private int criticalPoss = 10;
-    private Image zombieImage;
     public Zombie(PathPosition position) {
         super(position);
         setType(this.type);
@@ -32,13 +31,12 @@ public class Zombie extends EnemyProperty{
         setGold(this.gold); //TODO can be changed
         setSpeed(this.speed);
         setCriticalPoss(criticalPoss);
-        zombieImage = new Image((new File("src/images/zombie.png")).toURI().toString());
     }
 
     @Override
     //TODO add character object as parameter
     public void attack_ally(Ally ally) {
-        
+
         return;
     }
 
@@ -49,13 +47,13 @@ public class Zombie extends EnemyProperty{
     }
 
     @Override
-    public void attack(LoopManiaWorld l, List<Ally> defeatedAllies, List<EnemyProperty> transferZombies,
+    public boolean attack(LoopManiaWorld l, List<Ally> defeatedAllies, List<EnemyProperty> transferZombies,
             boolean inBattle, ItemProperty[] equipments) {
         // TODO Auto-generated method stub
 
         if (Math.pow((l.getCharacter().getX() - getX()), 2) + Math.pow((l.getCharacter().getY() - getY()), 2) > Math
             .pow(getFightRadius(), 2)) {
-            return;
+            return false;
         }
 
         boolean hasAttacked = false;
@@ -63,13 +61,13 @@ public class Zombie extends EnemyProperty{
             if (ally.getHp() <= 0) {
                 continue;
             }
-            
+
             l.getCharacter().setInBattle(true);
             inBattle = true;
             //e.attack_ally(ally);
             hasAttacked = true;
             //if (ally.getHp() <= 0) {
-            
+
             Random rand = new Random();
             int int_random = rand.nextInt(5);
             if (int_random == 0) {
@@ -91,19 +89,19 @@ public class Zombie extends EnemyProperty{
             for (ItemProperty item : equipments) {
                 if (item == null) {
                     continue;
-                } 
+                }
                 item.useDuringBattle(this, l.getCharacter());
             }
             //for (ItemProperty item : l)
             attack_character(l.getCharacter());
         }
-        
+        return true;
     }
 
     @Override
     public ImageView onLoadEnemy() {
         // TODO Auto-generated method stub
-        return new ImageView(zombieImage);
+        return new ImageView(new Image((new File("src/images/zombie.png")).toURI().toString()));
     }
 
     @Override

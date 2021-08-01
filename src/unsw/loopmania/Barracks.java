@@ -9,10 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Barracks extends BuildingProperty{
-    private Image barracksImage;
     public Barracks(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-        barracksImage = new Image((new File("src/images/barracks.png")).toURI().toString());
+
     }
 
     public void produceAlly(LoopManiaWorld l) {
@@ -20,7 +19,8 @@ public class Barracks extends BuildingProperty{
         // and put it in the global data
         PathPosition position = super.getNearestPath(l);
         Ally newAlly = new Ally(position);
-        l.getAllies().add(newAlly);
+        //l.getAllies().add(newAlly);
+        l.addAlly(newAlly);;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class Barracks extends BuildingProperty{
     @Override
     public ImageView onLoadBuilding() {
         // TODO Auto-generated method stub
-        return new ImageView(barracksImage);
+        return new ImageView(new Image((new File("src/images/barracks.png")).toURI().toString()));
     }
-    
+
 }

@@ -16,10 +16,9 @@ public class Doggie extends EnemyProperty{
     private int damage = 20;
     //private final boolean cirtical = true;
     private final boolean weak = false;
-    private final int hp = 000;
+    private final int hp = 1000;
     private final int exp = 100;
     private int criticalPoss = 10;
-    private Image basicEnemyImage;
 
     public Doggie(PathPosition position) {
         super(position);
@@ -34,25 +33,24 @@ public class Doggie extends EnemyProperty{
         setGold(this.gold); //TODO can be changed
         setSpeed(this.speed);
         setCriticalPoss(criticalPoss);
-        basicEnemyImage = new Image((new File("src/images/doggie.png")).toURI().toString());
     }
 
 
 
     @Override
-    public void attack(LoopManiaWorld l, List<Ally> defeatedAllies, List<EnemyProperty> transferZombies,
+    public boolean attack(LoopManiaWorld l, List<Ally> defeatedAllies, List<EnemyProperty> transferZombies,
             boolean inBattle, ItemProperty[] equipments) {
             if (Math.pow((l.getCharacter().getX() - getX()), 2) + Math.pow((l.getCharacter().getY() - getY()), 2) > Math
             .pow(getFightRadius(), 2)) {
-                return;
+                return false;
             }
-    
+
             boolean hasAttacked = false;
             for (Ally ally : l.getAllies()) {
                 if (ally.getHp() <= 0) {
                     continue;
                 }
-                
+
                 l.getCharacter().setInBattle(true);
                 inBattle = true;
                 hasAttacked = true;
@@ -68,20 +66,21 @@ public class Doggie extends EnemyProperty{
                 for (ItemProperty item : equipments) {
                     if (item == null) {
                         continue;
-                    } 
+                    }
                     item.useDuringBattle(this, l.getCharacter());
                 }
                 attack_character(l.getCharacter());
             }
-        
+        return true;
+
     }
 
     @Override
     public ImageView onLoadEnemy() {
         // TODO Auto-generated method stub
-        return new ImageView(basicEnemyImage);
+        return new ImageView(new Image((new File("src/images/doggie.png")).toURI().toString()));
     }
-    
+
 
     @Override
     public void setAllPropertyBack() {
@@ -91,7 +90,7 @@ public class Doggie extends EnemyProperty{
 
 
 
-    
+
     @Override
     public void attack_character(Character c) {
         super.attack_character(c);

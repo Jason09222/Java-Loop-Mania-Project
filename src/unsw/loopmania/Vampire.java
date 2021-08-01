@@ -18,7 +18,6 @@ public class Vampire extends EnemyProperty{
     private final int exp = 300;
 
     private int criticalPoss = 10;
-    private Image vampireImage;
     public Vampire(PathPosition position) {
         super(position);
         setType(type);
@@ -32,7 +31,6 @@ public class Vampire extends EnemyProperty{
         setGold(this.gold); //TODO can be changed
         setSpeed(this.speed);
         this.setCriticalPoss(criticalPoss);
-        vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
     }
 
     @Override
@@ -57,28 +55,28 @@ public class Vampire extends EnemyProperty{
         int int_random = rand.nextInt(getCriticalPoss());
         if (int_random == 0) {
             int times = rand.nextInt(10);
-            c.setHp(c.getHp() - this.getDamage() * times);
+            c.setHp(c.getHp().get() - this.getDamage() * times);
             //TODO random additional damage with every vampire attack, for a random number of vampire attacks
             return;
         }
         //TODO deduct hp of ally/Character
-        c.setHp(c.getHp() - this.getDamage());
+        c.setHp(c.getHp().get() - this.getDamage());
         return;
     }
 
 
-    @Override 
+    @Override
     public void setAllPropertyBack() {
         setDamage(60);
         setCriticalPoss(10);
     }
 
     @Override
-    public void attack(LoopManiaWorld l, List<Ally> defeatedAllies, List<EnemyProperty> transferZombies,
+    public boolean attack(LoopManiaWorld l, List<Ally> defeatedAllies, List<EnemyProperty> transferZombies,
             boolean inBattle, ItemProperty[] equipments) {
         if (Math.pow((l.getCharacter().getX() - getX()), 2) + Math.pow((l.getCharacter().getY() - getY()), 2) > Math
         .pow(getFightRadius(), 2)) {
-            return;
+            return false;
         }
 
         boolean hasAttacked = false;
@@ -86,13 +84,13 @@ public class Vampire extends EnemyProperty{
             if (ally.getHp() <= 0) {
                 continue;
             }
-            
+
             l.getCharacter().setInBattle(true);
             inBattle = true;
             //e.attack_ally(ally);
             hasAttacked = true;
             //if (ally.getHp() <= 0) {
-            
+
             attack_ally(ally);
             if (ally.getHp() <= 0) {
                 defeatedAllies.add(ally);
@@ -106,19 +104,19 @@ public class Vampire extends EnemyProperty{
             for (ItemProperty item : equipments) {
                 if (item == null) {
                     continue;
-                } 
+                }
                 item.useDuringBattle(this, l.getCharacter());
             }
             //for (ItemProperty item : l)
             attack_character(l.getCharacter());
         }
-        
+        return true;
     }
 
     @Override
     public ImageView onLoadEnemy() {
         // TODO Auto-generated method stub
-        return new ImageView(vampireImage);
+        return new ImageView( new Image((new File("src/images/vampire.png")).toURI().toString()));
     }
 
     @Override

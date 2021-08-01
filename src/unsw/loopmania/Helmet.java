@@ -3,6 +3,7 @@ package unsw.loopmania;
 import java.io.File;
 import java.util.List;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,21 +13,16 @@ import javafx.scene.image.ImageView;
  */
 public class Helmet extends ItemProperty {
     private final int defense = 30;
-    private final int price = 1500;
-    private Image helmetImage;
+    public static IntegerProperty price = new SimpleIntegerProperty(1500);
     // TODO = add more weapon/item types
     public Helmet(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y, ItemType.HELMET);
-        helmetImage = new Image((new File("src/images/helmet.png")).toURI().toString());
     }
     public int getDefense() {
         return this.defense;
     }
-    
-    @Override
-    public int getPrice() {
-        return this.price;
-    }
+
+
     @Override
     public void useDuringBattle(EnemyProperty e, Character c) {
         // TODO Auto-generated method stub
@@ -35,7 +31,7 @@ public class Helmet extends ItemProperty {
         } else {
             e.setDamage(0);
         }
-        
+
     }
     @Override
     public void characterStepOn(LoopManiaWorld l, List<ItemProperty> toRemoveGold,
@@ -43,10 +39,10 @@ public class Helmet extends ItemProperty {
         // TODO Auto-generated method stub
         return;
     }
-    
+
     @Override
     public ImageView onLoadItems() {
-        return new ImageView(helmetImage);
+        return new ImageView(new Image((new File("src/images/helmet.png")).toURI().toString()));
     }
     @Override
     public boolean canBePurchased() {

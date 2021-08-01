@@ -212,7 +212,18 @@ public class LoopManiaWorldController {
      * maze, as well as enemies, and running of battles
      */
     private Timeline timeline;
-
+    private File PVZaudio;
+    private File shopMusic;
+    private File battleMusicAutumn;
+    private File battleMusicSpring;
+    private File battleMusicSummer;
+    private File battleMusicWinter;
+    MediaPlayer shopAudioPlayer;
+    MediaPlayer audioPlayer;
+    MediaPlayer battleAutumnAudioPlayer;
+    MediaPlayer battleWinterAudioPlayer;
+    MediaPlayer battleSpringAudioPlayer;
+    MediaPlayer battleSummerAudioPlayer;
     private Image brilliantBlueNewImage;
     private Image goldImage;
     private Image expImage;
@@ -255,7 +266,6 @@ public class LoopManiaWorldController {
     private IntegerProperty battleVampireInNum;
     private IntegerProperty battleDoggieInNum;
     private IntegerProperty battleMuskInNum;
-    private SimpleIntegerProperty allyInWorld;
 
     // private Experience gold;
 
@@ -317,6 +327,8 @@ public class LoopManiaWorldController {
     private MenuSwitcher gameOverSwitcher;
     private MenuSwitcher gameWinSwitcher;
 
+    private MenuSwitcher heroCastleMenuSwitcher;
+
     /**
      * @param world           world object loaded from file
      * @param initialEntities the initial JavaFX nodes (ImageViews) which should be
@@ -365,6 +377,21 @@ public class LoopManiaWorldController {
     @FXML
     public void initialize() {
         // TODO = load more images/entities during initialization
+        battleMusicAutumn = new File("src/images/BATTLE_AUTUMN.mp3"); 
+        Media audio = new Media(battleMusicAutumn.toURI().toString());
+        battleAutumnAudioPlayer = new MediaPlayer(audio);
+
+        battleMusicWinter = new File("src/images/BATTLE_WINTER.mp3"); 
+        audio = new Media(battleMusicWinter.toURI().toString());
+        battleWinterAudioPlayer = new MediaPlayer(audio);
+
+        battleMusicSpring = new File("src/images/BATTLE_SPRING.mp3"); 
+        audio = new Media(battleMusicSpring.toURI().toString());
+        battleSpringAudioPlayer = new MediaPlayer(audio);
+
+        battleMusicSummer = new File("src/images/BATTLE_SUMMER.mp3"); 
+        audio = new Media(battleMusicSummer.toURI().toString());
+        battleSummerAudioPlayer = new MediaPlayer(audio);
 
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
@@ -452,7 +479,7 @@ public class LoopManiaWorldController {
 
         ImageView ringView = new ImageView(theOneRingImage);
         ringNum = new Label("0");
-        ringInNum = world.getRingNum();
+        ringInNum = world.getRing();
         ringNum.textProperty().bind(ringInNum.asString());
         ringNum.setTextFill(Color.GREEN);
         ringNum.setFont(new Font("Cambria", 40));
@@ -552,14 +579,15 @@ public class LoopManiaWorldController {
 
 
         ImageView heartView = new ImageView(heartImage);
-        hpProgress = new ProgressBar();
-        hpInWorld = world.getHp();
-        hpProgress.progressProperty().bind(hpInWorld);
-
         hpNum = new Label("0");
         hpInNum = world.getHpInt();
         hpNum.textProperty().bind(hpInNum.asString());
         hpNum.setTextFill(Color.RED);
+        
+        hpProgress = new ProgressBar();
+        hpInWorld = world.getHp();
+        hpProgress.progressProperty().bind(hpInWorld);
+
 
         layout.getChildren().add(hpProgress);
         StackPane.setAlignment(hpProgress, Pos.BOTTOM_RIGHT);
@@ -588,12 +616,15 @@ public class LoopManiaWorldController {
 
 
 
-        File audioFile = new File("src/images/audio.mp3");
-        Media audio = new Media(audioFile.toURI().toString());
-        MediaPlayer audioPlayer = new MediaPlayer(audio);
-        audioPlayer.setAutoPlay(true);
+        
 
     }
+
+    public GridPane getUnequippedInventory() {
+        return this.unequippedInventory;
+    }
+
+    
 
     /**
      * create and run the timer
@@ -601,20 +632,84 @@ public class LoopManiaWorldController {
     public void startTimer() {
         // TODO = handle more aspects of the behaviour required by the specification
         System.out.println("starting timer");
-        isPaused = false;
+
+
+
+        PVZaudio = new File("src/images/audio.mp3");
+        Media audio = new Media(PVZaudio.toURI().toString());
+        audioPlayer = new MediaPlayer(audio);
+        audioPlayer.setAutoPlay(true);
+        audioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         // trigger adding code to process main game logic to queue. JavaFX will target
         // framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
-            world.runTickMoves();
 
-            goldInt.set(world.getGolds());
-            hpInNum.set(world.getHpValue());
-            hpInWorld.set((double) world.getHpValue() / 500.00);
-            expInNum.set(world.getExperience());
-            expInWorld.set((double) world.getExperience() / 123456.00);
-            allyInNum.set(world.getAllies().size());
+            world.runTickMoves();
+            int result = world.getCycle() % 4;
+            if (result == 0) {
+                if (world.getCharacter().getInBattle()) {
+                    audioPlayer.pause();
+                    
+                    battleAutumnAudioPlayer.setAutoPlay(true);
+                    battleAutumnAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                    battleAutumnAudioPlayer.play();
+                } else {
+                    battleAutumnAudioPlayer.stop();
+                    audioPlayer.play();
+                }
+            } else if (result == 1) {
+                if (world.getCharacter().getInBattle()) {
+                    audioPlayer.pause();
+                    
+                    battleWinterAudioPlayer.setAutoPlay(true);
+                    battleWinterAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                    battleWinterAudioPlayer.play();
+                } else {
+                    battleWinterAudioPlayer.stop();
+                    audioPlayer.play();
+                }
+            } else if (result == 2) {
+                if (world.getCharacter().getInBattle()) {
+                    audioPlayer.pause();
+                    
+                    battleSpringAudioPlayer.setAutoPlay(true);
+                    battleSpringAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                    battleSpringAudioPlayer.play();
+                } else {
+                    battleSpringAudioPlayer.stop();
+                    audioPlayer.play();
+                }
+            } else {
+                if (world.getCharacter().getInBattle()) {
+                    audioPlayer.pause();
+                    
+                    battleSummerAudioPlayer.setAutoPlay(true);
+                    battleSummerAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                    battleSummerAudioPlayer.play();
+                } else {
+                    battleSummerAudioPlayer.stop();
+                    audioPlayer.play();
+                }
+            }
+            
+            if (world.isShopTime()) {
+                try {
+                    
+                    switchToShop();
+                    audioPlayer.pause();
+                    
+                    shopMusic = new File("src/images/shopMusic.mp3");
+                    Media stopAudio = new Media(shopMusic.toURI().toString());
+                    shopAudioPlayer = new MediaPlayer(stopAudio);
+                    shopAudioPlayer.setAutoPlay(true);
+                    shopAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            //allyInNum.set(world.getAllies().size());
             healthPotionInNum.set(world.getHealthPotion());
-            ringInNum.set(world.getRing());
             cycleInNum.set(world.getCycle());
             battleSlugInNum.set(world.getBattleSlugNum().get());
             battleZombieInNum.set(world.getBattleZombieNum().get());
@@ -686,17 +781,20 @@ public class LoopManiaWorldController {
      */
     private void loadVampireCard() {
         // TODO = load more types of card
+        checkCardEntity();
         VampireCastleCard vampireCastleCard = world.loadVampireCard();
         onLoad(vampireCastleCard);
     }
 
     private void loadCampfireCard() {
         // TODO = load more types of card
+        checkCardEntity();
         CampfireCard campfireCard = world.loadCampfireCard();
         onLoad(campfireCard);
     }
 
     private void loadTowerCard() {
+        checkCardEntity();
         // TODO = load more types of card
         TowerCard towerCard = world.loadTowerCard();
         onLoad(towerCard);
@@ -704,23 +802,27 @@ public class LoopManiaWorldController {
 
     private void loadTrapCard() {
         // TODO = load more types of card
+        checkCardEntity();
         TrapCard trapCard = world.loadTrapCard();
         onLoad(trapCard);
     }
 
     private void loadVillageCard() {
         // TODO = load more types of card
+        checkCardEntity();
         VillageCard villageCard = world.loadVillageCard();
         onLoad(villageCard);
     }
 
     private void loadBarracksCard() {
         // TODO = load more types of card
+        checkCardEntity();
         BarracksCard barracksCard = world.loadBarracksCard();
         onLoad(barracksCard);
     }
 
     public void loadZombiePitCard() {
+        checkCardEntity();
         ZombiePitCard zombiePitCard = world.loadZombiePitCard();
         onLoad(zombiePitCard);
     }
@@ -757,7 +859,7 @@ public class LoopManiaWorldController {
 
     private void loadArmour() {
         Armour armour = (Armour)world.addUnequippedItem(ItemType.ARMOUR);
-        armour.onLoadItems();
+        onLoad(armour);
     }
 
     /**
@@ -775,7 +877,9 @@ public class LoopManiaWorldController {
         Random rand = new Random();
         int result = rand.nextInt(2);
         world.addGold(enemy.getGold());
-        if (enemy.getType().equals("Doggie")) world.addDoggieCoin(2);
+        if (enemy.getType().equals("Doggie")) {
+            world.addDoggieCoin(rand.nextInt(5));
+        }
         switch(result) {
             case 0:
                 generateCard();
@@ -956,7 +1060,7 @@ public class LoopManiaWorldController {
      *
      * @param item
      */
-    private void onLoad(ItemProperty item) {
+    public void onLoad(ItemProperty item) {
         ImageView view = item.onLoadItems();
 
         if (item.getType() == ItemType.OTHER || item.getType() == ItemType.HEALTHPOTION) {
@@ -968,6 +1072,12 @@ public class LoopManiaWorldController {
             addEntity(item, view);
             unequippedInventory.getChildren().add(view);
         }
+    }
+
+    public void unLoad(ItemProperty item) {
+        ImageView view = item.onLoadItems();
+        unequippedInventory.getChildren().remove(view);
+        
     }
 
     /**
@@ -1054,9 +1164,12 @@ public class LoopManiaWorldController {
                                  * Village) onLoad((Village)b); if (b instanceof ZombiePit)
                                  * onLoad((ZombiePit)b); if (b instanceof Barracks) onLoad((Barracks)b);
                                  */
-                                ImageView view = b.onLoadBuilding();
-                                addEntity(b, view);
-                                squares.getChildren().add(view);
+                                if (b != null) {
+
+                                    ImageView view = b.onLoadBuilding();
+                                    addEntity(b, view);
+                                    squares.getChildren().add(view);
+                                }
                                 // VampireCastleBuilding newBuilding =
                                 // (VampireCastleBuilding)world.convertCardToBuildingByCoordinates(nodeX, nodeY,
                                 // x, y);
@@ -1333,6 +1446,10 @@ public class LoopManiaWorldController {
         this.gameWinSwitcher = gameWinSwitcher;
     }
 
+    public void setHeroCastleMenuSwitcher(MenuSwitcher heroCastleMenuSwitcher) {
+        this.heroCastleMenuSwitcher = heroCastleMenuSwitcher;
+    }
+
     /**
      * this method is triggered when click button to go to main menu in FXML
      *
@@ -1343,6 +1460,12 @@ public class LoopManiaWorldController {
         // TODO = possibly set other menu switchers
         pause();
         mainMenuSwitcher.switchMenu();
+    }
+
+    @FXML
+    private void switchToShop() throws IOException {
+        pause();
+        heroCastleMenuSwitcher.switchMenu();
     }
 
     /**
@@ -1431,5 +1554,35 @@ public class LoopManiaWorldController {
         System.out.println("current method = " + currentMethodLabel);
         System.out.println("In application thread? = " + Platform.isFxApplicationThread());
         System.out.println("Current system time = " + java.time.LocalDateTime.now().toString().replace('T', ' '));
+    }
+
+
+    public void checkCardEntity() {
+        if (world.getCardEntities().size() >= world.getWidth()){
+            // give some cash/experience/item rewards for the discarding of the oldest card
+            Random rand = new Random();
+            int result = rand.nextInt(10) % 3;
+            switch (result) {
+                case 0:
+                    world.addGold(rand.nextInt(5));
+                    break;
+                case 1:
+                    world.addExperience(rand.nextInt(5));
+                    break;
+                case 2:
+                    world.addUnequippedItem(world.generateItem());
+                    break;
+            }
+
+            world.removeCard(0);
+        }
+    }
+
+    public MediaPlayer getAudioPlayer() {
+        return audioPlayer;
+    }
+
+    public MediaPlayer getShopAudioPlayer() {
+        return shopAudioPlayer;
     }
 }
