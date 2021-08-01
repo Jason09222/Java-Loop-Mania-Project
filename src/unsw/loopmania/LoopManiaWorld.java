@@ -94,6 +94,7 @@ public class LoopManiaWorld {
     private GoalLogic totaGoal;
     private DoggieCoinMarket doggieCoinMarket;
     private ModeType mode;
+    // private List<ItemProperty> rareItems
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
      * them
@@ -611,7 +612,7 @@ public class LoopManiaWorld {
             shouldSpawnDoggie = true;
         }
 
-        if (getCycle() == 4 && experience.get() >= 100 && !hasKilledMuske.get() && !hasSpawnMuske.get()) {
+        if (getCycle() >= 40 && experience.get() >= 10000 && !hasKilledMuske.get() && !hasSpawnMuske.get()) {
             shouldSpawnMuske = true;
         }
         moveBasicEnemies();
@@ -1367,4 +1368,9 @@ public class LoopManiaWorld {
     public DoubleProperty getSuperPowerProgress() {
         return character.getSuperPowerProgress();
     }
+
+    public void useSuperPower() {
+        character.useSuperPower();
+    }
+
 }

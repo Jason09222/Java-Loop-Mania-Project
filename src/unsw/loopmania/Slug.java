@@ -14,7 +14,8 @@ public class Slug extends EnemyProperty{
     private final int SupportR = 1;
     private final int gold = 100;
     private final int speed = 2;
-    private int damage = 10;
+    private int damage = 20;
+
     //private final boolean cirtical = true;
     private final boolean weak = false;
     private final int hp = 600;
@@ -36,7 +37,7 @@ public class Slug extends EnemyProperty{
     }
     @Override
     public void setAllPropertyBack() {
-        setDamage(2);
+        setDamage(20);
         setCriticalPoss(0);
     }
 
@@ -78,6 +79,7 @@ public class Slug extends EnemyProperty{
                 item.useDuringBattle(this, l.getCharacter());
             }
             attack_character(l.getCharacter());
+            l.getCharacter().charingSuperPower(20);
         }
         return true;
     }

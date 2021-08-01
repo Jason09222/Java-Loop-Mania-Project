@@ -17,7 +17,7 @@ public class Anduril extends RareItem {
     private Image andurilImage;
     public Anduril(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y, ItemType.SWORD);
-        andurilImage = new Image((new File("src/images/anduril.png")).toURI().toString());
+        //andurilImage = new Image((new File("src/images/anduril.png")).toURI().toString());
 
         //TODO Auto-generated constructor stub
     }
@@ -38,8 +38,9 @@ public class Anduril extends RareItem {
         if (e.isBoss()) {
             c.setDamage(c.getDamage() + 3 * damage);
         } else {
-            c.setDamage(c.getDamage());
+            c.setDamage(c.getDamage() + damage);
         }
+        
     }
 
     @Override
@@ -61,5 +62,6 @@ public class Anduril extends RareItem {
         // TODO Auto-generated method stub
         return false;
     }
+
 
 }

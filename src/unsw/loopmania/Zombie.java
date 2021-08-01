@@ -12,7 +12,7 @@ public class Zombie extends EnemyProperty{
     private final int SupportR = 4;
     private final int gold = 300;
     private final int speed = 2;
-    private int damage = 20;
+    private int damage = 30;
     //private final boolean cirtical = true;
     private final boolean weak = false;
     private final int hp = 800;
@@ -42,7 +42,7 @@ public class Zombie extends EnemyProperty{
 
     @Override
     public void setAllPropertyBack() {
-        setDamage(40);
+        setDamage(30);
         setCriticalPoss(10);
     }
 
@@ -94,6 +94,7 @@ public class Zombie extends EnemyProperty{
             }
             //for (ItemProperty item : l)
             attack_character(l.getCharacter());
+            l.getCharacter().charingSuperPower(20);
         }
         return true;
     }

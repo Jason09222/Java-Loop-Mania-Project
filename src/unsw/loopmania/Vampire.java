@@ -61,13 +61,14 @@ public class Vampire extends EnemyProperty{
         }
         //TODO deduct hp of ally/Character
         c.setHp(c.getHp().get() - this.getDamage());
+        c.charingSuperPower(20);
         return;
     }
 
 
     @Override
     public void setAllPropertyBack() {
-        setDamage(60);
+        setDamage(40);
         setCriticalPoss(10);
     }
 

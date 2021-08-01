@@ -84,7 +84,7 @@ public class Doggie extends EnemyProperty{
 
     @Override
     public void setAllPropertyBack() {
-        setDamage(20);
+        setDamage(60);
         setCriticalPoss(10);
     }
 
@@ -94,6 +94,7 @@ public class Doggie extends EnemyProperty{
     @Override
     public void attack_character(Character c) {
         super.attack_character(c);
+        c.charingSuperPower(20);
         Random rand = new Random();
         int result = rand.nextInt(criticalPoss);
         if (result == 0) {
