@@ -109,6 +109,9 @@ public class HeroCastleMenuController {
     @FXML
     private StackPane currentGold;
 
+    @FXML
+    private Label shopMessage;
+
 
     private int nextAvailableX = 0;
     private int nextAvailableY = 0;
@@ -143,7 +146,6 @@ public class HeroCastleMenuController {
 
     void selected(ItemProperty item) {
         initialisePane();
-        sell.setText("SELL");
         ImageView view = item.onLoadItems();
         view.setFitHeight(100);
         view.setFitWidth(100);
@@ -163,6 +165,8 @@ public class HeroCastleMenuController {
     @FXML
     void handleExitButton(ActionEvent event) {
         resetButtons();
+        controller.getShopAudioPlayer().pause();
+        controller.getAudioPlayer().play();
         switchToGame();
     }
 
@@ -185,74 +189,120 @@ public class HeroCastleMenuController {
     
     @FXML
     void handlePurchaseDoggie(ActionEvent event) {
-        if (world.getGold().get() >= world.getItemPrice(ItemType.ARMOUR).get()) {
-            buyItem(ItemType.ARMOUR);
+        if (world.getGold().get() >= world.getItemPrice(ItemType.DOGGIECOIN).get()) {
+            buyItem(ItemType.DOGGIECOIN);
         }
     }
 
     @FXML
     void handlePurchaseArmour(ActionEvent event) {
-        if (!purchaseArmour.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.ARMOUR).get()) {
-            buyItem(ItemType.ARMOUR);
-            purchaseArmour.setText("\u2713");
-            armourBought++;
+        if (world.getMode() == ModeType.BERSERKER && armourBought != 0) {
+            shopMessage.setText("Shop Message: Cannot buy more armour in Berserker mode");
         }
+        else {
+            if (world.getGold().get() >= world.getItemPrice(ItemType.ARMOUR).get()) {
+                buyItem(ItemType.ARMOUR);
+                armourBought++;
+                shopMessage.setText("Shop Message: Armour was purchased");
+            }
+            else {
+                shopMessage.setText("Shop Message: Not enough gold to buy armour");
+            }
+        }
+
         
     }
 
     @FXML
     void handlePurchaseHelmet(ActionEvent event) {
-        if (!purchaseHelmet.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.HELMET).get()) {
-            buyItem(ItemType.HELMET);
-            purchaseHelmet.setText("\u2713");
-            armourBought++;
+        if (world.getMode() == ModeType.BERSERKER && armourBought != 0) {
+            shopMessage.setText("Shop Message: Cannot buy more armour in Berserker mode");
         }
+        else {
+            if (world.getGold().get() >= world.getItemPrice(ItemType.HELMET).get()) {
+                buyItem(ItemType.HELMET);
+                armourBought++;
+                shopMessage.setText("Shop Message: Helmet was purchased");
+            }
+            else {
+                shopMessage.setText("Shop Message: Not enough gold to buy helmet");
+            }
+        }
+
+
         
     }
 
     @FXML
     void handlePurchasePotion(ActionEvent event) {
-        if (!purchasePotion.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.HEALTHPOTION).get()) {
-            buyItem(ItemType.HEALTHPOTION);
-            purchasePotion.setText("\u2713");
-            potionBought++;
+        if (world.getMode() == ModeType.SURVIVAL && potionBought != 0) {
+            shopMessage.setText("Shop Message: Cannot buy more potions in Survival mode");
         }
+        else {
+            if (world.getGold().get() >= world.getItemPrice(ItemType.HEALTHPOTION).get()) {
+                buyItem(ItemType.HEALTHPOTION);
+                potionBought++;
+                shopMessage.setText("Shop Message: Potion was purchased");
+            }
+            else {
+                shopMessage.setText("Shop Message: Not enough gold to buy potion");
+            }
+        }
+
         
     }
 
     @FXML
     void handlePurchaseShield(ActionEvent event) {
-        if (!purchaseShield.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.SHIELD).get()) {
-            buyItem(ItemType.SHIELD);
-            purchaseShield.setText("\u2713");
-            armourBought++;
+        if (world.getMode() == ModeType.BERSERKER && armourBought != 0) {
+            shopMessage.setText("Shop Message: Cannot buy more armour in Berserker mode");
         }
+        else {
+            if (world.getGold().get() >= world.getItemPrice(ItemType.SHIELD).get()) {
+                buyItem(ItemType.SHIELD);
+                armourBought++;
+                shopMessage.setText("Shop Message: Shield was purchased");
+            }
+            else {
+                shopMessage.setText("Shop Message: Not enough gold to buy shield");
+            }
+        }
+
         
     }
 
     @FXML
     void handlePurchaseStaff(ActionEvent event) {
-        if (!purchaseStaff.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.STAFF).get()) {
+        if (world.getGold().get() >= world.getItemPrice(ItemType.STAFF).get()) {
             buyItem(ItemType.STAFF);
-            purchaseStaff.setText("\u2713");
+            shopMessage.setText("Shop Message: Staff was purchased");
+        }
+        else {
+            shopMessage.setText("Shop Message: Not enough gold to buy staff");
         }
         
     }
 
     @FXML
     void handlePurchaseStake(ActionEvent event) {
-        if (!purchaseStake.getText().equals("\u2713") &&world.getGold().get() >= world.getItemPrice(ItemType.STAKE).get()) {
+        if (world.getGold().get() >= world.getItemPrice(ItemType.STAKE).get()) {
             buyItem(ItemType.STAKE);
-            purchaseStake.setText("\u2713");
+            shopMessage.setText("Shop Message: Stake was purchased");
+        }
+        else {
+            shopMessage.setText("Shop Message: Not enough gold to buy stake");
         }
         
     }
 
     @FXML
     void handlePurchaseSword(ActionEvent event) {
-        if (!purchaseSword.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.SWORD).get()) {
+        if (world.getGold().get() >= world.getItemPrice(ItemType.SWORD).get()) {
             buyItem(ItemType.SWORD);
-            purchaseSword.setText("\u2713");
+            shopMessage.setText("Shop message: Sword was purchased");
+        }
+        else {
+            shopMessage.setText("Shop Message: Not enough gold to buy sword");
         }
         
     }
@@ -266,17 +316,13 @@ public class HeroCastleMenuController {
         gold.setTextFill(Color.ORANGE);
         gold.setFont(new Font("Cambria", 40));
         //goldInt.set(world.getGolds());
-        Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
-        for (int x = 0; x < LoopManiaWorld.unequippedInventoryWidth; x++) {
-            for (int y = 0; y < LoopManiaWorld.unequippedInventoryHeight; y++) {
-                ImageView emptySlotView = new ImageView(inventorySlotImage);
-                inventory.add(emptySlotView, x, y);
-            }
-        }
         currentGold.getChildren().add(gold);
         StackPane.setAlignment(gold, Pos.CENTER_RIGHT);
         potionBought = 0;
         armourBought = 0;
+
+        doggiePrice.setText("0");
+        doggiePrice.textProperty().bind(DoggieCoinPrice.price.asString());
 
     }
 
@@ -284,7 +330,7 @@ public class HeroCastleMenuController {
 
     @FXML
     public void sellItem(ActionEvent event) {
-        if (sell.getText().equals("\u2713") || paneToSell.getChildren().size() == 0) return;
+        if (paneToSell.getChildren().size() == 0) return;
         String text = "";
         for (Node each: paneToSell.getChildren()) {
             if (each instanceof Label) {
@@ -294,7 +340,6 @@ public class HeroCastleMenuController {
         }
         
         removeItem(text);
-        sell.setText("\u2713");
         update();
         initialisePane();
         //goldInt.set(world.getGolds());
