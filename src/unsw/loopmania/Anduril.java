@@ -35,14 +35,11 @@ public class Anduril extends RareItem {
     
             if (e.getDamage() < 0) e.setDamage(0);
         }
-        else {
-            if (e.isBoss()) {
-                c.setDamage(c.getDamage() + 3 * damage);
-            } else {
-                c.setDamage(c.getDamage());
-            }
+        if (e.isBoss()) {
+            c.setDamage(c.getDamage() + 3 * damage);
+        } else {
+            c.setDamage(c.getDamage());
         }
-
     }
 
     @Override
@@ -65,9 +62,4 @@ public class Anduril extends RareItem {
         return false;
     }
 
-    private void confusingProperty(LoopManiaWorld l) {
-        if (l.getMode() != ModeType.CONFUSING) {
-
-        }
-    }
 }

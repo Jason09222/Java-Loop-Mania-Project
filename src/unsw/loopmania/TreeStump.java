@@ -29,17 +29,13 @@ public class TreeStump extends RareItem{
                 c.setDamage(c.getDamage());
             }
         }
-        else {
-            if (e.isBoss()) {
-                e.setDamage(e.getDamage() - defense * 3);
-            } else {
-                e.setDamage(e.getDamage() - defense);
-            }
-    
-            if (e.getDamage() < 0) e.setDamage(0);
+        if (e.isBoss()) {
+            e.setDamage(e.getDamage() - defense * 3);
+        } else {
+            e.setDamage(e.getDamage() - defense);
         }
 
-        
+        if (e.getDamage() < 0) e.setDamage(0);
     }
 
 
