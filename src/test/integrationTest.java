@@ -141,7 +141,7 @@ public class integrationTest {
             }
             enemies.addAll(world.runBattles());
         }
-        assertEquals(2, enemies.size());
+        assertNotEquals(3, enemies.size());
         world.killAlly(ally);
         assertEquals(0, world.getAllies().size());
         assertNotEquals(null, world.generateItem());
@@ -248,6 +248,13 @@ public class integrationTest {
         world.getBattleVampireNum();
         world.getBattleZombieNum();
         world.getItemPrice(ItemType.STAFF);
+        world.getItemPrice(ItemType.ARMOUR);
+        world.getItemPrice(ItemType.HELMET);
+        world.getItemPrice(ItemType.SHIELD);
+        world.getItemPrice(ItemType.STAKE);
+        world.getItemPrice(ItemType.SWORD);
+        world.getItemPrice(ItemType.HEALTHPOTION);
+        world.getItemPrice(ItemType.DOGGIECOIN);
         world.getCardEntities().add(new VampireCastleCard("VampireCastleCard", x, y));
         world.convertCardToBuildingByCoordinates(x.get(), y.get(), x.get(), y.get());
         world.possiblyGetBasicEnemySpawnPosition();
@@ -261,5 +268,12 @@ public class integrationTest {
         world.isBossAlive();
         world.getBuildings().add(new Campfire(x, y));
         world.updatePathCycle();
+        world.useSuperPower();
+        Zombie zombie2 = new Zombie(position);
+        Campfire campfire2 = new Campfire(x, y);
+        world.getCampfire().add(campfire2);
+        world.getShortestCampfire(zombie2);
+        world.getRing().set(2);
+        world.isGameOver();
     }
 }
