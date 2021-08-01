@@ -20,6 +20,7 @@ import java.io.File;
 import javax.swing.Action;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 
 public class HeroCastleMenuController {
@@ -110,7 +111,10 @@ public class HeroCastleMenuController {
     private StackPane currentGold;
 
     @FXML
-    private Label shopMessage;
+    private Label doggieCoinOwned;
+
+    @FXML
+    private Label shopMessage = new Label("");
 
 
     private int nextAvailableX = 0;
@@ -119,7 +123,7 @@ public class HeroCastleMenuController {
     public void update() {
         initialiseInventory();
         //goldInt.set(world.getGolds());
-        sell.setText("Sell");
+        //sell.setText("Sell");
         for(ItemProperty item: world.getUnequippedInventoryItems()) {
             if (item != null) {
 
@@ -137,6 +141,7 @@ public class HeroCastleMenuController {
 
 
         }
+    
     }
 
     @FXML
@@ -144,6 +149,14 @@ public class HeroCastleMenuController {
         update();
     }
 
+    @FXML
+    void selectDoggie(MouseEvent event) {
+        DoggieCoin coin = new DoggieCoin(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0), ItemType.DOGGIECOIN);
+        selected(coin);
+        coin.destroy();
+    }
+
+    
     void selected(ItemProperty item) {
         initialisePane();
         ImageView view = item.onLoadItems();
@@ -172,6 +185,9 @@ public class HeroCastleMenuController {
     @FXML
     void handleExitButton(ActionEvent event) {
         resetButtons();
+        controller.getShopAudioPlayer().pause();
+        controller.getAudioPlayer().play();
+        resetShop();
         switchToGame();
     }
 
@@ -183,8 +199,9 @@ public class HeroCastleMenuController {
         if (itemType == ItemType.HEALTHPOTION) {
             world.addPotion(1);
             
-        }
-        else {
+        } else if (itemType == ItemType.DOGGIECOIN) {
+            world.addDoggieCoin(1);
+        } else {
             ItemProperty item = world.addUnequippedItem(itemType);
             controller.onLoad(item);
         }
@@ -196,6 +213,10 @@ public class HeroCastleMenuController {
     void handlePurchaseDoggie(ActionEvent event) {
         if (world.getGold().get() >= world.getItemPrice(ItemType.DOGGIECOIN).get()) {
             buyItem(ItemType.DOGGIECOIN);
+            shopMessage.setText("Shop Message: 1 doggie coin was purchased");
+        }
+        else {
+            shopMessage.setText("Shop Message: Not enough gold to buy doggie coin");
         }
     }
 
@@ -329,9 +350,25 @@ public class HeroCastleMenuController {
         doggiePrice.setText("0");
         doggiePrice.textProperty().bind(DoggieCoinPrice.price.asString());
 
+        doggieCoinOwned.setText(String.valueOf(world.getDoggieCoin().get()));
+        //doggieCoinOwned.textProperty().bind(world.getDoggieCoin().asString());
     }
 
+    @FXML
+    public void addCoin(ActionEvent event) {
+        String inital = doggieCoinOwned.getText();
+        int now = Integer.parseInt(inital) + 1;
+        if (now > world.getDoggieCoin().get()) return;
+        doggieCoinOwned.setText(String.valueOf(now));
+    }
 
+    @FXML
+    public void decreaseCoin(ActionEvent event) {
+        String inital = doggieCoinOwned.getText();
+        int now = Integer.parseInt(inital) - 1;
+        if (now < 0) return;
+        doggieCoinOwned.setText(String.valueOf(now));
+    }
 
     @FXML
     public void sellItem(ActionEvent event) {
@@ -355,6 +392,13 @@ public class HeroCastleMenuController {
     }
 
     public void removeItem(String text) {
+        if (text.equals("DOGGIECOIN")) {
+            int number = Integer.parseInt(doggieCoinOwned.getText());
+            goldInt.set(goldInt.get() + number * DoggieCoinPrice.price.get());
+            world.addDoggieCoin(-1 * number);
+            doggieCoinOwned.setText(String.valueOf(world.getDoggieCoin().get()));
+            return;
+        }
         for (ItemProperty item: world.getUnequippedInventoryItems()) {
             if(item.getType().name().equals(text)) {
                 world.getUnequippedInventoryItems().remove(item);

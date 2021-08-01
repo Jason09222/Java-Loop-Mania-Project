@@ -37,7 +37,7 @@ public class LoopManiaWorld {
      * width of the world in GridPane cells
      */
     private int width;
-
+    private int shopTimes;
     /**
      * height of the world in GridPane cells
      */
@@ -80,7 +80,7 @@ public class LoopManiaWorld {
     private int potionsOwned;
 
     private SimpleIntegerProperty alliesOwned;
-    private int doggieCoinOwned;
+    private IntegerProperty doggieCoinOwned;
 
     private IntegerProperty experience;
     private DoubleProperty expDouble;
@@ -99,6 +99,8 @@ public class LoopManiaWorld {
      * them
      */
     private List<Pair<Integer, Integer>> orderedPath;
+
+
 
     /**
      * create the world (constructor)
@@ -136,9 +138,10 @@ public class LoopManiaWorld {
         shouldSpawnMuske = false;
         hasSpawnMuske = new SimpleBooleanProperty(false);
         hasKilledMuske = new SimpleBooleanProperty(false);
-        doggieCoinOwned = 0;
+        doggieCoinOwned = new SimpleIntegerProperty(0);
 
         doggieCoinMarket = new DoggieCoinMarket(this);
+        shopTimes = 0;
         doggieCoinPrice = new DoggieCoinPrice();
         doggieCoinMarket.registerObserver(doggieCoinPrice);
     }
@@ -208,7 +211,7 @@ public class LoopManiaWorld {
         // like this with specific input types...
         nonSpecifiedEntities.add(entity);
     }
-    public int getDoggieCoin() {
+    public IntegerProperty getDoggieCoin() {
         return this.doggieCoinOwned;
     }
     public IntegerProperty getHpValue() {
@@ -225,6 +228,10 @@ public class LoopManiaWorld {
 
     public int getCycle() {
         return this.pathCycle / orderedPath.size();
+    }
+
+    public void setCycle(int n) {
+        this.pathCycle = n * orderedPath.size();
     }
 
     public List<ItemProperty> getUnequippedInventoryItems() {
@@ -349,7 +356,7 @@ public class LoopManiaWorld {
         ally.destroy();
         allies.remove(ally);
         alliesOwned.set(alliesOwned.get() - 1);
-        if (alliesOwned.get() < 0) alliesOwned.set(0); 
+        if (alliesOwned.get() < 0) alliesOwned.set(0);
     }
 
     /**
@@ -364,6 +371,9 @@ public class LoopManiaWorld {
 
         boolean inBattle = false;
         character.setDamageBack();
+        if (character.getSuperPowerDuration() > 0) {
+            character.setDamage(3 * character.getDamage());
+        }
         for (EnemyProperty e : enemies) {
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
             // influence radii and battle radii
@@ -374,7 +384,7 @@ public class LoopManiaWorld {
                 e.setInBattle(true);
                 character.setInBattle(true);
             }
-            
+
         }
         for (EnemyProperty enemy : transferZombies) {
             enemies.add(enemy);
@@ -402,7 +412,7 @@ public class LoopManiaWorld {
                 continue;
             }
             // add character attacked
-            if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= 4) {
+            if (e.getInBattle()) {
                 //inBattle = true;
                 //e.setInBattle(true);
                 character.attack(e, equippedItems.getEquipment(), getMode());
@@ -471,12 +481,12 @@ public class LoopManiaWorld {
      */
 
     public ItemProperty addUnequippedItem(ItemType type) {
+        
         Random rand = new Random();
         int result = rand.nextInt(30);
         if (result == 0) {
             ringOwned.set(ringOwned.get() + 1);
         }
-
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null) {
             // eject the oldest unequipped item and replace it... oldest item is that at
@@ -527,7 +537,12 @@ public class LoopManiaWorld {
                 potionsOwned += 1;
                 item = null;
                 break;
-
+            case ANDURIL:
+                item = new Anduril(x, y);
+                break;
+            case TREESTUMP:
+                item = new TreeStump(x, y);
+                break;
             default:
 
                 item = null;
@@ -584,6 +599,9 @@ public class LoopManiaWorld {
      * immediately
      */
     public void runTickMoves() {
+        if (character.getSuperPowerDuration() > 0) {
+            character.setSuperPowerDuration(character.getSuperPowerDuration() - 1);
+        }
         doggieCoinMarket.notifyObservers();
         if (!character.getInBattle()) {
             character.moveDownPath();
@@ -835,28 +853,28 @@ public class LoopManiaWorld {
         return new SimpleIntegerProperty(this.pathCycle / orderedPath.size());
     }
 
-    
+
     public IntegerProperty getAllyNum() {
         return alliesOwned;
     }
-    
+
     public IntegerProperty getHealthPotionNum() {
         return new SimpleIntegerProperty(potionsOwned);
     }
-    
+
     public DoubleProperty getHp() {
         return character.getHpProgress();
     }
-    
+
     public IntegerProperty getHpInt() {
         return character.getHp();
     }
-    
+
     public void addGold(int num) {
         gold.set(gold.get() + num);
     }
     public void addDoggieCoin(int num) {
-        this.doggieCoinOwned += num;
+        this.doggieCoinOwned.set(this.getDoggieCoin().get() + num);
     }
     /*
     public void spendGold(int numLost) {
@@ -1131,7 +1149,7 @@ public class LoopManiaWorld {
 
 
 
-    
+
 
     public boolean checkPathTile(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         Pair<Integer, Integer> position = new Pair<>(x.get(), y.get());
@@ -1205,7 +1223,8 @@ public class LoopManiaWorld {
     }
 
     public boolean isShopTime() {
-        if (character.getX() == startCastle.getX() && character.getY() == startCastle.getY()) {
+        if (character.getX() == startCastle.getX() && character.getY() == startCastle.getY() && shopTimes < getCycle()) {
+            shopTimes++;
             return true;
         }
         return false;
@@ -1276,9 +1295,9 @@ public class LoopManiaWorld {
         }
         else if (itemType == ItemType.HEALTHPOTION) {
             return HealthPotion.price;
-        } 
+        }
         else if (itemType == ItemType.DOGGIECOIN) {
-            return DoggieCoin.price;
+            return DoggieCoinPrice.price;
         }
         return new SimpleIntegerProperty(0);
     }
@@ -1343,5 +1362,9 @@ public class LoopManiaWorld {
 
     public void setMode(ModeType mode) {
         this.mode = mode;
+    }
+
+    public DoubleProperty getSuperPowerProgress() {
+        return character.getSuperPowerProgress();
     }
 }
