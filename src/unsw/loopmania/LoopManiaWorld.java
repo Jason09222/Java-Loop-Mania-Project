@@ -100,7 +100,7 @@ public class LoopManiaWorld {
      */
     private List<Pair<Integer, Integer>> orderedPath;
 
-    
+
 
     /**
      * create the world (constructor)
@@ -230,6 +230,10 @@ public class LoopManiaWorld {
         return this.pathCycle / orderedPath.size();
     }
 
+    public void setCycle(int n) {
+        this.pathCycle = n * orderedPath.size();
+    }
+
     public List<ItemProperty> getUnequippedInventoryItems() {
         return this.unequippedInventoryItems;
     }
@@ -352,7 +356,7 @@ public class LoopManiaWorld {
         ally.destroy();
         allies.remove(ally);
         alliesOwned.set(alliesOwned.get() - 1);
-        if (alliesOwned.get() < 0) alliesOwned.set(0); 
+        if (alliesOwned.get() < 0) alliesOwned.set(0);
     }
 
     /**
@@ -380,7 +384,7 @@ public class LoopManiaWorld {
                 e.setInBattle(true);
                 character.setInBattle(true);
             }
-            
+
         }
         for (EnemyProperty enemy : transferZombies) {
             enemies.add(enemy);
@@ -844,23 +848,23 @@ public class LoopManiaWorld {
         return new SimpleIntegerProperty(this.pathCycle / orderedPath.size());
     }
 
-    
+
     public IntegerProperty getAllyNum() {
         return alliesOwned;
     }
-    
+
     public IntegerProperty getHealthPotionNum() {
         return new SimpleIntegerProperty(potionsOwned);
     }
-    
+
     public DoubleProperty getHp() {
         return character.getHpProgress();
     }
-    
+
     public IntegerProperty getHpInt() {
         return character.getHp();
     }
-    
+
     public void addGold(int num) {
         gold.set(gold.get() + num);
     }
@@ -1140,7 +1144,7 @@ public class LoopManiaWorld {
 
 
 
-    
+
 
     public boolean checkPathTile(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         Pair<Integer, Integer> position = new Pair<>(x.get(), y.get());
@@ -1283,7 +1287,7 @@ public class LoopManiaWorld {
         }
         else if (itemType == ItemType.HEALTHPOTION) {
             return HealthPotion.price;
-        } 
+        }
         else if (itemType == ItemType.DOGGIECOIN) {
             return DoggieCoinPrice.price;
         }

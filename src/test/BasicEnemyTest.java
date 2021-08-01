@@ -171,7 +171,9 @@ public class BasicEnemyTest {
         zombie.attack_character(character);
         zombie.setAllPropertyBack();
         world.setCharacter(character);
-        assertFalse(zombie.attack(world, new ArrayList<>(), new ArrayList<>(), true, world.getEquipItems()));
+        world.getAllies().add(ally);
+        world.setCycle(6);
+        assertTrue(zombie.attack(world, new ArrayList<>(), new ArrayList<>(), true, world.getEquipItems()));
         assertTrue(zombie.isBoss());
         Zombie zombie2 = new Zombie(position);
         zombie2.setHP(100);

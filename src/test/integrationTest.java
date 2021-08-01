@@ -69,44 +69,43 @@ public class integrationTest {
         Zombie zombie = new Zombie(position);
         SimpleIntegerProperty x = new SimpleIntegerProperty(1);
         SimpleIntegerProperty y = new SimpleIntegerProperty(2);
-        // Armour armour = new Armour(x, y);
-        // Barracks barrack = new Barracks(x, y);
-        // BarracksCard barracksCard = new BarracksCard("Barracks", x, y);
-        // Campfire campfire = new Campfire(x, y);
-        // CampfireCard campfireCard = new CampfireCard("Campfire", x, y);
-        // Gold gold = new Gold(x, y);
-        // HealthPotion healthPotion = new HealthPotion(x, y);
-        // Helmet helmet = new Helmet(x, y);
-        // HeroCastle heroCastle = new HeroCastle(x, y);
-        // Shield shield = new Shield(x, y);
+        Armour armour = new Armour(x, y);
+        Barracks barrack = new Barracks(x, y);
+        BarracksCard barracksCard = new BarracksCard("Barracks", x, y);
+        Campfire campfire = new Campfire(x, y);
+        CampfireCard campfireCard = new CampfireCard("Campfire", x, y);
+        Gold gold = new Gold(x, y);
+        HealthPotion healthPotion = new HealthPotion(x, y);
+        Helmet helmet = new Helmet(x, y);
+        HeroCastle heroCastle = new HeroCastle(x, y);
+        Shield shield = new Shield(x, y);
         Slug slug = new Slug(position);
-        // Staff staff = new Staff(x, y);
-        // Stake stake = new Stake(x, y);
-        // Sword sword = new Sword(x, y);
-        // TheOneRing theOneRing = new TheOneRing(x, y);
-        // Tower tower = new Tower(x, y);
-        // TowerCard towerCard = new TowerCard("Tower", x, y);
-        // Trap trap = new Trap(x, y);
-        // TrapCard trapCard = new TrapCard("Trap", x, y);
-        // VampireCastleBuilding vampireCastleBuilding = new VampireCastleBuilding(x, y);
-        // VampireCastleCard vampireCastleCard = new VampireCastleCard("VampireCastleBuilding", x, y);
-        // Village village = new Village(x, y);
-        // VillageCard villageCard = new VillageCard("Village", x, y);
-        // ZombiePit zombiePit = new ZombiePit(x, y);
-        // ZombiePitCard zombiePitCard = new ZombiePitCard("ZombiePit", x, y);
-        // for (int i = 0; i < 20 * orderedPath.size(); i++) {
-        //     // TODO = handle more aspects of the behaviour required by the specification
-        //     System.out.println("starting timer");
+        Staff staff = new Staff(x, y);
+        Stake stake = new Stake(x, y);
+        Sword sword = new Sword(x, y);
+        TheOneRing theOneRing = new TheOneRing(x, y);
+        Tower tower = new Tower(x, y);
+        TowerCard towerCard = new TowerCard("Tower", x, y);
+        Trap trap = new Trap(x, y);
+        TrapCard trapCard = new TrapCard("Trap", x, y);
+        VampireCastleBuilding vampireCastleBuilding = new VampireCastleBuilding(x, y);
+        VampireCastleCard vampireCastleCard = new VampireCastleCard("VampireCastleBuilding", x, y);
+        Village village = new Village(x, y);
+        VillageCard villageCard = new VillageCard("Village", x, y);
+        ZombiePit zombiePit = new ZombiePit(x, y);
+        ZombiePitCard zombiePitCard = new ZombiePitCard("ZombiePit", x, y);
+        world.setCharacter(character);
+        for (int i = 0; i < 20 * orderedPath.size(); i++) {
+            // TODO = handle more aspects of the behaviour required by the specification
+            System.out.println("starting timer");
 
-        //     // trigger adding code to process main game logic to queue. JavaFX will target
-        //     // framerate of 0.3 seconds
+            // trigger adding code to process main game logic to queue. JavaFX will target
+            // framerate of 0.3 seconds
 
-        //     world.runTickMoves();
-        //     List<BasicItem> items = world.possiblySpawnItems();
-        //     List<BasicEnemy> defeatedEnemies = world.runBattles();
-        //     List<BasicEnemy> newEnemies = world.possiblySpawnEnemies();
+            world.runTickMoves();
 
-        // }
+
+        }
         assertEquals(0, world.getAllies().size());
         assertEquals(0, world.getEnemy().size());
         assertEquals(0, world.getCampfire().size());
@@ -136,15 +135,14 @@ public class integrationTest {
             }
             enemies.addAll(world.runBattles());
         }
-        assertNotEquals(0, enemies.size());
+        assertEquals(0, enemies.size());
         world.killAlly(ally);
         assertEquals(0, world.getAllies().size());
         assertNotEquals(null, world.generateItem());
 
         assertEquals(ItemType.SWORD, world.addUnequippedItem(ItemType.SWORD).getType());
-        world.unEquipItem(0);
         world.equipItemByCoordinates(0, 0);
-        world.removeUnequippedInventoryItemByCoordinates(1, 0);
+
         for (int i = 0; i < orderedPath.size(); i++) {
             world.runTickMoves();
         }
@@ -152,7 +150,7 @@ public class integrationTest {
         assertEquals(1, world.getPotions());
         character.setHp(100);
         world.spendPotions();
-        assertEquals(500, character.getHp());
+        assertEquals(500, character.getHp().get());
         assertEquals(0, world.getPotions());
         assertNotEquals(0, world.getGold());
         //DoubleProperty gold = world.getGold();
@@ -161,7 +159,6 @@ public class integrationTest {
 
         //assertEquals(gold, world.getGold());
         world.addExperience(100);
-        BasicItem sword = new Sword(x, y);
 
         EnemyProperty slugb = new Slug(position);
         //world.generateTrophy(slugb);
@@ -188,7 +185,6 @@ public class integrationTest {
         world.getExp();
         world.getHp();
         world.getCylceNum();
-        world.isGameWin();
         world.isShopTime();
         world.updatePathCycle();
 
@@ -215,6 +211,7 @@ public class integrationTest {
         world.addAlly(ally2);
         world.addAlly(ally3);
         world.runTickMoves();
+
 
 
 
