@@ -36,6 +36,6 @@ public class AllyTest {
         assertEquals("Vampire", ally.getOriginalType());
         EnemyProperty e = new Zombie(position);
         ally.attack(e);
-        assertEquals(300, e.getHP());
+        assertEquals(600, e.getHP());
     }
 }

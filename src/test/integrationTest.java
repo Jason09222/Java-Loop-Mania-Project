@@ -141,7 +141,7 @@ public class integrationTest {
             }
             enemies.addAll(world.runBattles());
         }
-        assertEquals(0, enemies.size());
+        assertEquals(2, enemies.size());
         world.killAlly(ally);
         assertEquals(0, world.getAllies().size());
         assertNotEquals(null, world.generateItem());

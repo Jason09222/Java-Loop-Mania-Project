@@ -10,11 +10,10 @@ import javafx.scene.image.ImageView;
 
 public class TreeStump extends RareItem{
     private final int defense = 20;
-    private Image treeStumpImage;
 
     public TreeStump(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y, ItemType.SHIELD);
-        treeStumpImage = new Image((new File("src/images/tree_stump.png")).toURI().toString());
+        
     }
     public int getDefense() {
         return this.defense;
@@ -43,7 +42,7 @@ public class TreeStump extends RareItem{
 
     @Override
     public ImageView onLoadItems() {
-        return new ImageView(new Image((new File("src/images/shield.png")).toURI().toString()));
+        return new ImageView(new Image((new File("src/images/tree_stump.png")).toURI().toString()));
     }
     @Override
     public void characterStepOn(LoopManiaWorld l, List<ItemProperty> toRemoveGold,

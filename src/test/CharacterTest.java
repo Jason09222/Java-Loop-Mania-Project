@@ -10,6 +10,7 @@ import unsw.loopmania.Character;
 import unsw.loopmania.HealthPotion;
 //import unsw.loopmania.HealthPotion;
 import unsw.loopmania.LoopManiaWorld;
+import unsw.loopmania.ModeType;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.Slug;
 import unsw.loopmania.Staff;
@@ -53,7 +54,7 @@ public class CharacterTest {
         character.setDamage(2);
         character.getInBattle();
         Slug e = new Slug(position);
-        character.attack(e, world.getEquipItems());
+        character.attack(e, world.getEquipItems(), ModeType.STANDARD);
         character.useHealthPotion(healthPotion);
         character.setDamageBack();
         character.setHp(-10);

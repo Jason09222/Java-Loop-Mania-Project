@@ -37,9 +37,9 @@ public class BasicEnemyTest {
         position.moveDownPath();
         Slug slug = new Slug(position);
         assertEquals("Slug", slug.getType());
-        assertEquals(3000, slug.getHP());
+        assertEquals(600, slug.getHP());
         assertEquals(100, slug.getExp());
-        assertEquals(2, slug.getDamage());
+        assertEquals(10, slug.getDamage());
         assertEquals(1, slug.getFightRadius());
         assertEquals(1, slug.getSupportRadius());
         assertFalse(slug.getIsWeak());
@@ -53,7 +53,7 @@ public class BasicEnemyTest {
         assertEquals("Down", slug.getLastDirec());
         Ally ally = new Ally(position);
         slug.attack_ally(ally);
-        assertEquals(98, ally.getHp());
+        assertEquals(90, ally.getHp());
         assertEquals(2, slug.getDistance(3, 4));
         Character character = new Character(position);
         world.setCharacter(character);
