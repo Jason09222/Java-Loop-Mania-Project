@@ -691,6 +691,9 @@ public class LoopManiaWorldController {
                     battleAutumnAudioPlayer.play();
                 } else {
                     battleAutumnAudioPlayer.stop();
+                    battleWinterAudioPlayer.stop();
+                    battleSpringAudioPlayer.stop();
+                    battleSummerAudioPlayer.stop();
                     audioPlayer.play();
                 }
             } else if (result == 1) {
@@ -700,7 +703,10 @@ public class LoopManiaWorldController {
                     battleWinterAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
                     battleWinterAudioPlayer.play();
                 } else {
+                    battleAutumnAudioPlayer.stop();
                     battleWinterAudioPlayer.stop();
+                    battleSpringAudioPlayer.stop();
+                    battleSummerAudioPlayer.stop();
                     audioPlayer.play();
                 }
             } else if (result == 2) {
@@ -711,7 +717,10 @@ public class LoopManiaWorldController {
                     battleSpringAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
                     battleSpringAudioPlayer.play();
                 } else {
+                    battleAutumnAudioPlayer.stop();
+                    battleWinterAudioPlayer.stop();
                     battleSpringAudioPlayer.stop();
+                    battleSummerAudioPlayer.stop();
                     audioPlayer.play();
                 }
             } else {
@@ -722,6 +731,9 @@ public class LoopManiaWorldController {
                     battleSummerAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
                     battleSummerAudioPlayer.play();
                 } else {
+                    battleAutumnAudioPlayer.stop();
+                    battleWinterAudioPlayer.stop();
+                    battleSpringAudioPlayer.stop();
                     battleSummerAudioPlayer.stop();
                     audioPlayer.play();
                 }
@@ -983,9 +995,8 @@ public class LoopManiaWorldController {
         int totalRewards = 7;
         Random rand = new Random();
         int result = rand.nextInt(1000) % totalRewards;
-        loadAnduril();
-        loadTreeStump();
-        /*switch (result) {
+        
+        switch (result) {
             case 0:
                 loadSword();
                 break;
@@ -1005,13 +1016,13 @@ public class LoopManiaWorldController {
                 loadStake();
                 break;
             case 6:
-                result = rand.nextInt(10);
+                result = rand.nextInt(3);
                 if (result == 0) loadAnduril();
                 else if (result == 1) loadTreeStump();
                 break;
             default:
                 return;
-        }*/
+        }
     }
 
     /**

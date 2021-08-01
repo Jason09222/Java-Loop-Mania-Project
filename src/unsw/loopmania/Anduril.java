@@ -28,7 +28,7 @@ public class Anduril extends RareItem {
         if (e.isBoss()) {
             c.setDamage(c.getDamage() + 3 * damage);
         } else {
-            c.setDamage(c.getDamage());
+            c.setDamage(c.getDamage() + damage);
         }
         
     }

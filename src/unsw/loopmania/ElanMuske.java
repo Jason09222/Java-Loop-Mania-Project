@@ -76,7 +76,7 @@ public class ElanMuske extends EnemyProperty{
                     item.useDuringBattle(this, l.getCharacter());
                 }
                 attack_character(l.getCharacter());
-                l.getCharacter().charingSuperPower(30);
+                l.getCharacter().charingSuperPower(40);
                 recoverEnemies(l.getEnemy());
             }
         return true;
