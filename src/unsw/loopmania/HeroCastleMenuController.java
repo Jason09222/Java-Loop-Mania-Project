@@ -182,18 +182,19 @@ public class HeroCastleMenuController {
         inventory.getChildren().clear();
         this.nextAvailableX = 0;
         this.nextAvailableY = 0;
-        /* Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
+        Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         for (int x = 0; x < LoopManiaWorld.unequippedInventoryWidth; x++) {
             for (int y = 0; y < LoopManiaWorld.unequippedInventoryHeight; y++) {
                 ImageView emptySlotView = new ImageView(inventorySlotImage);
                 inventory.add(emptySlotView, x, y);
             }
-        } */
+        }
     }
 
     @FXML
     void handleExitButton(ActionEvent event) {
         resetButtons();
+        resetShop();
         switchToGame();
     }
 
@@ -219,6 +220,10 @@ public class HeroCastleMenuController {
     void handlePurchaseDoggie(ActionEvent event) {
         if (world.getGold().get() >= world.getItemPrice(ItemType.DOGGIECOIN).get()) {
             buyItem(ItemType.DOGGIECOIN);
+            shopMessage.setText("Shop Message: 1 doggie coin was purchased");
+        }
+        else {
+            shopMessage.setText("Shop Message: Not enough gold to buy doggie coin");
         }
     }
 
