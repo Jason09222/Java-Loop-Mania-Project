@@ -25,7 +25,7 @@ public class Armour extends ItemProperty {
     }
     
     @Override
-    public void useDuringBattle(EnemyProperty e, Character c) {
+    public void useDuringBattle(EnemyProperty e, Character c, ModeType mode) {
         e.setDamage(e.getDamage()/ 2);
         
     }

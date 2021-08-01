@@ -21,13 +21,26 @@ public class Anduril extends RareItem {
     }
 
     @Override
-    public void useDuringBattle(EnemyProperty e, Character c) {
+    public void useDuringBattle(EnemyProperty e, Character c, ModeType mode) {
         // TODO Auto-generated method stub
-        if (e.isBoss()) {
-            c.setDamage(c.getDamage() + 3 * damage);
-        } else {
-            c.setDamage(c.getDamage());
+        if (mode == ModeType.CONFUSING) {
+            int defense = 20; 
+            if (e.isBoss()) {
+                e.setDamage(e.getDamage() - defense * 3);
+            } else {
+                e.setDamage(e.getDamage() - defense);
+            }
+    
+            if (e.getDamage() < 0) e.setDamage(0);
         }
+        else {
+            if (e.isBoss()) {
+                c.setDamage(c.getDamage() + 3 * damage);
+            } else {
+                c.setDamage(c.getDamage());
+            }
+        }
+
     }
 
     @Override
@@ -48,5 +61,11 @@ public class Anduril extends RareItem {
     public boolean canBePurchased() {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    private void confusingProperty(LoopManiaWorld l) {
+        if (l.getMode() != ModeType.CONFUSING) {
+
+        }
     }
 }

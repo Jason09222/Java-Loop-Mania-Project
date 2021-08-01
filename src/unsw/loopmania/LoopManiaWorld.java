@@ -405,7 +405,7 @@ public class LoopManiaWorld {
             if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= 4) {
                 //inBattle = true;
                 //e.setInBattle(true);
-                character.attack(e, equippedItems.getEquipment());
+                character.attack(e, equippedItems.getEquipment(), getMode());
                 if (e.getHP() <= 0) {
                     defeatedEnemies.add(e);
                 }
@@ -1213,6 +1213,9 @@ public class LoopManiaWorld {
 
     public boolean isGameOver() {
         if (character.getHp().get() <= 0) {
+            /*if (getMode() == ModeType.CONFUSING) {
+
+            } */
             if (ringOwned.get() > 0) {
                 ringOwned.set(ringOwned.get() - 1);;
                 character.setHp(500);
