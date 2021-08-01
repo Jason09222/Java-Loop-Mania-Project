@@ -863,6 +863,16 @@ public class LoopManiaWorldController {
         onLoad(zombiePitCard);
     }
 
+    public void loadAnduril() {
+        Anduril anduril = (Anduril) world.addUnequippedItem(ItemType.ANDURIL);
+        onLoad(anduril);
+    }
+
+    public void loadTreeStump() {
+        TreeStump treeStump = (TreeStump) world.addUnequippedItem(ItemType.TREESTUMP);
+        onLoad(treeStump);
+    }
+
     /**
      * load an item into the world and pair it with an image in the GUI
      */
@@ -872,7 +882,7 @@ public class LoopManiaWorldController {
         Sword sword = (Sword) world.addUnequippedItem(ItemType.SWORD);
         //world.addRareItem(sword);
         onLoad(sword);
-    }
+    } 
 
     private void loadShield() {
         Shield shield = (Shield) world.addUnequippedItem(ItemType.SHIELD);
@@ -970,11 +980,12 @@ public class LoopManiaWorldController {
      * generates a random item from the available rewards
      */
     public void generateItem() {
-        int totalRewards = 6;
+        int totalRewards = 7;
         Random rand = new Random();
         int result = rand.nextInt(1000) % totalRewards;
-
-        switch (result) {
+        loadAnduril();
+        loadTreeStump();
+        /*switch (result) {
             case 0:
                 loadSword();
                 break;
@@ -993,9 +1004,14 @@ public class LoopManiaWorldController {
             case 5:
                 loadStake();
                 break;
+            case 6:
+                result = rand.nextInt(10);
+                if (result == 0) loadAnduril();
+                else if (result == 1) loadTreeStump();
+                break;
             default:
                 return;
-        }
+        }*/
     }
 
     /**
@@ -1363,10 +1379,10 @@ public class LoopManiaWorldController {
                 draggedEntity.relocateToPoint(new Point2D(event.getSceneX(), event.getSceneY()));
                 switch (draggableType) {
                     case CARD:
-                        draggedEntity.setImage(vampireCastleCardImage);
+                        draggedEntity.setImage(view.getImage());
                         break;
                     case ITEM:
-                        draggedEntity.setImage(swordImage);
+                        draggedEntity.setImage(view.getImage());
                         break;
                     default:
                         break;
