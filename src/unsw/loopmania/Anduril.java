@@ -13,14 +13,28 @@ import javafx.scene.image.ImageView;
  */
 public class Anduril extends RareItem {
     private final int damage = 250;
-    public Anduril(SimpleIntegerProperty x, SimpleIntegerProperty y, ItemType type) {
-        super(x, y, type);
+
+    private Image andurilImage;
+    public Anduril(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        super(x, y, ItemType.SWORD);
+        andurilImage = new Image((new File("src/images/anduril.png")).toURI().toString());
+
         //TODO Auto-generated constructor stub
     }
 
     @Override
-    public void useDuringBattle(EnemyProperty e, Character c) {
+    public void useDuringBattle(EnemyProperty e, Character c, ModeType mode) {
         // TODO Auto-generated method stub
+        if (mode == ModeType.CONFUSING) {
+            int defense = 20; 
+            if (e.isBoss()) {
+                e.setDamage(e.getDamage() - defense * 3);
+            } else {
+                e.setDamage(e.getDamage() - defense);
+            }
+    
+            if (e.getDamage() < 0) e.setDamage(0);
+        }
         if (e.isBoss()) {
             c.setDamage(c.getDamage() + 3 * damage);
         } else {
@@ -47,4 +61,5 @@ public class Anduril extends RareItem {
         // TODO Auto-generated method stub
         return false;
     }
+
 }
