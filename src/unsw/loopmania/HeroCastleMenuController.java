@@ -194,6 +194,8 @@ public class HeroCastleMenuController {
     @FXML
     void handleExitButton(ActionEvent event) {
         resetButtons();
+        controller.getShopAudioPlayer().pause();
+        controller.getAudioPlayer().play();
         resetShop();
         switchToGame();
     }

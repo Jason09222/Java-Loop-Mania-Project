@@ -37,7 +37,7 @@ public class LoopManiaWorld {
      * width of the world in GridPane cells
      */
     private int width;
-
+    private int shopTimes;
     /**
      * height of the world in GridPane cells
      */
@@ -139,6 +139,7 @@ public class LoopManiaWorld {
         doggieCoinOwned = new SimpleIntegerProperty(0);
 
         doggieCoinMarket = new DoggieCoinMarket(this);
+        shopTimes = 0;
         doggieCoinPrice = new DoggieCoinPrice();
         doggieCoinMarket.registerObserver(doggieCoinPrice);
     }
@@ -402,7 +403,7 @@ public class LoopManiaWorld {
                 continue;
             }
             // add character attacked
-            if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= 4) {
+            if (e.getInBattle()) {
                 //inBattle = true;
                 //e.setInBattle(true);
                 character.attack(e, equippedItems.getEquipment());
@@ -1205,7 +1206,8 @@ public class LoopManiaWorld {
     }
 
     public boolean isShopTime() {
-        if (character.getX() == startCastle.getX() && character.getY() == startCastle.getY()) {
+        if (character.getX() == startCastle.getX() && character.getY() == startCastle.getY() && shopTimes < getCycle()) {
+            shopTimes++;
             return true;
         }
         return false;
