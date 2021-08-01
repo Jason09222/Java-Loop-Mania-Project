@@ -1,6 +1,7 @@
 package unsw.loopmania;
 
 public enum ItemType {
+    ANDURIL(0),
     STAKE(0),
     STAFF(0),
     SWORD(0),
@@ -9,9 +10,8 @@ public enum ItemType {
     SHIELD(2),
     OTHER(4),
     HEALTHPOTION(4),
-    DOGGIECOIN(5),
-    ANDURIL(6),
-    TREESTUMP(7)    
+    DOGGIECOIN(4),
+    TREESTUMP(3),   
     ;
 
     private int index;

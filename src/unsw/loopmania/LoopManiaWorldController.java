@@ -862,8 +862,9 @@ public class LoopManiaWorldController {
         int totalRewards = 7;
         Random rand = new Random();
         int result = rand.nextInt(1000) % totalRewards;
-
-        switch (result) {
+        loadAnduril();
+        loadTreeStump();
+        /*switch (result) {
             case 0:
                 loadSword();
                 break;
@@ -889,7 +890,7 @@ public class LoopManiaWorldController {
                 break;
             default:
                 return;
-        }
+        }*/
     }
 
     /**
@@ -1257,10 +1258,10 @@ public class LoopManiaWorldController {
                 draggedEntity.relocateToPoint(new Point2D(event.getSceneX(), event.getSceneY()));
                 switch (draggableType) {
                     case CARD:
-                        draggedEntity.setImage(vampireCastleCardImage);
+                        draggedEntity.setImage(view.getImage());
                         break;
                     case ITEM:
-                        draggedEntity.setImage(swordImage);
+                        draggedEntity.setImage(view.getImage());
                         break;
                     default:
                         break;

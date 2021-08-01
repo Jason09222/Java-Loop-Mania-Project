@@ -55,4 +55,9 @@ public class MainMenuController {
         world.setMode(ModeType.CONFUSING);
         gameSwitcher.switchMenu();
     }
+
+    @FXML
+    private void mute() {
+        
+    }
 }

@@ -13,7 +13,7 @@ public class TreeStump extends RareItem{
     private Image treeStumpImage;
     public TreeStump(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y, ItemType.SHIELD);
-        treeStumpImage = new Image((new File("src/images/shield.png")).toURI().toString());
+        treeStumpImage = new Image((new File("src/images/tree_stump.png")).toURI().toString());
     }
     public int getDefense() {
         return this.defense;

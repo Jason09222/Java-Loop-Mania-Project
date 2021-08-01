@@ -14,8 +14,8 @@ import javafx.scene.image.ImageView;
 public class Anduril extends RareItem {
     private final int damage = 250;
     private Image andurilImage;
-    public Anduril(SimpleIntegerProperty x, SimpleIntegerProperty y, ItemType type) {
-        super(x, y, type);
+    public Anduril(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        super(x, y, ItemType.SWORD);
         andurilImage = new Image((new File("src/images/anduril.png")).toURI().toString());
         //TODO Auto-generated constructor stub
     }

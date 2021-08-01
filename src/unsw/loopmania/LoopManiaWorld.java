@@ -528,7 +528,7 @@ public class LoopManiaWorld {
                 item = null;
                 break;
             case ANDURIL:
-                item = new Anduril(x, y, ItemType.ANDURIL);
+                item = new Anduril(x, y);
                 break;
             case TREESTUMP:
                 item = new TreeStump(x, y);
