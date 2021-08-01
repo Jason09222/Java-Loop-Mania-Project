@@ -371,4 +371,9 @@ public class HeroCastleMenuController {
         purchaseSword.setText("Buy");
     }
 
+    public void resetShop() {
+        potionBought = 0;
+        armourBought = 0;
+    }
+
 }
