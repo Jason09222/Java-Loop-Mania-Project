@@ -228,6 +228,9 @@ public class LoopManiaWorldController {
     MediaPlayer battleWinterAudioPlayer;
     MediaPlayer battleSpringAudioPlayer;
     MediaPlayer battleSummerAudioPlayer;
+
+    private boolean muteMusic;
+    
     private Image brilliantBlueNewImage;
     private Image goldImage;
     private Image expImage;
@@ -400,9 +403,9 @@ public class LoopManiaWorldController {
         mainMenuMusic = new File("src/images/mainMenuMusic.mp3"); 
         audio = new Media(mainMenuMusic.toURI().toString());
         mainMenuAudioPlayer = new MediaPlayer(audio);
-        mainMenuAudioPlayer.setAutoPlay(true);
+        if (!getMute()) mainMenuAudioPlayer.setAutoPlay(true);
         mainMenuAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mainMenuAudioPlayer.play();
+        if (!getMute()) mainMenuAudioPlayer.play();
         
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
@@ -636,7 +639,14 @@ public class LoopManiaWorldController {
         return this.unequippedInventory;
     }
 
-    
+    public void setMute(boolean muteMusic) {
+        this.muteMusic = muteMusic;
+    }
+
+    public boolean getMute() {
+        return this.muteMusic;
+    }
+
 
     /**
      * create and run the timer
@@ -650,7 +660,7 @@ public class LoopManiaWorldController {
         PVZaudio = new File("src/images/audio.mp3");
         Media audio = new Media(PVZaudio.toURI().toString());
         audioPlayer = new MediaPlayer(audio);
-        audioPlayer.setAutoPlay(true);
+        if (!getMute()) audioPlayer.setAutoPlay(true);
         audioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         // trigger adding code to process main game logic to queue. JavaFX will target
         // framerate of 0.3 seconds
@@ -662,45 +672,45 @@ public class LoopManiaWorldController {
                 if (world.getCharacter().getInBattle()) {
                     audioPlayer.pause();
                     
-                    battleAutumnAudioPlayer.setAutoPlay(true);
+                    if (!getMute())battleAutumnAudioPlayer.setAutoPlay(true);
                     battleAutumnAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-                    battleAutumnAudioPlayer.play();
+                    if (!getMute()) battleAutumnAudioPlayer.play();
                 } else {
                     battleAutumnAudioPlayer.stop();
-                    audioPlayer.play();
+                    if (!getMute()) audioPlayer.play();
                 }
             } else if (result == 1) {
                 if (world.getCharacter().getInBattle()) {
                     audioPlayer.pause();
                     
-                    battleWinterAudioPlayer.setAutoPlay(true);
+                    if (!getMute()) battleWinterAudioPlayer.setAutoPlay(true);
                     battleWinterAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-                    battleWinterAudioPlayer.play();
+                    if (!getMute()) battleWinterAudioPlayer.play();
                 } else {
                     battleWinterAudioPlayer.stop();
-                    audioPlayer.play();
+                    if (!getMute()) audioPlayer.play();
                 }
             } else if (result == 2) {
                 if (world.getCharacter().getInBattle()) {
                     audioPlayer.pause();
                     
-                    battleSpringAudioPlayer.setAutoPlay(true);
+                    if (!getMute()) battleSpringAudioPlayer.setAutoPlay(true);
                     battleSpringAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-                    battleSpringAudioPlayer.play();
+                    if (!getMute()) battleSpringAudioPlayer.play();
                 } else {
                     battleSpringAudioPlayer.stop();
-                    audioPlayer.play();
+                    if (!getMute()) audioPlayer.play();
                 }
             } else {
                 if (world.getCharacter().getInBattle()) {
                     audioPlayer.pause();
                     
-                    battleSummerAudioPlayer.setAutoPlay(true);
+                    if (!getMute()) battleSummerAudioPlayer.setAutoPlay(true);
                     battleSummerAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-                    battleSummerAudioPlayer.play();
+                    if (!getMute()) battleSummerAudioPlayer.play();
                 } else {
                     battleSummerAudioPlayer.stop();
-                    audioPlayer.play();
+                    if (!getMute()) audioPlayer.play();
                 }
             }
             
@@ -713,7 +723,7 @@ public class LoopManiaWorldController {
                     shopMusic = new File("src/images/shopMusic.mp3");
                     Media stopAudio = new Media(shopMusic.toURI().toString());
                     shopAudioPlayer = new MediaPlayer(stopAudio);
-                    shopAudioPlayer.setAutoPlay(true);
+                    if (!getMute()) shopAudioPlayer.setAutoPlay(true);
                     shopAudioPlayer.setCycleCount(MediaPlayer.INDEFINITE);
                 }
                 catch (IOException e) {
