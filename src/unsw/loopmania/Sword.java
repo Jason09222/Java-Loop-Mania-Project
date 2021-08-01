@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView;
  * represents an equipped or unequipped sword in the backend world
  */
 public class Sword extends ItemProperty {
-    private final int damage = 200;
+    private final int damage = 100;
     private final int price = 1000;
     private Image swordImage;
     public Sword(SimpleIntegerProperty x, SimpleIntegerProperty y) {
