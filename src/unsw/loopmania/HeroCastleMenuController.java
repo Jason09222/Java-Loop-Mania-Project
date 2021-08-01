@@ -19,6 +19,7 @@ import java.io.File;
 
 import javax.swing.Action;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.event.ActionEvent;
 
 public class HeroCastleMenuController {
@@ -26,7 +27,7 @@ public class HeroCastleMenuController {
     private MenuSwitcher gameSwitcher;
     private LoopManiaWorld world;
     private LoopManiaWorldController controller;
-
+    private IntegerProperty goldInt;
     @FXML
     private GridPane inventory;
 
@@ -104,9 +105,10 @@ public class HeroCastleMenuController {
     private int nextAvailableX = 0;
     private int nextAvailableY = 0;
 
-    @FXML
-    void updateInventory(ActionEvent event) {
+    public void update() {
         initialiseInventory();
+        //goldInt.set(world.getGolds());
+        sell.setText("Sell");
         for(ItemProperty item: world.getUnequippedInventoryItems()) {
             if (item != null) {
 
@@ -119,14 +121,19 @@ public class HeroCastleMenuController {
                     nextAvailableX++;
                 }
     
-    
                 view.setOnMouseClicked(e->selected(item));
             }
         }
     }
 
+    @FXML
+    void updateInventory(ActionEvent event) {
+        update();
+    }
+
     void selected(ItemProperty item) {
         initialisePane();
+        sell.setText("SELL");
         ImageView view = item.onLoadItems();
         view.setFitHeight(100);
         view.setFitWidth(100);
@@ -139,79 +146,90 @@ public class HeroCastleMenuController {
 
     public void initialiseInventory() {
         inventory.getChildren().clear();
+        this.nextAvailableX = 0;
+        this.nextAvailableY = 0;
     }
 
     @FXML
     void handleExitButton(ActionEvent event) {
+        resetButtons();
         switchToGame();
     }
 
 
     private void buyItem(ItemType itemType) {
         world.addGold(-1 * world.getItemPrice(itemType));
-        world.getGold().set(world.getGolds());
+        //goldInt.set(world.getGolds());
+        //gold.textProperty().bind(goldInt.asString());
         if (itemType == ItemType.HEALTHPOTION) {
             world.addPotion(1);
-
+            
         }
         else {
             ItemProperty item = world.addUnequippedItem(itemType);
             controller.onLoad(item);
         }
-
+        
+        update();
     }
 
     @FXML
     void handlePurchaseArmour(ActionEvent event) {
-        if (world.getGold().getValue() >= world.getItemPrice(ItemType.ARMOUR)) {
+        if (!purchaseArmour.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.ARMOUR)) {
             buyItem(ItemType.ARMOUR);
+            purchaseArmour.setText("\u2713");
         }
         
     }
 
     @FXML
     void handlePurchaseHelmet(ActionEvent event) {
-        if (world.getGold().getValue() >= world.getItemPrice(ItemType.HELMET)) {
+        if (!purchaseHelmet.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.HELMET)) {
             buyItem(ItemType.HELMET);
+            purchaseHelmet.setText("\u2713");
         }
         
     }
 
     @FXML
     void handlePurchasePotion(ActionEvent event) {
-        if (world.getGold().getValue() >= world.getItemPrice(ItemType.HEALTHPOTION)) {
+        if (!purchasePotion.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.HEALTHPOTION)) {
             buyItem(ItemType.HEALTHPOTION);
+            purchasePotion.setText("\u2713");
         }
         
     }
 
     @FXML
     void handlePurchaseShield(ActionEvent event) {
-        if (world.getGold().getValue() >= world.getItemPrice(ItemType.SHIELD)) {
+        if (!purchaseShield.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.SHIELD)) {
             buyItem(ItemType.SHIELD);
+            purchaseShield.setText("\u2713");
         }
         
     }
 
     @FXML
     void handlePurchaseStaff(ActionEvent event) {
-        if (world.getGold().getValue() >= world.getItemPrice(ItemType.STAFF)) {
+        if (!purchaseStaff.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.STAFF)) {
             buyItem(ItemType.STAFF);
+            purchaseStaff.setText("\u2713");
         }
         
     }
 
     @FXML
     void handlePurchaseStake(ActionEvent event) {
-        if (world.getGold().getValue() >= world.getItemPrice(ItemType.STAKE)) {
+        if (!purchaseStake.getText().equals("\u2713") &&world.getGold().get() >= world.getItemPrice(ItemType.STAKE)) {
             buyItem(ItemType.STAKE);
+            purchaseStake.setText("\u2713");
         }
         
     }
 
     @FXML
     void handlePurchaseSword(ActionEvent event) {
-        if (!purchaseSword.getText().equals("\u2713") && world.getGold().getValue() >= world.getItemPrice(ItemType.SWORD)) {
+        if (!purchaseSword.getText().equals("\u2713") && world.getGold().get() >= world.getItemPrice(ItemType.SWORD)) {
             buyItem(ItemType.SWORD);
             purchaseSword.setText("\u2713");
         }
@@ -221,28 +239,21 @@ public class HeroCastleMenuController {
 
     @FXML
     public void initialize() {
-        gold = new Label("0");
-        gold.textProperty().bind(world.getGold().asString());
+        goldInt = world.getGold();
+        gold = new Label(String.valueOf(goldInt.get()));
+        gold.textProperty().bind(goldInt.asString());
         gold.setTextFill(Color.ORANGE);
         gold.setFont(new Font("Cambria", 40));
+        //goldInt.set(world.getGolds());
         currentGold.getChildren().add(gold);
         StackPane.setAlignment(gold, Pos.CENTER_RIGHT);
-
-        /*// add the empty slot images for the unequipped inventory
-        Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
-        for (int x = 0; x < LoopManiaWorld.unequippedInventoryWidth; x++) {
-            for (int y = 0; y < LoopManiaWorld.unequippedInventoryHeight; y++) {
-                ImageView emptySlotView = new ImageView(inventorySlotImage);
-                inventory.add(emptySlotView, x, y);
-            }
-        }*/
     }
 
 
 
     @FXML
     public void sellItem(ActionEvent event) {
-        if (paneToSell.getChildren().size() == 0) return;
+        if (sell.getText().equals("\u2713") || paneToSell.getChildren().size() == 0) return;
         String text = "";
         for (Node each: paneToSell.getChildren()) {
             if (each instanceof Label) {
@@ -250,26 +261,33 @@ public class HeroCastleMenuController {
                 text = label.getText().split(":")[0];
             }
         }
-
+        
         removeItem(text);
+        sell.setText("\u2713");
+        update();
+        initialisePane();
+        //goldInt.set(world.getGolds());
     }
 
     public void initialisePane() {
-        for (Node each: paneToSell.getChildren()) {
-            paneToSell.getChildren().remove(each);
-        }
+        paneToSell.getChildren().clear();
     }
 
     public void removeItem(String text) {
         for (ItemProperty item: world.getUnequippedInventoryItems()) {
             if(item.getType().name().equals(text)) {
                 world.getUnequippedInventoryItems().remove(item);
-                world.addGold(item.getPrice());
-                world.getGold().set(world.getGolds());
+                controller.unLoad(item);
+                //world.addGold(item.getPrice());
+                goldInt.set(goldInt.get() + item.getPrice());
+                item.destroy();
                 return;
             }
         }
     }
-
+    public void resetButtons() {
+        sell.setText("Sell");
+        purchaseSword.setText("Buy");
+    }
 
 }
