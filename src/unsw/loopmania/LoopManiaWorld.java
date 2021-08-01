@@ -9,8 +9,10 @@ import javax.swing.text.html.HTMLDocument.Iterator;
 import java.lang.Math;
 import org.javatuples.Pair;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.effect.BlurType;
@@ -42,6 +44,8 @@ public class LoopManiaWorld {
     private int height;
 
     private int pathCycle = 0;
+
+    private DoggieCoinPrice doggieCoinPrice;
 
     /**
      * generic entitites - i.e. those which don't have dedicated fields
@@ -84,10 +88,11 @@ public class LoopManiaWorld {
 
     private boolean shouldSpawnDoggie;
     private boolean shouldSpawnMuske;
-    private boolean hasSpawnMuske;
+    public BooleanProperty hasSpawnMuske;
+    public BooleanProperty hasKilledMuske;
     private IntegerProperty gold;
     private GoalLogic totaGoal;
-
+    private DoggieCoinMarket doggieCoinMarket;
     private ModeType mode;
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
@@ -129,8 +134,13 @@ public class LoopManiaWorld {
         startCastle = new HeroCastle(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         shouldSpawnDoggie = false;
         shouldSpawnMuske = false;
-        hasSpawnMuske = false;
+        hasSpawnMuske = new SimpleBooleanProperty(false);
+        hasKilledMuske = new SimpleBooleanProperty(false);
         doggieCoinOwned = 0;
+
+        doggieCoinMarket = new DoggieCoinMarket(this);
+        doggieCoinPrice = new DoggieCoinPrice();
+        doggieCoinMarket.registerObserver(doggieCoinPrice);
     }
 
 
@@ -251,7 +261,7 @@ public class LoopManiaWorld {
                 enemies.add(enemy);
                 spawningEnemies.add(enemy);
                 shouldSpawnMuske = false;
-                hasSpawnMuske = true;
+                hasSpawnMuske.set(true);
             }
         }
 
@@ -324,40 +334,6 @@ public class LoopManiaWorld {
         return spawningItems;
     }
 
-    // /**
-    // * get a randomly generated position which could be used to spawn an item
-    // *
-    // * @return null if random choice is that wont be spawning an enemy or it isn't
-    // * possible, or random coordinate pair if should go ahead
-    // */
-    // private Pair<Integer, Integer> possiblyGetBasicItemSpawnPosition() {
-
-    // // has a chance spawning a basic item on a tile the character isn't on or
-    // // immediately before or after (currently space required = 2)...
-    // Random rand = new Random();
-    // int choice = rand.nextInt(2);
-    // if ((choice == 0) && (enemies.size() < 2)) {
-    // List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
-    // int indexPosition = orderedPath.indexOf(new Pair<Integer,
-    // Integer>(character.getX(), character.getY()));
-    // // inclusive start and exclusive end of range of positions not allowed
-    // int startNotAllowed = (indexPosition - 2 + orderedPath.size()) %
-    // orderedPath.size();
-    // int endNotAllowed = (indexPosition + 3) % orderedPath.size();
-    // // note terminating condition has to be != rather than < since wrap around...
-    // for (int i = endNotAllowed; i != startNotAllowed; i = (i + 1) %
-    // orderedPath.size()) {
-    // orderedPathSpawnCandidates.add(orderedPath.get(i));
-    // }
-
-    // // choose random choice
-    // Pair<Integer, Integer> spawnPosition = orderedPathSpawnCandidates
-    // .get(rand.nextInt(orderedPathSpawnCandidates.size()));
-
-    // return spawnPosition;
-    // }
-    // return null;
-    // }
 
     /**
      * kill an enemy
@@ -382,7 +358,6 @@ public class LoopManiaWorld {
      * @return list of enemies which have been killed
      */
     public List<EnemyProperty> runBattles() {
-        // TODO = modify this - currently the character automatically wins all battles
         // without any damage!
         List<EnemyProperty> defeatedEnemies = new ArrayList<EnemyProperty>();
         List<Ally> defeatedAllies = new ArrayList<Ally>();
@@ -391,7 +366,6 @@ public class LoopManiaWorld {
         character.setDamageBack();
         for (EnemyProperty e : enemies) {
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
-            // TODO = you should implement different RHS on this inequality, based on
             // influence radii and battle radii
             // boolean hasAttacked = false;
             e.setAllPropertyBack();
@@ -444,6 +418,9 @@ public class LoopManiaWorld {
             // if we killEnemy in prior loop, we get
             // java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
+            if (e.getType().equals("ElanMuske")) {
+                hasKilledMuske.set(true);
+            }
             addExperience(e.getExp());
             killEnemy(e);
         }
@@ -483,35 +460,6 @@ public class LoopManiaWorld {
                 return null;
         }
     }
-
-    /**
-     * spawn a sword in the world and return the sword entity
-     *
-     * @return a sword to be spawned in the controller as a JavaFX node
-     */
-
-    /*
-    public Sword addUnequippedSword() {
-        // TODO = expand this - we would like to be able to add multiple types of items,
-        // apart from swords
-        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
-        if (firstAvailableSlot == null) {
-            // eject the oldest unequipped item and replace it... oldest item is that at
-            // beginning of items
-            // TODO = give some cash/experience rewards for the discarding of the oldest
-            // sword
-            removeItemByPositionInUnequippedInventoryItems(0);
-            firstAvailableSlot = getFirstAvailableSlotForItem();
-        }
-
-        // now we insert the new sword, as we know we have at least made a slot
-        // available...
-        Sword sword = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-        unequippedInventoryItems.add(sword);
-        return sword;
-    }
-    */
 
 
 
@@ -636,7 +584,7 @@ public class LoopManiaWorld {
      * immediately
      */
     public void runTickMoves() {
-
+        doggieCoinMarket.notifyObservers();
         if (!character.getInBattle()) {
             character.moveDownPath();
             updatePathCycle();
@@ -645,7 +593,7 @@ public class LoopManiaWorld {
             shouldSpawnDoggie = true;
         }
 
-        if (getCycle() == 40 && experience.get() >= 10000 && !hasSpawnMuske) {
+        if (getCycle() == 4 && experience.get() >= 100 && !hasKilledMuske.get() && !hasSpawnMuske.get()) {
             shouldSpawnMuske = true;
         }
         moveBasicEnemies();
@@ -1301,7 +1249,7 @@ public class LoopManiaWorld {
         for (EnemyProperty e : enemies) {
             if (e.isBoss()) return true;
         }
-        return !hasSpawnMuske;
+        return !hasSpawnMuske.get();
     }
 
     public IntegerProperty getItemPrice(ItemType itemType) {
