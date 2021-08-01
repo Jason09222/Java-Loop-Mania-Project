@@ -37,7 +37,7 @@ public class LoopManiaWorld {
      * width of the world in GridPane cells
      */
     private int width;
-
+    private int shopTimes;
     /**
      * height of the world in GridPane cells
      */
@@ -137,6 +137,7 @@ public class LoopManiaWorld {
         doggieCoinOwned = 0;
 
         doggieCoinMarket = new DoggieCoinMarket(this);
+        shopTimes = 0;
     }
 
 
@@ -450,7 +451,7 @@ public class LoopManiaWorld {
             // if we killEnemy in prior loop, we get
             // java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
-            if (e.getType().equals("Muske")) {
+            if (e.getType().equals("ElanMuske")) {
                 hasKilledMuske.set(true);
             }
             addExperience(e.getExp());
@@ -1266,7 +1267,8 @@ public class LoopManiaWorld {
     }
 
     public boolean isShopTime() {
-        if (character.getX() == startCastle.getX() && character.getY() == startCastle.getY()) {
+        if (character.getX() == startCastle.getX() && character.getY() == startCastle.getY() && shopTimes < getCycle()) {
+            shopTimes++;
             return true;
         }
         return false;
