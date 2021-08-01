@@ -171,13 +171,13 @@ public class BasicItemTest {
         PathPosition position = new PathPosition(index, orderedPath);
         Anduril armour = new Anduril(x, y);
         Slug slug = new Slug(null);
-        assertEquals(armour.getType(), ItemType.OTHER);
+        assertEquals(armour.getType(), ItemType.SWORD);
         assertEquals(armour.getX(), 1);
         assertEquals(armour.getY(), 2);
         Character character = new Character(position);
         armour.useDuringBattle(slug, character, ModeType.STANDARD);
         assertFalse(armour.canBePurchased());
-        assertEquals(armour.getSlot(), 4);
+        assertEquals(armour.getSlot(), 0);
         armour.characterStepOn(world, new ArrayList<>(), new ArrayList<>());
     }
 
@@ -358,7 +358,7 @@ public class BasicItemTest {
         PathPosition position = new PathPosition(index, orderedPath);
         Armour armour = new Armour(x, y);
         Slug slug = new Slug(null);
-        assertEquals(armour.getDefense(slug), 1);
+        assertEquals(armour.getDefense(slug), 5);
         assertEquals(armour.getType(), ItemType.ARMOUR);
         assertEquals(armour.getX(), 1);
         assertEquals(armour.getY(), 2);

@@ -156,7 +156,7 @@ public class BuildingTest {
         tower.attack(world);
         vampire.setInBattle(true);
         world.getEnemy().add(vampire);
-        assertEquals(vampire.getHP(), 800);//???
+        assertEquals(vampire.getHP(), 1000);//???
         tower.spawnEnemy(world, new ArrayList<>());
         tower.characterStepOn(world);
         tower.enemyStepOn(world, new ArrayList<>());
@@ -293,7 +293,7 @@ public class BuildingTest {
         trap.destroyTrap(world);
         assertEquals(world.getBuildings().size(), 0);
 
-        assertEquals(vampire.getHP(), 800);// Should kill the ememy
+        assertEquals(vampire.getHP(), 1000);// Should kill the ememy
         trap.spawnEnemy(world, new ArrayList<>());
         trap.characterStepOn(world);
         trap.enemyStepOn(world, new ArrayList<>());
@@ -336,7 +336,7 @@ public class BuildingTest {
         Character character = new Character(position);
         world.setCharacter(character);
         campfire.doubleDamage(character);
-        assertEquals(vampire.getHP(), 600);
+        assertEquals(vampire.getHP(), 800);
         campfire.spawnEnemy(world, new ArrayList<>());
         campfire.characterStepOn(world);
         campfire.enemyStepOn(world, new ArrayList<>());
