@@ -21,7 +21,6 @@ import unsw.loopmania.Campfire;
 import unsw.loopmania.CampfireCard;
 import unsw.loopmania.Character;
 import unsw.loopmania.EnemyProperty;
-import unsw.loopmania.Goals;
 import unsw.loopmania.Gold;
 import unsw.loopmania.HealthPotion;
 import unsw.loopmania.Helmet;
@@ -161,7 +160,6 @@ public class integrationTest {
         //assertEquals(gold + 100, world.getGold());
 
         //assertEquals(gold, world.getGold());
-        assertNotEquals(0, world.getExperience());
         world.addExperience(100);
         BasicItem sword = new Sword(x, y);
 
@@ -179,7 +177,6 @@ public class integrationTest {
         world.loadVillageCard();
         world.loadZombiePitCard();
 
-        world.convertCardToBuildingByCoordinates(card.getX(), card.getY(), 2, 3);
 
 
         world.getHealthPotionNum();
