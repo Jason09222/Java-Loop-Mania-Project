@@ -132,7 +132,7 @@ public class integrationTest {
         while (true) {
             if (world.getEnemy().size() == 0)
                 break;
-            if (character.getHp() <= 0) {
+            if (character.getHp().get() <= 0) {
                 break;
             }
             enemies.addAll(world.runBattles());
