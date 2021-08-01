@@ -148,7 +148,10 @@ public class integrationTest {
 
         assertEquals(ItemType.SWORD, world.addUnequippedItem(ItemType.SWORD).getType());
         world.equipItemByCoordinates(0, 0);
-
+        Ally ally22 = new Ally(position);
+        Ally ally33 = new Ally(position);
+        world.getAllies().add(ally22);
+        world.getAllies().add(ally33);
         for (int i = 0; i < orderedPath.size(); i++) {
             world.runTickMoves();
         }
